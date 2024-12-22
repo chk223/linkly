@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>댓글 작성</title>
+</head>
+<body>
+<div id="container">
+    <h2>댓글 작성</h2>
+    <form th:action="@{/comment/add-comment}" method="post">
+        <!-- Feed ID (hidden) -->
+        <input type="hidden" name="feedId" th:value="${feedId}">
+
+        <!-- 댓글 내용 -->
+        <div>
+            <label for="content">댓글 내용</label>
+            <textarea id="content" name="content" rows="5" required></textarea>
+        </div>
+
+        <!-- 제출 버튼 -->
+        <button type="submit" class="btn btn-success">댓글 달기</button>
+    </form>
+</div>
+</body>
+</html>
