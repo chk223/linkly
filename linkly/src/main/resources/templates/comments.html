@@ -1,24 +1,45 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title>댓글 작성</title>
+    <title>댓글 관리</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link rel="stylesheet" th:href="@{/css/style.css}">
 </head>
 <body>
-<div id="container">
-    <h2>댓글 작성</h2>
-    <form th:action="@{/comment/add-comment}" method="post">
-        <!-- Feed ID (hidden) -->
-        <input type="hidden" name="feedId" th:value="${feedId}">
-
-        <!-- 댓글 내용 -->
-        <div>
-            <label for="content">댓글 내용</label>
-            <textarea id="content" name="content" rows="5" required></textarea>
+<div class="container mt-5">
+    <!-- 댓글 리스트 -->
+    <div class="comment-section">
+        <h3>댓글</h3>
+        <div class="comment-list">
+            <div class="comment-item mb-3" th:each="comment : ${comments}">
+                <div class="d-flex justify-content-between">
+                    <div>
+                        <span class="comment-author" th:text="${comment.userName}">작성자</span>
+                        <span class="comment-date text-muted" th:text="${comment.updatedAt}">2024-01-01</span>
+                    </div>
+                    <div th:if="${comment.isEditable}">
+                        <button class="btn btn-sm btn-primary" th:onclick="'/comment/edit/' + ${comment.id}">수정</button>
+                        <button class="btn btn-sm btn-danger" th:onclick="'/comment/delete/' + ${comment.id}">삭제</button>
+                    </div>
+                </div>
+                <p class="comment-content mt-2" th:text="${comment.content}">댓글 내용</p>
+            </div>
         </div>
+    </div>
 
-        <!-- 제출 버튼 -->
-        <button type="submit" class="btn btn-success">댓글 달기</button>
-    </form>
+    <!-- 댓글 작성 폼 -->
+    <div class="comment-form mt-4">
+        <h4>댓글 작성</h4>
+        <form th:action="@{/comment/add}" method="post" th:object="${commentRequestDto}">
+            <input type="hidden" name="feedId" th:value="${feedId}">
+            <div class="mb-3">
+                <label for="content" class="form-label">내용</label>
+                <textarea id="content" th:field="*{content}" class="form-control" rows="4" required></textarea>
+            </div>
+            <button type="submit" class="btn btn-success">댓글 달기</button>
+        </form>
+    </div>
 </div>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 </html>

@@ -22,9 +22,15 @@
         <p th:text="${feed.content}">피드 내용</p>
     </div>
 
-    <!-- 좋아요 수 -->
+    <!-- 좋아요 버튼 -->
     <div class="feed-likes">
         <span th:text="'좋아요: ' + ${feed.heartCount}">좋아요: 0</span>
+        <button th:if="${userLiked}" th:onclick="'location.href=\'/feed/unlike/' + ${feed.id} + '\''" class="btn btn-secondary">
+            좋아요 취소
+        </button>
+        <button th:if="${!userLiked}" th:onclick="'location.href=\'/feed/like/' + ${feed.id} + '\''" class="btn btn-primary">
+            좋아요
+        </button>
     </div>
 
     <!-- 피드 수정 및 삭제 버튼 -->
@@ -42,6 +48,5 @@
     <!-- 댓글창 열기 버튼 -->
     <a th:href="@{/comment/add/{feedId}(feedId=${feed.id})}" class="btn btn-primary">댓글 작성</a>
 </div>
-
 </body>
 </html>

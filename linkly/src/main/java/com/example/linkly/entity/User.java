@@ -1,5 +1,6 @@
 package com.example.linkly.entity;
 
+import com.example.linkly.exception.util.ErrorMessage;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -8,7 +9,6 @@ import lombok.Getter;
 @Table(name = "user")
 public class User extends BaseEntity {
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private String id;
 
     @Column(length = 10)
