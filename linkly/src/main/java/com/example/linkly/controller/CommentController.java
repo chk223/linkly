@@ -2,7 +2,9 @@ package com.example.linkly.controller;
 
 import com.example.linkly.dto.comment.CommentRequestDto;
 import com.example.linkly.dto.comment.CommentResponseDto;
+import com.example.linkly.entity.Heart;
 import com.example.linkly.service.comment.CommentService;
+import com.example.linkly.service.heart.HeartService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -16,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class CommentController {
 
     private final CommentService commentService;
+    private final HeartService heartService;
 
     // 댓글 생성
     @PostMapping("/{feedId}")
@@ -56,4 +59,8 @@ public class CommentController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
+
+    // 댓글 좋아요 추가
+
+
 }
