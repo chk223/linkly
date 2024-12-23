@@ -2,6 +2,7 @@ package com.example.linkly.repository;
 
 import com.example.linkly.entity.User;
 import org.springframework.data.jpa.repository.JpaRepository;
+
 import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 

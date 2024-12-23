@@ -1,5 +1,6 @@
 package com.example.linkly.entity;
 
+import com.example.linkly.exception.util.ErrorMessage;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
