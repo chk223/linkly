@@ -17,7 +17,9 @@ import java.io.IOException;
 @Component
 public class JwtFilter implements Filter {
     private final JwtUtil jwtUtil;
-    private static final String[] WHITE_LIST = {"/api/auth/login","/api/users/signup","/login","/auth/login","/users/signup","/*"};
+
+    private static final String[] WHITE_LIST = {"/api/auth/login","/api/user/sign-up","/login","/auth/login","/users/signup","/*"};
+
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
     @Autowired
     public JwtFilter(JwtUtil jwtUtil) {
