@@ -4,9 +4,11 @@ import com.example.linkly.config.PasswordEncoder;
 import com.example.linkly.dto.user.UserResponseDto;
 import com.example.linkly.dto.user.UserUpdateRequestDto;
 import com.example.linkly.entity.User;
+import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.View;
@@ -32,6 +34,7 @@ public class UserServiceImpl implements UserService{
     public void signUp(String email, String password, String userName) {
 
         if (userRepository.findByEmail(email) != null) {
+            log.info("이미 존재하는 이메일입니다.");
             throw new RuntimeException("이미 존재하는 이메일입니다."); //수정
         }
         User user = new User(email, password, userName, null, null, null); // 프로필 사진, 소개, 링크는 프로필 수정에서
@@ -60,6 +63,8 @@ public class UserServiceImpl implements UserService{
 
         User user = userRepository.findByIdOrElseThrow(id);
 
+//        User user = userRepository.findById(id).orElseThrow(() ->
+//                new UserException("아이디에 해당하는 유저가 없습니다.", HttpStatus.NOT_FOUND));
         // 이름 수정
         if(dto.getName() != null) {
             user.updateName(dto.getName());
