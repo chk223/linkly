@@ -20,16 +20,34 @@ public class Feed {
     @Column(name = "img_url")
     private String imgUrl;
     @Column(name = "like_count")
-    private Long likeCount;
+    private Long heartCount;
 
     @CreatedDate
-    @Column(name = "create_at", updatable = false)
+    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
+    @Setter
     @ManyToOne
     @JoinColumn(name = "user_id")
     private User user;
 
     public Feed() {
     }
+
+    public Feed(String imgUrl, String content, Long heartCount) {
+        this.imgUrl = imgUrl;
+        this.content = content;
+        this.heartCount = heartCount;
+    }
+
+    public Long increaseCount () {
+        this.heartCount += 1;
+        return this.heartCount;
+    }
+
+    public Long decreaseCount () {
+        this.heartCount -= 1;
+        return this.heartCount;
+    }
+
 }

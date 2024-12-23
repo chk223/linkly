@@ -1,4 +1,7 @@
 package com.example.linkly.repository;
 
-public interface FeedRepository {
+import com.example.linkly.entity.Feed;
+import org.springframework.data.jpa.repository.JpaRepository;
+
+public interface FeedRepository extends JpaRepository<Feed, Long> {
 }

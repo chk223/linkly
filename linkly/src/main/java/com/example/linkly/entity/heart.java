@@ -5,8 +5,8 @@ import lombok.Getter;
 
 @Entity
 @Getter
-@Table(name = "like")
-public class Like {
+@Table(name = "heart")
+public class heart {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,6 +20,6 @@ public class Like {
     @JoinColumn(name = "feed_id")
     private Feed feed;
 
-    public Like() {
+    public heart() {
     }
 }
