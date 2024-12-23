@@ -1,4 +1,4 @@
-package com.example.linkly.common.exception;
+package com.example.linkly.util.exception;
 
 import com.example.linkly.exception.util.ErrorResponse;
 import org.springframework.http.HttpStatus;
