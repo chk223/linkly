@@ -2,6 +2,7 @@ package com.example.linkly.entity;
 
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -14,10 +15,12 @@ public class Heart {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @Setter
     private User user;
 
     @ManyToOne
     @JoinColumn(name = "feed_id")
+    @Setter
     private Feed feed;
 
     public Heart() {
