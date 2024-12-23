@@ -1,4 +1,4 @@
 package com.example.linkly.repository;
 
-public interface LikeRepository {
+public interface HeartRepository {
 }

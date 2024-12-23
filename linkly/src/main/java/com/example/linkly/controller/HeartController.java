@@ -1,4 +1,4 @@
 package com.example.linkly.controller;
 
-public class LikeController {
+public class HeartController {
 }
