@@ -4,6 +4,7 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.stereotype.Component;
 
 import java.time.LocalDateTime;
 
@@ -15,12 +16,14 @@ public class Feed {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
+    @Column(name="title")
+    private String title;
     @Column(length = 100)
     private String content;
     @Column(name = "img_url")
     private String imgUrl;
     @Column(name = "like_count")
-    private Long likeCount;
+    private Long heartCount;
 
     @CreatedDate
     @Column(name = "create_at", updatable = false)
