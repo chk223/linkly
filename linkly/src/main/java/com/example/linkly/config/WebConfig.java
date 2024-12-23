@@ -1,3 +1,4 @@
+
 package com.example.linkly.config;
 
 import com.example.linkly.filter.JwtFilter;
@@ -41,3 +42,4 @@ public class WebConfig implements WebMvcConfigurer {
     }
 
 }
+
