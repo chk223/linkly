@@ -5,8 +5,10 @@ import com.example.linkly.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import org.springframework.data.domain.Page;
 
+import java.util.UUID;
+
 public interface FeedService {
-    FeedResponseDto feedSave(String userId, String title, String imgUrl, String content);
+    FeedResponseDto feedSave(UUID userId, String title, String imgUrl, String content);
 
     FeedResponseDto findById(Long id);
 

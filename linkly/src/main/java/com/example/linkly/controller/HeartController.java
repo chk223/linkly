@@ -18,14 +18,14 @@ import org.springframework.web.bind.annotation.*;
 public class HeartController {
     private final HeartService heartService;
 
-    @PostMapping("/toggle")
-    public ResponseEntity<String> toggleHeart(
-           @RequestBody String userId,
-           @RequestBody Long feedId
-    ) {
-
-        String result = heartService.toggleHeart(userId, feedId);
-        log.info(result);
-        return ResponseEntity.ok(result);
-    }
+//    @PostMapping("/toggle")
+//    public ResponseEntity<String> toggleHeart(
+//           @RequestBody String userId,
+//           @RequestBody Long feedId
+//    ) {
+//
+//        String result = heartService.toggleHeart(userId, feedId);
+//        log.info(result);
+//        return ResponseEntity.ok(result);
+//    }
 }

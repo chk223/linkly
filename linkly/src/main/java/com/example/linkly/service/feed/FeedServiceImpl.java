@@ -5,6 +5,7 @@ import com.example.linkly.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.entity.User;
 import com.example.linkly.exception.FeedException;
+import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.UserRepository;
@@ -16,6 +17,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 @Slf4j
 @Service
 @RequiredArgsConstructor
@@ -25,11 +28,10 @@ public class FeedServiceImpl implements FeedService {
     private final UserRepository userRepository;
 
     @Override
-    public FeedResponseDto feedSave(String userId, String title, String imgUrl, String content) {
+    public FeedResponseDto feedSave(UUID userId, String title, String imgUrl, String content) {
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
-//        User findUser = UserRepository.findById(userId).orElseThrow(()-> throw new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
+        User findUser = userRepository.findById(userId).orElseThrow(()-> new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
         Feed feed = new Feed(title, imgUrl, content, 0L);
-        User findUser = new User();  //임시 유저 머지 후 삭제
         feed.setUser(findUser);
 //        log.info("컨텐츠={}, 생성일={}, feedid={}, 유저={}, 라이크={}, url={}" ,feed.getContent(), feed.getCreatedAt(), feed.getId(), feed.getUser(), feed.getHeartCount(), feed.getImgUrl());
         Feed saveFeed = feedRepository.save(feed);

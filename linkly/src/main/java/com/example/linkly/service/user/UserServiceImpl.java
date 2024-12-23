@@ -4,6 +4,7 @@ import com.example.linkly.config.PasswordEncoder;
 import com.example.linkly.dto.user.UserResponseDto;
 import com.example.linkly.dto.user.UserUpdateRequestDto;
 import com.example.linkly.entity.User;
+import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.UserRepository;
 import lombok.extern.slf4j.Slf4j;
@@ -31,8 +32,10 @@ public class UserServiceImpl implements UserService{
     @Override
     public void signUp(String email, String password, String userName) {
 
-        if (userRepository.findByEmail(email) != null) {
-            throw new RuntimeException("이미 존재하는 이메일입니다."); //수정
+        log.info(email);
+        if (userRepository.findByEmail(email).equals(email)) {
+//            throw new RuntimeException("이미 존재하는 이메일입니다."); //수정
+            throw new
         }
         User user = new User(email, password, userName, null, null, null); // 프로필 사진, 소개, 링크는 프로필 수정에서
         User save = userRepository.save(user);
