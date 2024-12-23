@@ -27,8 +27,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequestDto loginRequestDto) {
         log.info("토큰 발급 시도");
-        authService.login(loginRequestDto);
-
+        return authService.login(loginRequestDto);
     }
 
 
