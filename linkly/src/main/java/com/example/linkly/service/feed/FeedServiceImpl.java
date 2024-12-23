@@ -8,16 +8,13 @@ import com.example.linkly.exception.FeedException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.UserRepository;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import lombok.Value;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.PatchMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
 
 @Slf4j
 @Service
@@ -95,5 +92,19 @@ public class FeedServiceImpl implements FeedService {
         Feed findFeed = feedRepository.findById(id).orElseThrow(() -> new FeedException(errorMessage.getMessage(), errorMessage.getStatus()));
         feedRepository.delete(findFeed);
     }
+
+    /**
+     * 피드 페이징
+     * @param page
+     * @param size
+     * @return
+     */
+    @Override
+    public Page<Feed> getFeedsPagination(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").ascending());
+
+        return feedRepository.findAll(pageable);
+    }
+
 
 }

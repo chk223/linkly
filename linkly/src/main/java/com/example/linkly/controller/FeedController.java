@@ -2,12 +2,15 @@ package com.example.linkly.controller;
 
 
 import com.example.linkly.dto.feed.CreateFeedRequestDto;
+import com.example.linkly.dto.feed.FeedPageResponseDto;
 import com.example.linkly.dto.feed.FeedResponseDto;
 import com.example.linkly.dto.feed.UpdateFeedRequestDto;
+import com.example.linkly.entity.Feed;
 import com.example.linkly.service.feed.FeedService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -61,6 +64,7 @@ public class FeedController {
 
     /**
      * 피드 삭제
+     *
      * @param id
      * @return
      */
@@ -68,5 +72,20 @@ public class FeedController {
     public ResponseEntity<Void> deleteFeed(@PathVariable Long id) {
         feedService.deleteFeed(id);
         return new ResponseEntity<>(HttpStatus.OK);
+    }
+
+    /**
+     * 피드 페이징
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping("/getfeeds")
+    public ResponseEntity<Page<Feed>> getFeeds(
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        Page<Feed> feedsPagination = feedService.getFeedsPagination(page - 1, size);
+        return ResponseEntity.ok(feedsPagination);
     }
 }
