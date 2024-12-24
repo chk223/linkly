@@ -13,7 +13,7 @@ import java.util.HashMap;
 import java.util.Map;
 @Slf4j
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/auth")
 public class AuthController {
     private final JwtUtil jwtUtil;
     private final AuthService authService;
@@ -27,7 +27,7 @@ public class AuthController {
     @PostMapping("/login")
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequestDto loginRequestDto) {
         log.info("토큰 발급 시도");
-        return authService.login(loginRequestDto);
+        return authService.apiLogin(loginRequestDto);
     }
 
     @PostMapping("/refresh")

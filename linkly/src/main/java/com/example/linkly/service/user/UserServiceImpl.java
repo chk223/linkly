@@ -24,7 +24,7 @@ public class UserServiceImpl implements UserService{
     PasswordEncoder bcrypt = new PasswordEncoder();
 
 
-    public UserServiceImpl(UserRepository userRepository, View error) {
+    public UserServiceImpl(UserRepository userRepository) {
         this.userRepository = userRepository;
     }
 

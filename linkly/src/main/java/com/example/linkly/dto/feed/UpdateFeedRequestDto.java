@@ -7,10 +7,12 @@ public class UpdateFeedRequestDto {
 
     private final String title;
     private final String content;
+    private final String imgUrl;
 
-    public UpdateFeedRequestDto(String title, String content) {
+    public UpdateFeedRequestDto(String title, String content, String imgUrl) {
         this.title = title;
         this.content = content;
+        this.imgUrl = imgUrl;
     }
 
 //    public UpdateFeedRequestDto(String title, String content, String userName) {

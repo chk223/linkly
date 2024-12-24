@@ -11,23 +11,35 @@
 <div th:insert="~{fragments/header :: header}"></div>
 <div id="container">
     <h2>피드 등록</h2>
-    <form class="input-form" th:action="@{/feed/add-feed}" method="post">
+    <form class="input-form" th:action="@{/view/feed}" method="post" th:object="${requestDto}">
         <!-- 피드 제목 -->
         <div>
-            <label for="title">제목</label>
-            <input type="text" id="title" name="title" required>
+            <span class="input-group-text">제목</span>
+            <input type="text" id="title" th:field="*{title}" class="form-control"
+                   th:classappend="${#fields.hasErrors('title') ? 'is-invalid':''}" placeholder="제목을 입력하세요.">
+            <div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
+                <span th:errors="*{title}"></span>
+            </div>
         </div>
 
         <!-- 피드 내용 -->
         <div>
-            <label for="content">내용</label>
-            <textarea id="content" name="content" required></textarea>
+            <span class="input-group-text">내용</span>
+            <input type="text" id="content" th:field="*{content}" class="form-control"
+                   th:classappend="${#fields.hasErrors('content') ? 'is-invalid':''}" placeholder="내용을 입력하세요.">
+            <div th:if="${#fields.hasErrors('content')}" class="invalid-feedback">
+                <span th:errors="*{content}"></span>
+            </div>
         </div>
 
         <!-- 이미지 URL -->
         <div>
-            <label for="imageUrl">이미지 url</label>
-            <input type="url" id="imageUrl" name="imageUrl">
+            <span class="input-group-text">이미지 URL</span>
+            <input type="text" id="imgUrl" th:field="*{imgUrl}" class="form-control"
+                   th:classappend="${#fields.hasErrors('imgUrl') ? 'is-invalid':''}" placeholder="이미지 주소를 입력하세요.">
+            <div th:if="${#fields.hasErrors('imgUrl')}" class="invalid-feedback">
+                <span th:errors="*{imgUrl}"></span>
+            </div>
         </div>
 
         <!-- 제출 버튼 -->

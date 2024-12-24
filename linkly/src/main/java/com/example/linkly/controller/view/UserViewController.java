@@ -67,10 +67,16 @@ public class UserViewController {
 
     // 유저 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id, @RequestBody String password){
+    public String deleteUser(@PathVariable UUID id, @RequestBody String password){
 
         userService.deleteUser(id, password);
 
-        return new ResponseEntity<>(HttpStatus.NO_CONTENT);
+        return "redirect:/";
     }
+
+    @RequestMapping("/my-info")
+    public String myInfo() {
+        return "myInfo";
+    }
+
 }

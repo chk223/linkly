@@ -9,7 +9,7 @@
       <div class="collapse navbar-collapse" id="navbarSupportedContent">
         <ul class="navbar-nav me-auto mb-2 mb-lg-0">
           <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="/add-feed">피드 추가</a>
+            <a class="nav-link active" aria-current="page" href="/view/feed">피드 추가</a>
           </li>
           <li class="nav-item">
             <a class="nav-link" href="/">랜덤 피드</a>
@@ -26,9 +26,9 @@
           <button class="btn btn-outline-success" type="submit">검색</button>
         </form>
         <li class="nav-item">
-          <a th:if="${user != null}" href="/user/logout" type="button" class="btn btn-danger">로그아웃</a>
-          <a th:if="${user == null}" href="/login" type="button" class="btn btn-primary">로그인</a>
-          <a th:if="${user != null}" href="/user/user-detail" type="button" class="btn btn-primary">추가 기능</a>
+          <a th:if="${user != null}" href="/view/user/logout" type="button" class="btn btn-danger">로그아웃</a>
+          <a th:if="${user == null}" href="/view/auth/login" type="button" class="btn btn-primary">로그인</a>
+          <a th:if="${user != null}" href="/view/user/my-info" type="button" class="btn btn-primary">추가 기능</a>
         </li>
       </div>
     </div>

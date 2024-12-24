@@ -1,14 +1,21 @@
 package com.example.linkly.service.feed;
 
+import com.example.linkly.dto.feed.CreateFeedRequestDto;
 import com.example.linkly.dto.feed.FeedResponseDto;
 import com.example.linkly.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.entity.User;
+import com.example.linkly.exception.AuthException;
 import com.example.linkly.exception.FeedException;
 import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.UserRepository;
+import com.example.linkly.util.auth.JwtUtil;
+import com.example.linkly.util.auth.ValidatorUser;
+import com.example.linkly.util.exception.ExceptionUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -17,6 +24,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -26,12 +34,16 @@ public class FeedServiceImpl implements FeedService {
 
     private final FeedRepository feedRepository;
     private final UserRepository userRepository;
+    private final ValidatorUser validatorUser;
 
     @Override
-    public FeedResponseDto feedSave(UUID userId, String title, String imgUrl, String content) {
+    public FeedResponseDto feedSave(CreateFeedRequestDto requestDto, HttpServletRequest request) {
+//        log.info("피드 저장 시도");
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
-        User findUser = userRepository.findById(userId).orElseThrow(()-> new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
-        Feed feed = new Feed(title, imgUrl, content, 0L);
+        String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
+//        log.info("저장하려는 유저의 이메일 ={}",userEmail);
+        User findUser = userRepository.findByEmail(userEmail).orElseThrow(() -> new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
+        Feed feed = new Feed(requestDto.getTitle(), Objects.equals(requestDto.getImgUrl(), "") ? null : requestDto.getImgUrl(), requestDto.getContent(), 0L);
         feed.setUser(findUser);
 //        log.info("컨텐츠={}, 생성일={}, feedid={}, 유저={}, 라이크={}, url={}" ,feed.getContent(), feed.getCreatedAt(), feed.getId(), feed.getUser(), feed.getHeartCount(), feed.getImgUrl());
         Feed saveFeed = feedRepository.save(feed);
@@ -79,6 +91,9 @@ public class FeedServiceImpl implements FeedService {
         }
         if (requestDto.getContent() != null) {
             findFeed.setContent(requestDto.getContent());
+        }
+        if (requestDto.getImgUrl() != null) {
+            findFeed.setContent(requestDto.getImgUrl());
         }
         feedRepository.save(findFeed);
         return FeedResponseDto.toDto(findFeed);

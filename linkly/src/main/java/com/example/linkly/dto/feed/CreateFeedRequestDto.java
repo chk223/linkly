@@ -1,21 +1,23 @@
 package com.example.linkly.dto.feed;
 
 import lombok.Getter;
+import lombok.Setter;
 
 import java.util.UUID;
 
 @Getter
+@Setter
 public class CreateFeedRequestDto {
+    private String title;
+    private String imgUrl;
+    private String content;
 
-    private final UUID userId;
-    private final String title;
-    private final String imgUrl;
-    private final String content;
-
-    public CreateFeedRequestDto(UUID userId, String title, String imgUrl, String content) {
-        this.userId = userId;
+    public CreateFeedRequestDto(String title, String imgUrl, String content) {
         this.title = title;
         this.imgUrl = imgUrl;
         this.content = content;
+    }
+
+    public CreateFeedRequestDto() {
     }
 }
