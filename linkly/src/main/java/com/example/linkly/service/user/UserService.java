@@ -10,7 +10,7 @@ public interface UserService {
 
     void signUp(String name, String email, String password);
 
-    List<UserResponseDto> findByNameLike(String name);
+    List<UserResponseDto> findByNameContains(String name);
 
     void updateUser(UUID id, UserUpdateRequestDto userUpdateRequestDto);
 

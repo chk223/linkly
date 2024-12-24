@@ -7,7 +7,9 @@ import com.example.linkly.entity.User;
 import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.UserRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -19,15 +21,12 @@ import java.util.stream.Collectors;
 
 @Slf4j
 @Service
+@RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
+
 
     private final UserRepository userRepository;
     PasswordEncoder bcrypt = new PasswordEncoder();
-
-
-    public UserServiceImpl(UserRepository userRepository, View error) {
-        this.userRepository = userRepository;
-    }
 
     // 유저 생성
     @Override
@@ -45,7 +44,7 @@ public class UserServiceImpl implements UserService{
 
     // 유저 조회
     @Override
-    public List<UserResponseDto> findByNameLike(String name){
+    public List<UserResponseDto> findByNameContains(String name){
 
         List<User> userList = userRepository.findByNameLike("%"+name+"%"); // %LIKE% : name이 포함된 유저 조회
         List<UserResponseDto> userResponseDtoList =
