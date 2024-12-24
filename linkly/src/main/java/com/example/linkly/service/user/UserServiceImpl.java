@@ -102,13 +102,21 @@ public class UserServiceImpl implements UserService{
 
         // 비밀번호 검증 성공
         if(bcrypt.matches(dto.getOriginalPw(), user.getPassword())) {
+
+            // originalPw == newPw CASE -> 예외처리
+            if(bcrypt.matches(dto.getNewPw(), user.getPassword())) {
+                log.info("이전과 동일한 비밀번호입니다. ");
+                ErrorMessage errorMessage2 = ErrorMessage.VALID_ERROR;
+                throw new UserException(errorMessage2.getMessage(), errorMessage2.getStatus());
+            }
             user.updatePassword(bcrypt.encode(dto.getNewPw()));
         }
+
         // 비밀번호 검증 실패
         else{
             log.info("비밀번호 검증 실패");
-            ErrorMessage errorMessage2 = ErrorMessage.PASSWORD_IS_WRONG;
-            throw new UserException(errorMessage2.getMessage(), errorMessage2.getStatus());
+            ErrorMessage errorMessage3 = ErrorMessage.PASSWORD_IS_WRONG;
+            throw new UserException(errorMessage3.getMessage(), errorMessage3.getStatus());
         }
 
         userRepository.flush(); // flush 필수!!
@@ -120,13 +128,13 @@ public class UserServiceImpl implements UserService{
 
         User user = userRepository.findByIdOrElseThrow(id);
 
-        // 비밀번호 일치 -> 유저 삭제
+        // 비밀번호 검증 성공 -> 유저 삭제
         if(bcrypt.matches(password, user.getPassword())) {
             userRepository.delete(user);
             log.info("유저 삭제 완료");
         }
 
-        // 비밀번호 불일치
+        // 비밀번호 검증 실패
         ErrorMessage errorMessage = ErrorMessage.PASSWORD_IS_WRONG;
     }
 }
