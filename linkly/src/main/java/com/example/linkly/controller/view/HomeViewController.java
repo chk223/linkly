@@ -68,18 +68,6 @@ public class HomeViewController {
         return "myInfo";
     }
 
-    @GetMapping("/sign-up")
-    public String signUp(Model model) {
-        model.addAttribute("userRequestDto", new UserRequestDto());
-        return "signUp";
-    }
-    @PostMapping("/sign-up")
-    public String signUp(@ModelAttribute UserRequestDto userRequestDto, BindingResult result) {
-        if (result.hasErrors()) {
-            return "signUp";
-        }
-        // 회원가입 처리 로직
-        return "redirect:/";
-    }
+
 
 }
