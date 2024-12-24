@@ -13,8 +13,8 @@ public enum UserGrade {
     }
 
     //대소문자 구분 x
-    @JsonCreator
-    public static UserGrade from(String value) {
-        return UserGrade.valueOf(value.toUpperCase());
-    }
+//    @JsonCreator
+//    public static UserGrade from(String value) {
+//        return UserGrade.valueOf(value.toUpperCase());
+//    }
 }
