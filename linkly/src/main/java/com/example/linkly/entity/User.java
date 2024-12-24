@@ -1,14 +1,12 @@
 package com.example.linkly.entity;
 
 import jakarta.persistence.*;
+import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
-import org.hibernate.annotations.SQLDelete;
-import org.hibernate.annotations.SQLRestriction;
-import org.hibernate.annotations.SoftDelete;
-import org.hibernate.annotations.Where;
+import org.hibernate.annotations.*;
 import org.springframework.web.multipart.MultipartFile;
 
 import java.util.UUID;
@@ -49,10 +47,15 @@ public class User extends BaseEntity {
     @Column
     private String profileUrl;
 
+    // 유저 등급
+    @Column(length = 10)
+    @ColumnDefault("0")
+    private int gradeVal;
+
     public User() {
     }
 
-    public User(String email, String password, String name,String profileImg, String profileIntro, String profileUrl) {
+    public User(String email, String password, String name, String profileImg, String profileIntro, String profileUrl) {
         this.email = email;
         this.password = password;
         this.name = name;
@@ -80,4 +83,9 @@ public class User extends BaseEntity {
     public void updateProfileUrl(String profileUrl) {
         this.profileUrl = profileUrl;
     }
+
+    public void updateGrade(int val) {
+        this.gradeVal = val;
+    }
+
 }

@@ -3,6 +3,7 @@ package com.example.linkly.service.user;
 import com.example.linkly.config.PasswordEncoder;
 import com.example.linkly.dto.user.PwUpdateRequestDto;
 import com.example.linkly.dto.user.UserResponseDto;
+import com.example.linkly.dto.user.UserSetGradeRequestDto;
 import com.example.linkly.dto.user.UserUpdateRequestDto;
 import com.example.linkly.entity.User;
 import com.example.linkly.exception.UserException;
@@ -57,14 +58,15 @@ public class UserServiceImpl implements UserService{
             if (userWithEmail != null) {
                 log.info("탈퇴한 사용자의 이메일입니다.");
                 ErrorMessage errorMessage = ErrorMessage.valueOf("탈퇴한 사용자의 이메일입니다. ");
-                throw new UserException(errorMessage.getMessage(), errorMessage.getStatus());
+                throw new UserException(errorMessage.getMessage(), HttpStatus.CONFLICT); // 409 Conflict : 리소스 충돌
             }
         }
         // (2) 가입된 이메일 여부 확인
         else if (userRepository.findByEmail(email).isPresent()) {
 
-            log.info("이미 존재하는 이메일입니다.");
-            throw new RuntimeException("이미 존재하는 이메일입니다."); //수정
+            log.info("이미 가입된 이메일입니다.");
+            ErrorMessage errorMessage = ErrorMessage.valueOf("이미 가입된 이메일입니다.");
+            throw new UserException(errorMessage.getMessage(), HttpStatus.CONFLICT); // 409 Conflict : 리소스 충돌
         }
 
         User user = new User(email, password, userName, null, null, null); // 프로필 사진, 소개, 링크는 프로필 수정에서
@@ -170,5 +172,22 @@ public class UserServiceImpl implements UserService{
             ErrorMessage errorMessage3 = ErrorMessage.PASSWORD_IS_WRONG;
             throw new UserException(errorMessage3.getMessage(), errorMessage3.getStatus());
         }
+    }
+
+    // 유저 등급 설정
+    @Transactional
+    @Override
+    public void updateGrade(UUID id, UserSetGradeRequestDto dto) {
+
+        ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
+
+        // 등급 설정
+        user.updateGrade(dto.getGradeVal());
+
+        userRepository.flush();
+
+        log.info("등급 설정 완료 {}", user.getGradeVal());
     }
 }

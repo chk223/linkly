@@ -16,10 +16,13 @@ public class UserResponseDto {
 
     private final String profileUrl;
 
+    private final int gradeVal;
+
     public UserResponseDto(User user) {
         this.name = user.getName();
         this.profileImgUrl = user.getProfileImg();
         this.profileIntro = user.getProfileIntro();
         this.profileUrl = user.getProfileUrl();
+        this.gradeVal = user.getGradeVal();
     }
 }

@@ -2,10 +2,7 @@ package com.example.linkly.controller;
 
 
 import com.example.linkly.config.PasswordEncoder;
-import com.example.linkly.dto.user.PwUpdateRequestDto;
-import com.example.linkly.dto.user.SignUpRequestDto;
-import com.example.linkly.dto.user.UserResponseDto;
-import com.example.linkly.dto.user.UserUpdateRequestDto;
+import com.example.linkly.dto.user.*;
 import com.example.linkly.service.user.UserService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -76,5 +73,14 @@ public class UserController {
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
+    // 등급 설정
+    @PatchMapping("/grade/{id}")
+    public ResponseEntity<Void> updateGrade(@PathVariable UUID id, @RequestBody UserSetGradeRequestDto dto){
+        userService.updateGrade(id, dto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+    }
+
 
 }
