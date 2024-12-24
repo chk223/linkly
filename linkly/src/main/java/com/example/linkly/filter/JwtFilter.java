@@ -20,6 +20,7 @@ public class JwtFilter implements Filter {
 
     private static final String[] WHITE_LIST = {"/api/auth/login","/api/user/sign-up","/login","/auth/login","/users/signup","/*", "/**"};
 
+
     private final AntPathMatcher pathMatcher = new AntPathMatcher();
     @Autowired
     public JwtFilter(JwtUtil jwtUtil) {
