@@ -7,7 +7,6 @@ import com.example.linkly.exception.CommentException;
 import com.example.linkly.exception.FeedException;
 import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
-import com.example.linkly.repository.CommentRepository;
 import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.HeartRepository;
 import com.example.linkly.repository.UserRepository;
@@ -47,7 +46,7 @@ public class HeartServiceImpl implements HeartService {
         // 좋아요 여부 확인
         Optional<Heart> heartOptional = heartRepository.findByUserAndCategoryIdAndCategory(user, categoryId, category);
 
-        if (category == HeartCategory.FEED) {
+//        if (category == HeartCategory.FEED) {
             Feed findFeed = feedRepository.findById(categoryId).orElseThrow(() ->
                     new FeedException(errorMessage.getMessage(), errorMessage.getStatus()));
 
@@ -67,26 +66,26 @@ public class HeartServiceImpl implements HeartService {
                 heartRepository.save(heart);
                 return "heart added";
             }
-        } else if (category == HeartCategory.COMMENT) {
-            Comment findComment = commentRepository.finById(categoryId).orElseThrow(() ->
-                    new CommentException(errorMessage.getMessage(), errorMessage.getStatus()));
-
-            if (heartOptional.isPresent()) {
-                findComment.decreaseCount();
-                heartRepository.delete(heartOptional.get());
-                return "Heart removed";
-            } else {
-                Heart heart = new Heart();
-                heart.setUser(user);
-                heart.setCategoryId(categoryId);
-                heart.setCategory(category);
-                findComment.increaseCount();
-
-                heartRepository.save(heart);
-                return "heart added";
-            }
-        }
-        return null;
+//        } else if (category == HeartCategory.COMMENT) {
+//            Comment findComment = commentRepository.finById(categoryId).orElseThrow(() ->
+//                    new CommentException(errorMessage.getMessage(), errorMessage.getStatus()));
+//
+//            if (heartOptional.isPresent()) {
+//                findComment.decreaseCount();
+//                heartRepository.delete(heartOptional.get());
+//                return "Heart removed";
+//            } else {
+//                Heart heart = new Heart();
+//                heart.setUser(user);
+//                heart.setCategoryId(categoryId);
+//                heart.setCategory(category);
+//                findComment.increaseCount();
+//
+//                heartRepository.save(heart);
+//                return "heart added";
+//            }
+//        }
+//        return null;
     }
 
 }

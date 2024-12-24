@@ -108,9 +108,9 @@ public class FeedServiceImpl implements FeedService {
      */
     @Override
     public Page<Feed> getFeedsPagination(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").ascending());
+        Pageable pageable = PageRequest.of(page, size);
 
-        return feedRepository.findAll(pageable);
+        return feedRepository.findAllRandom(pageable);
     }
 
 
