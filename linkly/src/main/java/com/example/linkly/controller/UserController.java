@@ -2,13 +2,11 @@ package com.example.linkly.controller;
 
 
 import com.example.linkly.config.PasswordEncoder;
+import com.example.linkly.dto.user.PwUpdateRequestDto;
 import com.example.linkly.dto.user.SignUpRequestDto;
 import com.example.linkly.dto.user.UserResponseDto;
 import com.example.linkly.dto.user.UserUpdateRequestDto;
-import com.example.linkly.entity.User;
-import com.example.linkly.repository.UserRepository;
 import com.example.linkly.service.user.UserService;
-import com.example.linkly.service.user.UserServiceImpl;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -25,16 +23,15 @@ import java.util.UUID;
 
 public class UserController {
 
-    private final UserServiceImpl userServiceImpl;
-    private final UserRepository userRepository;
-    private final PasswordEncoder bcypt;
+    private final UserService userService;
+    private final PasswordEncoder bcrypt;
 
     // 유저 생성
-    @PostMapping("/signup")
+    @PostMapping("/sign-up")
     public ResponseEntity<Void> signUp(@RequestBody SignUpRequestDto requestDto) {
-        userServiceImpl.signUp(
+        userService.signUp(
                 requestDto.getEmail(),
-                bcypt.encode(requestDto.getPassword()),
+                bcrypt.encode(requestDto.getPassword()),
                 requestDto.getName()
         );
 
@@ -44,19 +41,31 @@ public class UserController {
     // 유저 조회
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> findByNameContains(@RequestParam String name) {
-        List<UserResponseDto> userResponseDtoList = userServiceImpl.findByNameContains(name);
+        List<UserResponseDto> userResponseDtoList = userService.findByNameContains(name);
 
         return new ResponseEntity<>(userResponseDtoList, HttpStatus.OK);
     }
 
     // 유저 수정
-    // 이름, 패스워드 변경 및 프로필 사진, 소개, 링크 설정
+    // 이름 변경 및 프로필 사진, 소개, 링크 설정
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updateUser(
             @PathVariable UUID id,
             @RequestBody UserUpdateRequestDto requestDto
     ) {
-        userServiceImpl.updateUser(id, requestDto);
+        userService.updateUser(id, requestDto);
+
+        return new ResponseEntity<>(HttpStatus.OK);
+
+    }
+
+    // 비밀번호 수정
+    @PatchMapping("/{id}")
+    public ResponseEntity<Void> updatePw(
+            @PathVariable UUID id,
+            @RequestBody PwUpdateRequestDto requestDto
+    ) {
+        userService.updatePw(id, requestDto);
 
         return new ResponseEntity<>(HttpStatus.OK);
 
@@ -66,7 +75,7 @@ public class UserController {
     @DeleteMapping("/{id}")
     public ResponseEntity<Void> deleteUser(@PathVariable UUID id, @RequestBody String password){
 
-        userServiceImpl.deleteUser(id, password);
+        userService.deleteUser(id, password);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

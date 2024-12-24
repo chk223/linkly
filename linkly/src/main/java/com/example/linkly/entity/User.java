@@ -21,13 +21,9 @@ public class User extends BaseEntity {
     @Column(length = 10)
     private String name;
 
-//    @Email
-//    @NotBlank
     @Column(length = 30, nullable = false, unique = true)
     private String email;
 
-//    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")
-//    @NotBlank
     @Column(length = 255)
     private String password;
 
@@ -40,7 +36,6 @@ public class User extends BaseEntity {
     private String profileIntro;
 
     // 프로필 링크
-//    @Pattern(regexp = "^(https?://)?([\\w.-]+)?(\\.[a-z]{2,})?(:\\d+)?(/.*)?$")
     @Column
     private String profileUrl;
 

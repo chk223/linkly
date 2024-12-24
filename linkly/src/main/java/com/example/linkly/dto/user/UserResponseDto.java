@@ -1,9 +1,11 @@
 package com.example.linkly.dto.user;
 
 import com.example.linkly.entity.User;
+import lombok.AllArgsConstructor;
 import lombok.Getter;
 
 @Getter
+@AllArgsConstructor
 public class UserResponseDto {
 
     private final String name;

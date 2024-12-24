@@ -1,6 +1,7 @@
 package com.example.linkly.service.user;
 
 import com.example.linkly.config.PasswordEncoder;
+import com.example.linkly.dto.user.PwUpdateRequestDto;
 import com.example.linkly.dto.user.UserResponseDto;
 import com.example.linkly.dto.user.UserUpdateRequestDto;
 import com.example.linkly.entity.User;
@@ -93,8 +94,16 @@ public class UserServiceImpl implements UserService{
             user.updateProfileUrl(dto.getProfileUrl());
             log.info("프로필 링크 수정 완료: {} ", dto.getProfileUrl());
         }
-
         userRepository.flush(); // flush 필수!!
+    }
+
+    // 비밀번호 변경
+    @Transactional
+    @Override
+    public void updatePw(UUID id, PwUpdateRequestDto dto) {
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new UserException(errorMe));
+
 
     }
 
