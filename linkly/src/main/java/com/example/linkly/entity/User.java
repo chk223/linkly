@@ -1,5 +1,6 @@
 package com.example.linkly.entity;
 
+import com.example.linkly.grade.UserGrade;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
 import jakarta.validation.constraints.Email;
@@ -48,9 +49,9 @@ public class User extends BaseEntity {
     private String profileUrl;
 
     // 유저 등급
-    @Column(length = 10)
-    @ColumnDefault("0")
-    private int gradeVal;
+    @Enumerated(EnumType.STRING)  // Enum을 String으로 저장
+    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'BASIC'")
+    private UserGrade grade = UserGrade.BASIC;
 
     public User() {
     }
@@ -84,8 +85,9 @@ public class User extends BaseEntity {
         this.profileUrl = profileUrl;
     }
 
-    public void updateGrade(int val) {
-        this.gradeVal = val;
+    // 등급 전환 메서드 (엔티티 클래스 내부에서 처리)
+    public void updateGrade() {
+        this.grade = (this.grade == UserGrade.BASIC) ? UserGrade.VIP : UserGrade.BASIC;
     }
 
 }

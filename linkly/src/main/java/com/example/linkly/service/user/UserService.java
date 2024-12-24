@@ -2,7 +2,6 @@ package com.example.linkly.service.user;
 
 import com.example.linkly.dto.user.PwUpdateRequestDto;
 import com.example.linkly.dto.user.UserResponseDto;
-import com.example.linkly.dto.user.UserSetGradeRequestDto;
 import com.example.linkly.dto.user.UserUpdateRequestDto;
 
 import java.util.List;
@@ -20,6 +19,6 @@ public interface UserService {
 
     void deleteUser(UUID id, String password);
 
-    void updateGrade(UUID id, UserSetGradeRequestDto dto);
+    void updateGrade(UUID id);
 
 }

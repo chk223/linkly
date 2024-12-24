@@ -1,6 +1,7 @@
 package com.example.linkly.dto.user;
 
 import com.example.linkly.entity.User;
+import com.example.linkly.grade.UserGrade;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 
@@ -16,13 +17,13 @@ public class UserResponseDto {
 
     private final String profileUrl;
 
-    private final int gradeVal;
+    private final UserGrade gradeVal;
 
     public UserResponseDto(User user) {
         this.name = user.getName();
         this.profileImgUrl = user.getProfileImg();
         this.profileIntro = user.getProfileIntro();
         this.profileUrl = user.getProfileUrl();
-        this.gradeVal = user.getGradeVal();
+        this.gradeVal = user.getGrade();
     }
 }

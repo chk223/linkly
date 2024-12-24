@@ -3,7 +3,6 @@ package com.example.linkly.service.user;
 import com.example.linkly.config.PasswordEncoder;
 import com.example.linkly.dto.user.PwUpdateRequestDto;
 import com.example.linkly.dto.user.UserResponseDto;
-import com.example.linkly.dto.user.UserSetGradeRequestDto;
 import com.example.linkly.dto.user.UserUpdateRequestDto;
 import com.example.linkly.entity.User;
 import com.example.linkly.exception.UserException;
@@ -177,17 +176,17 @@ public class UserServiceImpl implements UserService{
     // 유저 등급 설정
     @Transactional
     @Override
-    public void updateGrade(UUID id, UserSetGradeRequestDto dto) {
+    public void updateGrade(UUID id) {
 
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
         User user = userRepository.findById(id).orElseThrow(() ->
                 new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
 
         // 등급 설정
-        user.updateGrade(dto.getGradeVal());
+        user.updateGrade();
 
         userRepository.flush();
 
-        log.info("등급 설정 완료 {}", user.getGradeVal());
+        log.info("등급 설정 완료 {}", user.getGrade());
     }
 }

@@ -76,8 +76,8 @@ public class UserController {
 
     // 등급 설정
     @PatchMapping("/grade/{id}")
-    public ResponseEntity<Void> updateGrade(@PathVariable UUID id, @RequestBody UserSetGradeRequestDto dto){
-        userService.updateGrade(id, dto);
+    public ResponseEntity<Void> updateGrade(@PathVariable UUID id){
+        userService.updateGrade(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
