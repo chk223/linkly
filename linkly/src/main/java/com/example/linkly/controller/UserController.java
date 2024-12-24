@@ -34,7 +34,6 @@ public class UserController {
                 bcrypt.encode(dto.getPassword()),
                 dto.getName()
         );
-
         return new ResponseEntity<>(HttpStatus.CREATED);
     }
 
@@ -56,7 +55,6 @@ public class UserController {
         userService.updateUser(id, requestDto);
 
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
     // 비밀번호 수정
@@ -68,7 +66,6 @@ public class UserController {
         userService.updatePw(id, requestDto);
 
         return new ResponseEntity<>(HttpStatus.OK);
-
     }
 
     // 유저 삭제

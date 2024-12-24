@@ -33,10 +33,13 @@ public class UserServiceImpl implements UserService{
     @Override
     public void signUp(String email, String password, String userName) {
 
-        if (userRepository.findByEmail(email) != null) {
+        // 탈퇴 이메일 여부
+//        if (userRepository.findByEmail())
+        if (userRepository.findByEmail(email).isPresent()) {
             log.info("이미 존재하는 이메일입니다.");
             throw new RuntimeException("이미 존재하는 이메일입니다."); //수정
         }
+
         User user = new User(email, password, userName, null, null, null); // 프로필 사진, 소개, 링크는 프로필 수정에서
         User save = userRepository.save(user);
         log.info("user name : {} 수정날짜는 {} 등록날짜는 {}", save.getName(), save.getUpdatedAt(), save.getCreatedAt());
@@ -123,6 +126,7 @@ public class UserServiceImpl implements UserService{
         log.info("비밀번호 수정 완료");
     }
 
+    // 유저 삭제
     @Override
     public void deleteUser(UUID id, String password) {
 
@@ -133,8 +137,11 @@ public class UserServiceImpl implements UserService{
             userRepository.delete(user);
             log.info("유저 삭제 완료");
         }
-
         // 비밀번호 검증 실패
-        ErrorMessage errorMessage = ErrorMessage.PASSWORD_IS_WRONG;
+        else{
+            log.info("비밀번호 검증 실패");
+            ErrorMessage errorMessage3 = ErrorMessage.PASSWORD_IS_WRONG;
+            throw new UserException(errorMessage3.getMessage(), errorMessage3.getStatus());
+        }
     }
 }
