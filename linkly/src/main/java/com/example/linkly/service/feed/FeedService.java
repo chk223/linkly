@@ -5,6 +5,7 @@ import com.example.linkly.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import org.springframework.data.domain.Page;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface FeedService {
@@ -17,4 +18,6 @@ public interface FeedService {
     void deleteFeed(Long id);
 
     Page<Feed> getFeedsPagination(int page, int size);
+
+    List<Feed> getBestFeeds();
 }
