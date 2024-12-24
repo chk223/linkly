@@ -6,6 +6,7 @@ import com.example.linkly.entity.Heart;
 import com.example.linkly.entity.User;
 import com.example.linkly.service.comment.CommentService;
 import com.example.linkly.service.heart.HeartService;
+import com.example.linkly.util.HeartCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -30,7 +31,7 @@ public class CommentController {
             @RequestBody CommentRequestDto requestDto
             ){
 
-        log.info("feedid={} userid={} commnet={}",feedId,requestDto.getUserId(),requestDto.getContent());
+        //log.info("feedid={} userid={} commnet={}",feedId,requestDto.getUserId(),requestDto.getContent());
         CommentResponseDto commentResponseDto = commentService.addComment(requestDto.getUserId(),requestDto.getContent(),feedId);
 
         return new ResponseEntity<>(commentResponseDto, HttpStatus.CREATED);
@@ -62,8 +63,5 @@ public class CommentController {
 
         return new ResponseEntity<>(HttpStatus.OK);
     }
-
-    // 댓글 좋아요 추가
-
 
 }

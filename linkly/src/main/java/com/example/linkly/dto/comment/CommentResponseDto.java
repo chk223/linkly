@@ -18,6 +18,7 @@ public class CommentResponseDto {
     private final String content;
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
+    private final Long heartNumber;
 
     public static CommentResponseDto toDto(Comment comment) {
         return new CommentResponseDto(
@@ -26,8 +27,10 @@ public class CommentResponseDto {
                 comment.getFeed().getId(),
                 comment.getContent(),
                 comment.getCreatedAt(),
-                comment.getUpdatedAt()
+                comment.getUpdatedAt(),
+                comment.getHeartCount()
         );
     }
+
 
 }

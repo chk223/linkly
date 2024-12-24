@@ -10,10 +10,15 @@ import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.CommentRepository;
 import com.example.linkly.repository.FeedRepository;
+import com.example.linkly.repository.HeartRepository;
 import com.example.linkly.repository.UserRepository;
+import com.example.linkly.util.HeartCategory;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 
 import java.util.UUID;
 
@@ -23,7 +28,6 @@ import java.util.UUID;
 public class CommentServiceImpl implements CommentService{
 
     private final CommentRepository commentRepository;
-    private final HttpSession session;
     private final UserRepository userRepository;
     private final FeedRepository feedRepository;
 
@@ -40,7 +44,7 @@ public class CommentServiceImpl implements CommentService{
 
         User user = userRepository.findById(id).orElseThrow(()-> new UserException(errorMessage.getMessage(),errorMessage.getStatus()));;
         Feed feed = feedRepository.findById(feedId).orElseThrow(()-> new FeedException(errorMessage.getMessage(),errorMessage.getStatus()));
-        Comment comment = commentRepository.save(new Comment(contents,user,feed));
+        Comment comment = commentRepository.save(new Comment(contents,user,feed,0L));
 
         return CommentResponseDto.toDto(comment);
     }
@@ -57,6 +61,13 @@ public class CommentServiceImpl implements CommentService{
         return CommentResponseDto.toDto(comment);
     }
 
+    /**
+     * 댓글 수정
+     * @param id
+     * @param content
+     * @param userId
+     * @return
+     */
     @Override
     public CommentResponseDto update(Long id, String content, UUID userId) {
 
@@ -68,6 +79,10 @@ public class CommentServiceImpl implements CommentService{
 
     }
 
+    /**
+     * 댓글 삭제
+     * @param id
+     */
     @Override
     public void delete(Long id) {
 
@@ -75,6 +90,7 @@ public class CommentServiceImpl implements CommentService{
 
         commentRepository.delete(comment);
     }
+
 
 
 
