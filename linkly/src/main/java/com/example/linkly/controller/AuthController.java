@@ -28,7 +28,7 @@ public class AuthController {
     public ResponseEntity<Map<String, String>> login(@RequestBody LoginRequestDto loginRequestDto) {
         log.info("토큰 발급 시도");
         return authService.login(loginRequestDto);
-
+    }
 
     @PostMapping("/refresh")
     public ResponseEntity<Map<String, String>> refresh(@RequestParam String refreshToken) {
