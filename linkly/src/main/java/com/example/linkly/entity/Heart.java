@@ -1,7 +1,9 @@
 package com.example.linkly.entity;
 
+import com.example.linkly.util.HeartCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
+import lombok.Setter;
 
 @Entity
 @Getter
@@ -14,11 +16,15 @@ public class Heart {
 
     @ManyToOne
     @JoinColumn(name = "user_id")
+    @Setter
     private User user;
 
-    @ManyToOne
-    @JoinColumn(name = "feed_id")
-    private Feed feed;
+    @Enumerated(EnumType.STRING)
+    @Setter
+    private HeartCategory category;
+
+    @Setter
+    private Long categoryId;
 
     public Heart() {
     }

@@ -1,5 +1,9 @@
 HELP.md
 src/main/resources/dbconfig.properties
+dbconfig.properties
+/.idea
+.idea/
+/dbconfig.properties
 .gradle
 build/
 !gradle/wrapper/gradle-wrapper.jar

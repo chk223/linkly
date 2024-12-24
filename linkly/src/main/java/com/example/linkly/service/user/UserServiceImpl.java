@@ -19,7 +19,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.View;
-
 import java.sql.SQLException;
 import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
@@ -66,6 +65,10 @@ public class UserServiceImpl implements UserService{
             log.info("이미 가입된 이메일입니다.");
             ErrorMessage errorMessage = ErrorMessage.valueOf("이미 가입된 이메일입니다.");
             throw new UserException(errorMessage.getMessage(), HttpStatus.CONFLICT); // 409 Conflict : 리소스 충돌
+        }
+        log.info(email);
+        if (userRepository.findByEmail(email).isPresent()) {
+            throw new RuntimeException("이미 존재하는 이메일입니다."); //수정
         }
 
         User user = new User(email, password, userName, null, null, null); // 프로필 사진, 소개, 링크는 프로필 수정에서
