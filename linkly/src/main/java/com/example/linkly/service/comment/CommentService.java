@@ -1,8 +1,9 @@
 package com.example.linkly.service.comment;
 
 import com.example.linkly.dto.comment.CommentResponseDto;
-import com.example.linkly.entity.User;
+import com.example.linkly.entity.Comment;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface CommentService {
@@ -16,5 +17,5 @@ public interface CommentService {
     void delete(Long id);
 
 
-
+    List<Comment> heartCountNumber();
 }

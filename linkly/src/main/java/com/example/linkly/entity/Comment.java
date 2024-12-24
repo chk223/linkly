@@ -1,6 +1,5 @@
 package com.example.linkly.entity;
 
-import com.example.linkly.dto.comment.CommentRequestDto;
 import jakarta.persistence.*;
 import lombok.Getter;
 
@@ -26,6 +25,7 @@ public class Comment extends BaseEntity {
 
     @Column(name = "like_count")
     private Long heartCount;
+
 
     public Comment() {
     }
