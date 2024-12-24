@@ -19,4 +19,9 @@ public interface UserRepository extends JpaRepository<User, UUID> {
     default User findByIdOrElseThrow(UUID id) {
         return findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exitst id = " + id));
     }
+
+    // 탈퇴 유저 조회
+    // 네이티브 SQL을 사용하여 deleted = true인 유저 조회
+    @Query(value = "SELECT * FROM user WHERE deleted = true", nativeQuery = true)
+    List<User> findDeletedUsersWithNativeQuery();
 }

@@ -8,15 +8,22 @@ import com.example.linkly.entity.User;
 import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.UserRepository;
+import jakarta.persistence.PersistenceException;
+import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.dao.DataAccessException;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.servlet.View;
 
+import java.sql.SQLException;
+import java.sql.SQLIntegrityConstraintViolationException;
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -33,9 +40,29 @@ public class UserServiceImpl implements UserService{
     @Override
     public void signUp(String email, String password, String userName) {
 
-        // 탈퇴 이메일 여부
-//        if (userRepository.findByEmail())
-        if (userRepository.findByEmail(email).isPresent()) {
+        // (1) 탈퇴된 이메일 여부 확인
+
+        // 탈퇴한 유저 리스트
+        List<User> deletedUsers = userRepository.findDeletedUsersWithNativeQuery();
+
+        if (!deletedUsers.isEmpty()) {
+            User userWithEmail = null;
+            for (User user : deletedUsers) {
+                if (email.equals(user.getEmail())) {
+                    userWithEmail = user;
+                    break;
+                }
+            }
+            // 가입하려는 이메일과 탈퇴한 유저의 이메일이 동일한 경우
+            if (userWithEmail != null) {
+                log.info("탈퇴한 사용자의 이메일입니다.");
+                ErrorMessage errorMessage = ErrorMessage.valueOf("탈퇴한 사용자의 이메일입니다. ");
+                throw new UserException(errorMessage.getMessage(), errorMessage.getStatus());
+            }
+        }
+        // (2) 가입된 이메일 여부 확인
+        else if (userRepository.findByEmail(email).isPresent()) {
+
             log.info("이미 존재하는 이메일입니다.");
             throw new RuntimeException("이미 존재하는 이메일입니다."); //수정
         }
@@ -43,8 +70,8 @@ public class UserServiceImpl implements UserService{
         User user = new User(email, password, userName, null, null, null); // 프로필 사진, 소개, 링크는 프로필 수정에서
         User save = userRepository.save(user);
         log.info("user name : {} 수정날짜는 {} 등록날짜는 {}", save.getName(), save.getUpdatedAt(), save.getCreatedAt());
-    }
 
+    }
 
     // 유저 조회
     @Override
