@@ -10,9 +10,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Setter
 @Table(name = "friend")
-@EntityListeners(AuditingEntityListener.class)
+
 public class Friend {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -20,11 +19,11 @@ public class Friend {
 
     @ManyToOne
     @JoinColumn(name = "follower", nullable = false)
-    private User follower;
+    private User follower; // 나를 팔로우 하는 사용자 (상대가 나에게 팔로우 요청)
 
     @ManyToOne
     @JoinColumn(name = "following", nullable = false)
-    private User following;
+    private User following; // 내가 팔로우 하는 사용자 (내가 상대에게 팔로우 요청)
 
     @CreatedDate
     @Column(name = "create_at", updatable = false)

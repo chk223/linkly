@@ -22,7 +22,6 @@ import java.util.UUID;
 public class FriendController {
     //속성
     private final FriendService friendService;
-    private final FriendServiceImpl friendServiceImpl;
 
     //기능
     //친구추가 (Follow)
@@ -36,7 +35,7 @@ public class FriendController {
         return new ResponseEntity<>(friendService.getMyFollowers(userId), HttpStatus.OK);
     }
     //내가 팔로우한 사람 조회(Following)
-    @GetMapping("/friends/{userId}")
+    @GetMapping("/followings/{userId}")
     public ResponseEntity<List<FriendResponseDto>> getMyFollowings(@PathVariable UUID userId) {
         return new ResponseEntity<>(friendService.getMyFollowings(userId), HttpStatus.OK);
     }
