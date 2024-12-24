@@ -6,13 +6,14 @@ import lombok.Getter;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
+import java.util.UUID;
 
 @Getter
 @AllArgsConstructor
 public class CommentResponseDto {
 
     private final Long id;
-    private final String userId;
+    private final UUID userId;
     private final Long feedId;
     private final String content;
     private final LocalDateTime createdAt;

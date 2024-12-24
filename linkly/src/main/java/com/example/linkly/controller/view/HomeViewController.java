@@ -52,7 +52,7 @@ public class HomeViewController {
         List<CommentResponseDto> comments = new ArrayList<>();
         model.addAttribute("comments", comments);
         model.addAttribute("feedId", feedId);
-        model.addAttribute("commentRequestDto", new CommentRequestDto());
+//        model.addAttribute("commentRequestDto", new CommentRequestDto());
         return "comments";
     }
     @PostMapping("/add-comment")

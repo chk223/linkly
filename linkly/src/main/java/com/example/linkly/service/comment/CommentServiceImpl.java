@@ -5,12 +5,17 @@ import com.example.linkly.dto.comment.CommentResponseDto;
 import com.example.linkly.entity.Comment;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.entity.User;
+import com.example.linkly.exception.FeedException;
+import com.example.linkly.exception.UserException;
+import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.CommentRepository;
 import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.UserRepository;
 import jakarta.servlet.http.HttpSession;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
+
+import java.util.UUID;
 
 
 @Service
@@ -19,8 +24,8 @@ public class CommentServiceImpl implements CommentService{
 
     private final CommentRepository commentRepository;
     private final HttpSession session;
-//    private final UserRepository userRepository;
-//    private final FeedRepository feedRepository;
+    private final UserRepository userRepository;
+    private final FeedRepository feedRepository;
 
     /**
      * 댓글 생성
@@ -29,15 +34,15 @@ public class CommentServiceImpl implements CommentService{
      * @return
      */
     @Override
-    public CommentResponseDto addComment(String contents, Long feedId) {
+    public CommentResponseDto addComment(UUID id, String contents, Long feedId) {
 
-        // session : Attribute안에 userid를 넣을지 email로 넣을지 수정 !
-//        User user = userRepository.findById(session.getAttribute("email"));
-//        Feed feed = feedRepository.findById(feedId);
-//        Comment comment = commentRepository.save(new Comment(contents,user,feed));
-//
-//        return CommentResponseDto.toDto(comment);
-        return null;
+        ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
+
+        User user = userRepository.findById(id).orElseThrow(()-> new UserException(errorMessage.getMessage(),errorMessage.getStatus()));;
+        Feed feed = feedRepository.findById(feedId).orElseThrow(()-> new FeedException(errorMessage.getMessage(),errorMessage.getStatus()));
+        Comment comment = commentRepository.save(new Comment(contents,user,feed));
+
+        return CommentResponseDto.toDto(comment);
     }
 
     /**
@@ -46,14 +51,14 @@ public class CommentServiceImpl implements CommentService{
      * @return
      */
     @Override
-    public CommentResponseDto findFeedById(Long feedId) {
+    public CommentResponseDto findCommentFeedById(Long feedId) {
 
         Comment comment = commentRepository.findByIdOrElseThrow(feedId);
         return CommentResponseDto.toDto(comment);
     }
 
     @Override
-    public CommentResponseDto update(Long id, String content, String userId) {
+    public CommentResponseDto update(Long id, String content, UUID userId) {
 
         Comment updateComment = commentRepository.findByIdOrElseThrow(id);
 
@@ -64,7 +69,7 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public void delete(Long id, String commentId) {
+    public void delete(Long id) {
 
         Comment comment = commentRepository.findByIdOrElseThrow(id);
 
