@@ -66,9 +66,6 @@ public class FeedServiceImpl implements FeedService {
         ErrorMessage errorBad = ErrorMessage.BLANK_INPUT;
         Feed findFeed = feedRepository.findById(id).orElseThrow(() -> new FeedException(errorNotFound.getMessage(), errorNotFound.getStatus()));
 
-//        if (!findFeed.getUser().getName().equals(requestDto.getUserName())) {
-//            throw new FeedException("작성자 이름이 다릅니다.", HttpStatus.UNAUTHORIZED);
-//        }
 
         if (requestDto.getTitle() == null && requestDto.getContent() == null) {
             throw new FeedException(errorBad.getMessage(), errorBad.getStatus());

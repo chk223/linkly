@@ -1,15 +1,13 @@
 package com.example.linkly.controller;
 
-import com.example.linkly.dto.feed.FeedResponseDto;
-import com.example.linkly.entity.Feed;
-import com.example.linkly.entity.User;
-import com.example.linkly.service.feed.FeedService;
 import com.example.linkly.service.heart.HeartService;
-import com.example.linkly.service.user.UserService;
+import com.example.linkly.util.HeartCategory;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.UUID;
 
 @Slf4j
 @RestController
@@ -18,14 +16,14 @@ import org.springframework.web.bind.annotation.*;
 public class HeartController {
     private final HeartService heartService;
 
-//    @PostMapping("/toggle")
-//    public ResponseEntity<String> toggleHeart(
-//           @RequestBody String userId,
-//           @RequestBody Long feedId
-//    ) {
-//
-//        String result = heartService.toggleHeart(userId, feedId);
-//        log.info(result);
-//        return ResponseEntity.ok(result);
-//    }
+    @PostMapping("/toggle")
+    public ResponseEntity<String> toggleHeart(
+            @RequestParam UUID userId,
+            @RequestParam Long categoryId,
+            @RequestParam HeartCategory category
+            ) {
+        String result = heartService.toggleHeart(userId, categoryId, category);
+
+        return ResponseEntity.ok(result);
+    }
 }
