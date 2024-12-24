@@ -119,7 +119,7 @@ public class FeedServiceImpl implements FeedService {
      */
     @Override
     public List<Feed> getBestFeeds() {
-        return feedRepository.findTop5ByOrderByHeartCountDesc();
+        return feedRepository.findTop5ByOrderByHeartCountDescCreatedAtAsc();
     }
 
 }
