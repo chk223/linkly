@@ -1,8 +1,9 @@
 package com.example.linkly.service.heart;
 
-import com.example.linkly.entity.Feed;
-import com.example.linkly.entity.User;
+import com.example.linkly.util.HeartCategory;
+
+import java.util.UUID;
 
 public interface HeartService {
-//    String toggleHeart(String user, Long feed);
+    String toggleHeart(UUID user, Long categoryId, HeartCategory category);
 }

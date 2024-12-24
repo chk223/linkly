@@ -66,7 +66,6 @@ public class FeedController {
 
     /**
      * 피드 삭제
-     *
      * @param id
      * @return
      */

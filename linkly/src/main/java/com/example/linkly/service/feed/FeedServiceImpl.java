@@ -36,6 +36,14 @@ public class FeedServiceImpl implements FeedService {
     private final UserRepository userRepository;
     private final ValidatorUser validatorUser;
 
+    /**
+     * 피드 생성
+     * @param userId
+     * @param title
+     * @param imgUrl
+     * @param content
+     * @return
+     */
     @Override
     public FeedResponseDto feedSave(CreateFeedRequestDto requestDto, HttpServletRequest request) {
 //        log.info("피드 저장 시도");
@@ -78,9 +86,6 @@ public class FeedServiceImpl implements FeedService {
         ErrorMessage errorBad = ErrorMessage.BLANK_INPUT;
         Feed findFeed = feedRepository.findById(id).orElseThrow(() -> new FeedException(errorNotFound.getMessage(), errorNotFound.getStatus()));
 
-//        if (!findFeed.getUser().getName().equals(requestDto.getUserName())) {
-//            throw new FeedException("작성자 이름이 다릅니다.", HttpStatus.UNAUTHORIZED);
-//        }
 
         if (requestDto.getTitle() == null && requestDto.getContent() == null) {
             throw new FeedException(errorBad.getMessage(), errorBad.getStatus());
