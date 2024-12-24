@@ -34,8 +34,7 @@ public class AuthServiceImpl implements AuthService {
     public ResponseEntity<Map<String, String>> login(LoginRequestDto loginRequestDto) throws AuthException {
         ErrorMessage errorMessage = ErrorMessage.UNCERTIFIED;
         // 사용자 이메일로 사용자 찾기
-        User user = userRepository.findByEmail(loginRequestDto.getEmail())
-                .orElseThrow(() -> new AuthException(errorMessage.getMessage(), errorMessage.getStatus()));
+        User user = userRepository.findByEmail(loginRequestDto.getEmail()).orElseThrow(() -> new AuthException(errorMessage.getMessage(), errorMessage.getStatus()));
 
         // 비밀번호 검증
         if (!user.getPassword().equals(loginRequestDto.getPassword())) {
