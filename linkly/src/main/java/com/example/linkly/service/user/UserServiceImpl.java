@@ -61,20 +61,14 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateUser(UUID id, UserUpdateRequestDto dto) {
 
-        User user = userRepository.findByIdOrElseThrow(id);
+        ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
+        User user = userRepository.findById(id).orElseThrow(() ->
+                new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
 
-//        User user = userRepository.findById(id).orElseThrow(() ->
-//                new UserException("아이디에 해당하는 유저가 없습니다.", HttpStatus.NOT_FOUND));
         // 이름 수정
         if(dto.getName() != null) {
             user.updateName(dto.getName());
             log.info("이름 수정 완료: {} ", dto.getName());
-        }
-
-        // 비밀번호 수정
-        if(dto.getPassword() != null) {
-            user.updatePassword(bcrypt.encode(dto.getPassword()));
-            log.info("비밀번호 수정 완료");
         }
 
         // 프로필 사진 수정
@@ -101,10 +95,24 @@ public class UserServiceImpl implements UserService{
     @Transactional
     @Override
     public void updatePw(UUID id, PwUpdateRequestDto dto) {
+
+        ErrorMessage errorMessage1 = ErrorMessage.ENTITY_NOT_FOUND;
         User user = userRepository.findById(id).orElseThrow(() ->
-                new UserException(errorMe));
+                new UserException(errorMessage1.getMessage(), errorMessage1.getStatus()));
 
+        // 비밀번호 검증 성공
+        if(bcrypt.matches(dto.getOriginalPw(), user.getPassword())) {
+            user.updatePassword(bcrypt.encode(dto.getNewPw()));
+        }
+        // 비밀번호 검증 실패
+        else{
+            log.info("비밀번호 검증 실패");
+            ErrorMessage errorMessage2 = ErrorMessage.PASSWORD_IS_WRONG;
+            throw new UserException(errorMessage2.getMessage(), errorMessage2.getStatus());
+        }
 
+        userRepository.flush(); // flush 필수!!
+        log.info("비밀번호 수정 완료");
     }
 
     @Override

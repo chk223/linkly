@@ -28,11 +28,11 @@ public class UserController {
 
     // 유저 생성
     @PostMapping("/sign-up")
-    public ResponseEntity<Void> signUp(@RequestBody SignUpRequestDto requestDto) {
+    public ResponseEntity<Void> signUp(@RequestBody SignUpRequestDto dto) {
         userService.signUp(
-                requestDto.getEmail(),
-                bcrypt.encode(requestDto.getPassword()),
-                requestDto.getName()
+                dto.getEmail(),
+                bcrypt.encode(dto.getPassword()),
+                dto.getName()
         );
 
         return new ResponseEntity<>(HttpStatus.CREATED);
@@ -48,7 +48,7 @@ public class UserController {
 
     // 유저 수정
     // 이름 변경 및 프로필 사진, 소개, 링크 설정
-    @PatchMapping("/{id}")
+    @PatchMapping("/edit/{id}")
     public ResponseEntity<Void> updateUser(
             @PathVariable UUID id,
             @RequestBody UserUpdateRequestDto requestDto
