@@ -113,6 +113,10 @@ public class FeedServiceImpl implements FeedService {
         return feedRepository.findAllRandom(pageable);
     }
 
+    /**
+     * 베스트5 피드 조회
+     * @return
+     */
     @Override
     public List<Feed> getBestFeeds() {
         return feedRepository.findTop5ByOrderByHeartCountDesc();

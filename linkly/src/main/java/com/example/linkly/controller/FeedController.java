@@ -98,7 +98,8 @@ public class FeedController {
      * @return
      */
     @GetMapping("/best")
-    public List<Feed> getBestFeeds() {
-        return feedService.getBestFeeds();
+    public ResponseEntity<List<Feed>> getBestFeeds() {
+        List<Feed> bestFeeds = feedService.getBestFeeds();
+        return new ResponseEntity<>(bestFeeds, HttpStatus.OK);
     }
 }
