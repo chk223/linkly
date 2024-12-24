@@ -20,8 +20,10 @@ public class Heart {
     private User user;
 
     @Enumerated(EnumType.STRING)
+    @Setter
     private HeartCategory category;
 
+    @Setter
     private Long categoryId;
 
     public Heart() {
