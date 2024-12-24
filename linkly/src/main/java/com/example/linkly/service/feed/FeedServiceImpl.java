@@ -27,6 +27,14 @@ public class FeedServiceImpl implements FeedService {
     private final FeedRepository feedRepository;
     private final UserRepository userRepository;
 
+    /**
+     * 피드 생성
+     * @param userId
+     * @param title
+     * @param imgUrl
+     * @param content
+     * @return
+     */
     @Override
     public FeedResponseDto feedSave(UUID userId, String title, String imgUrl, String content) {
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
