@@ -22,12 +22,12 @@ public class User extends BaseEntity {
     @Column(length = 10)
     private String name;
 
-//    @Email
+    //    @Email
 //    @NotBlank
     @Column(length = 30, nullable = false, unique = true)
     private String email;
 
-//    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")
+    //    @Pattern(regexp = "^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)[a-zA-Z\\d]{8,}$")
 //    @NotBlank
     @Column(length = 255)
     private String password;

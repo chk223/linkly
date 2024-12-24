@@ -13,6 +13,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @RestController
@@ -31,12 +32,12 @@ public class FriendController {
     }
     //나를 팔로우한 사람 조회(Follower)
     @GetMapping("/followers/{userId}")
-    public ResponseEntity<List<FriendResponseDto>> getMyFollowers(@PathVariable String userId) {
+    public ResponseEntity<List<FriendResponseDto>> getMyFollowers(@PathVariable UUID userId) {
         return new ResponseEntity<>(friendService.getMyFollowers(userId), HttpStatus.OK);
     }
     //내가 팔로우한 사람 조회(Following)
     @GetMapping("/friends/{userId}")
-    public ResponseEntity<List<FriendResponseDto>> getMyFollowings(@PathVariable String userId) {
+    public ResponseEntity<List<FriendResponseDto>> getMyFollowings(@PathVariable UUID userId) {
         return new ResponseEntity<>(friendService.getMyFollowings(userId), HttpStatus.OK);
     }
     //친구삭제 (Unfollow)

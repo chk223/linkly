@@ -11,6 +11,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.UUID;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -40,7 +41,7 @@ public class FriendServiceImpl implements FriendService {
     }
     //나를 팔로우 하는 사람 조회 비즈니스 로직
     @Override
-    public List<FriendResponseDto> getMyFollowers(String userId) {
+    public List<FriendResponseDto> getMyFollowers(UUID userId) {
         List<Friend> followers = friendRepository.findByFollowerId(userId);
         return followers.stream().map(friend -> new FriendResponseDto(
                 friend.getId(),
@@ -51,7 +52,7 @@ public class FriendServiceImpl implements FriendService {
     }
     //내가 팔로우 하는 사람 조회 비즈니스 로직
     @Override
-    public List<FriendResponseDto> getMyFollowings(String userId) {
+    public List<FriendResponseDto> getMyFollowings(UUID userId) {
         List<Friend> followings = friendRepository.findByFollowingId(userId);
         return followings.stream().map(friend -> new FriendResponseDto(
                 friend.getId(),
