@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping("/friends")
 @RequiredArgsConstructor
 public class FriendController {
-//    //속성
+    //속성
 //    private final FriendService friendService;
 //    private final FriendServiceImpl friendServiceImpl;
 //

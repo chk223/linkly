@@ -14,7 +14,9 @@ import com.example.linkly.repository.HeartRepository;
 import com.example.linkly.repository.UserRepository;
 import com.example.linkly.util.HeartCategory;
 import com.example.linkly.util.exception.ExceptionUtil;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
+import org.attoparser.dom.Comment;
 import org.springframework.stereotype.Service;
 
 import java.util.Optional;
@@ -29,6 +31,7 @@ public class HeartServiceImpl implements HeartService {
     private final FeedRepository feedRepository;
     private final CommentRepository commentRepository;
 
+
     /**
      * 좋아요 토글
      *
@@ -38,6 +41,7 @@ public class HeartServiceImpl implements HeartService {
      * @return
      */
     @Override
+    @Transactional
     public String toggleHeart(UUID userId, Long categoryId, HeartCategory category) {
 
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
@@ -49,13 +53,10 @@ public class HeartServiceImpl implements HeartService {
         // 좋아요 여부 확인
         Optional<Heart> heartOptional = heartRepository.findByUserAndCategoryIdAndCategory(user, categoryId, category);
 
-
-
-
-
         if (category == HeartCategory.FEED) {
             Feed findFeed = feedRepository.findById(categoryId).orElseThrow(() ->
                     new FeedException(errorMessage.getMessage(), errorMessage.getStatus()));
+
             if (heartOptional.isPresent()) {
                 //좋아요가 되어 있다면 삭제
                 findFeed.decreaseCount();
@@ -92,6 +93,7 @@ public class HeartServiceImpl implements HeartService {
             }
         }
         return null;
+
     }
 }
 
