@@ -24,6 +24,7 @@ public class Feed {
     @Column(length = 100)
     private String content;
 
+    @Setter
     @Column(name = "img_url")
     private String imgUrl;
     @Column(name = "like_count")

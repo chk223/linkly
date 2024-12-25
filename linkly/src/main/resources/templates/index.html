@@ -1,50 +1,69 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
 <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>피드와 친구 목록</title>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
-    <title>Title</title>
+    <style>
+        /* 카드 이미지 설정 */
+        .card img {
+            height: 150px;
+            object-fit: cover;
+        }
+        .card {
+            margin: 10px;
+        }
+        #feed-container {
+            border-right: 1px solid #ccc;
+            padding: 20px;
+        }
+        #friends-container {
+            padding: 20px;
+        }
+    </style>
 </head>
 <body>
 <div th:insert="~{fragments/header :: header}"></div>
-<div id="container" style="display: flex; flex-direction: row; height: 100vh;">
-    <!-- 중앙 피드 -->
-    <div id="feed" style="flex: 3; border-right: 1px solid #ccc; padding: 20px;">
-        <h2>Feed</h2>
-        <div th:each="feed : ${feeds}">
-            <div style="margin-bottom: 20px; border-bottom: 1px solid #eee; padding-bottom: 10px;">
-                <h4 th:text="${feed.title}">Post Title</h4>
-                <p th:text="${feed.content}">Post Content</p>
+<div class="container-fluid mt-4">
+    <div class="row">
+        <!-- 피드 영역 -->
+        <div id="feed-container" class="col-md-9">
+            <h2>피드</h2>
+            <div class="row">
+                <!-- 카드 리스트 반복 렌더링 -->
+                <div class="col-md-4" th:each="feed : ${feeds}">
+                    <div class="card">
+                        <!-- 이미지 영역 -->
+                        <img th:src="${(feed.imgUrl != null and feed.imgUrl != '') ? feed.imgUrl : '/images/default.png'}"
+                             class="card-img-top"
+                             alt="Feed Image">
+
+                        <!-- 제목만 보여주는 영역 -->
+                        <div class="card-body">
+                            <h5 class="card-title" th:text="${feed.title}">피드 제목</h5>
+                            <!-- 상세 페이지로 이동하는 버튼 -->
+                            <a th:href="@{/view/feed/{id}(id=${feed.id})}" class="btn btn-primary">상세 보기</a>
+                        </div>
+                    </div>
+                </div>
             </div>
         </div>
 
-        <!-- 페이지네이션 -->
-        <div style="text-align: center;">
-            <button th:if="${pageNumber > 1}"
-                    th:href="@{/feed(page=${pageNumber - 1})}">
-                Previous
-            </button>
-            <span th:text="${pageNumber}">1</span>
-            <button th:if="${pageNumber < totalPages}"
-                    th:href="@{/feed(page=${pageNumber + 1})}">
-                Next
-            </button>
+        <!-- 친구 목록 영역 -->
+        <div id="friends-container" class="col-md-3">
+            <h2>친구 목록</h2>
+            <ul style="list-style: none; padding: 0;">
+                <li th:each="friend : ${friends}" style="margin-bottom: 10px;">
+                    <div style="display: flex; align-items: center;">
+                        <img th:src="${friend.profilePicture != null ? friend.profilePicture : '/images/default-profile.png'}"
+                             alt="Profile Picture"
+                             style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+                        <span th:text="${friend.name}">Friend Name</span>
+                    </div>
+                </li>
+            </ul>
         </div>
-    </div>
-
-    <!-- 친구 목록 -->
-    <div id="friends" style="flex: 1; padding: 20px;">
-        <h2>Friends</h2>
-        <ul style="list-style: none; padding: 0;">
-            <li th:each="friend : ${friends}" style="margin-bottom: 10px;">
-                <div style="display: flex; align-items: center;">
-                    <img th:src="${friend.profilePicture}"
-                         alt="Profile Picture"
-                         style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                    <span th:text="${friend.name}">Friend Name</span>
-                </div>
-            </li>
-        </ul>
     </div>
 </div>
 </body>

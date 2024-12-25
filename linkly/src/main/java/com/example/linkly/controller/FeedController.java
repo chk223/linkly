@@ -7,6 +7,7 @@ import com.example.linkly.dto.feed.FeedResponseDto;
 import com.example.linkly.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.service.feed.FeedService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -33,8 +34,8 @@ public class FeedController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<FeedResponseDto> feedSave(@Valid @RequestBody CreateFeedRequestDto requestDto) {
-        FeedResponseDto feedResponseDto = feedService.feedSave(requestDto.getUserId(), requestDto.getTitle(), requestDto.getImgUrl(), requestDto.getContent());
+    public ResponseEntity<FeedResponseDto> feedSave(@Valid @RequestBody CreateFeedRequestDto requestDto, HttpServletRequest request) {
+        FeedResponseDto feedResponseDto = feedService.feedSave(requestDto,request);
         return new ResponseEntity<>(feedResponseDto, HttpStatus.CREATED);
     }
 
