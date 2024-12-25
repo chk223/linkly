@@ -19,5 +19,6 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
     @Query("SELECT f FROM Feed f ORDER BY function('RAND')")
     Page<Feed> findAllRandom(Pageable pageable);
 
+    // 베스트5피드를 좋아요 수와 생성날짜 내림차순
     List<Feed> findTop5ByOrderByHeartCountDescCreatedAtAsc();
 }

@@ -38,12 +38,12 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public FeedResponseDto feedSave(UUID userId, String title, String imgUrl, String content) {
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
+        // 피드 생성을 위한 작성자 찾기
         User findUser = userRepository.findById(userId).orElseThrow(()-> new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
         Feed feed = new Feed(title, imgUrl, content, 0L);
+        // 피드의 작성자를 세팅
         feed.setUser(findUser);
-//        log.info("컨텐츠={}, 생성일={}, feedid={}, 유저={}, 라이크={}, url={}" ,feed.getContent(), feed.getCreatedAt(), feed.getId(), feed.getUser(), feed.getHeartCount(), feed.getImgUrl());
         Feed saveFeed = feedRepository.save(feed);
-//        log.info("저장된id={}, 저장된유저={}, 저장된컨텐츠={}, 저장된url={}, 저장된카운트={}, 저장된날짜={}", saveFeed.getId(), saveFeed.getUser(), saveFeed.getContent(), saveFeed.getImgUrl(), saveFeed.getHeartCount(), saveFeed.getCreatedAt());
         return new FeedResponseDto(saveFeed);
     }
 
@@ -75,13 +75,16 @@ public class FeedServiceImpl implements FeedService {
         Feed findFeed = feedRepository.findById(id).orElseThrow(() -> new FeedException(errorNotFound.getMessage(), errorNotFound.getStatus()));
 
 
+        // 피드수정 요청에 아무 값이 들어오지 않았을 경우 에러 처리
         if (requestDto.getTitle() == null && requestDto.getContent() == null) {
             throw new FeedException(errorBad.getMessage(), errorBad.getStatus());
         }
 
+        // 피드에 수정할 content가 없다면 title만 수정
         if (requestDto.getTitle() != null) {
             findFeed.setTitle(requestDto.getTitle());
         }
+        // 피드에 수정할 title이 없다면 content만 수정
         if (requestDto.getContent() != null) {
             findFeed.setContent(requestDto.getContent());
         }
