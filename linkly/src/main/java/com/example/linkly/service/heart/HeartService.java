@@ -6,4 +6,5 @@ import java.util.UUID;
 
 public interface HeartService {
     String toggleHeart(UUID user, Long categoryId, HeartCategory category);
+
 }

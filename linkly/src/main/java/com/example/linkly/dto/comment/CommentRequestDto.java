@@ -1,17 +1,15 @@
 package com.example.linkly.dto.comment;
 
+import lombok.AllArgsConstructor;
 import lombok.Getter;
-import lombok.Setter;
+
+import java.util.UUID;
 
 @Getter
-@Setter
+@AllArgsConstructor
 public class CommentRequestDto {
-    private String content;
 
-    public CommentRequestDto() {
-    }
+    private final UUID userId;
+    private final String content;
 
-    public CommentRequestDto(String content) {
-        this.content = content;
-    }
 }
