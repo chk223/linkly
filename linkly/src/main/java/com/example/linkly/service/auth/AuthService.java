@@ -9,4 +9,5 @@ import java.util.Map;
 public interface AuthService {
     ResponseEntity<Map<String, String>> apiLogin(LoginRequestDto loginRequestDto);
     void login(LoginRequestDto loginRequestDto, HttpServletResponse response);
+    void logout(HttpServletResponse response);
 }

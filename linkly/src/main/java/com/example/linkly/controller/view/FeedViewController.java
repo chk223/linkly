@@ -23,7 +23,7 @@ public class FeedViewController {
     @GetMapping
     public String displayFeedForm(Model model) {
         model.addAttribute("requestDto", new CreateFeedRequestDto());
-        return "addFeed";
+        return "feed/addFeed";
     }
 
     @PostMapping()
@@ -43,18 +43,19 @@ public class FeedViewController {
 //        log.info("해당 피드 작성한 유저 이메일 ={}", feed.getEmail());
         model.addAttribute("feed", feed);
         model.addAttribute("userEmail", userEmail);
-        return "feedDetail"; // 피드 상세 페이지 렌더링
+        return "feed/feedDetail"; // 피드 상세 페이지 렌더링
     }
 
     @GetMapping("/edit-feed/{id}")
     public String displayFeedUpdateForm(@PathVariable Long id,Model model) {
         FeedResponseDto findFeed = feedService.findById(id);
         model.addAttribute("feed", findFeed);
-        return "editFeed";
+        return "feed/editFeed";
     }
 
     @PostMapping("/edit-feed/{id}")
     public String updateFeed(@PathVariable Long id, @ModelAttribute UpdateFeedRequestDto responseDto) {
+        log.info("수정 제목 : {}, 내용 : {} 이미지 : {}", responseDto.getTitle(), responseDto.getContent(),responseDto.getImgUrl());
         feedService.updateFeed(id,responseDto);
         return "redirect:/view/feed/" + id; // 업데이트 후 상세 페이지로 리다이렉트
     }

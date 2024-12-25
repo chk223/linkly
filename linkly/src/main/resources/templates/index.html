@@ -35,7 +35,7 @@
                 <div class="col-md-4" th:each="feed : ${feeds}">
                     <div class="card">
                         <!-- 이미지 영역 -->
-                        <img th:src="${(feed.imgUrl != null) ? feed.imgUrl : '/images/default.png'}"
+                        <img th:src="${(feed.imgUrl != null and feed.imgUrl != '') ? feed.imgUrl : '/images/default.png'}"
                              class="card-img-top"
                              alt="Feed Image">
 

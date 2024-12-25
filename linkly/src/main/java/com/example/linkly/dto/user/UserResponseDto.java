@@ -4,10 +4,18 @@ import com.example.linkly.entity.User;
 import com.example.linkly.grade.UserGrade;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
+
+import java.util.UUID;
 
 @Getter
+@Setter
 @AllArgsConstructor
 public class UserResponseDto {
+
+    private final UUID id;
+
+    private final String email;
 
     private final String name;
 
@@ -20,6 +28,8 @@ public class UserResponseDto {
     private final UserGrade gradeVal;
 
     public UserResponseDto(User user) {
+        this.id = user.getId();
+        this.email = user.getEmail();
         this.name = user.getName();
         this.profileImgUrl = user.getProfileImg();
         this.profileIntro = user.getProfileIntro();

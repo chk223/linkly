@@ -98,7 +98,7 @@ public class FeedServiceImpl implements FeedService {
             findFeed.setContent(requestDto.getContent());
         }
         if (requestDto.getImgUrl() != null) {
-            findFeed.setContent(requestDto.getImgUrl());
+            findFeed.setImgUrl(requestDto.getImgUrl());
         }
         feedRepository.save(findFeed);
         return FeedResponseDto.toDto(findFeed);

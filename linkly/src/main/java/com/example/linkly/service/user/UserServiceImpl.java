@@ -8,7 +8,11 @@ import com.example.linkly.entity.User;
 import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.UserRepository;
+import com.example.linkly.util.auth.JwtUtil;
+import com.example.linkly.util.auth.ValidatorUser;
+import com.example.linkly.util.exception.ExceptionUtil;
 import jakarta.persistence.PersistenceException;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +35,7 @@ import java.util.stream.Collectors;
 @RequiredArgsConstructor
 public class UserServiceImpl implements UserService{
 
-
+    private final ValidatorUser validatorUser;
     private final UserRepository userRepository;
     PasswordEncoder bcrypt = new PasswordEncoder();
 
@@ -77,17 +81,27 @@ public class UserServiceImpl implements UserService{
 
     }
 
+    @Override
+    public UserResponseDto getInfo(UUID id) {
+        User user = userRepository.findById(id).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+        return new UserResponseDto(user);
+    }
+
+    @Override
+    public UserResponseDto findByEmail(String email) {
+        User user = userRepository.findByEmail(email).orElseThrow(()-> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+        return new UserResponseDto(user);
+    }
+
     // 유저 조회
     @Override
     public List<UserResponseDto> findByNameContains(String name){
 
         List<User> userList = userRepository.findByNameLike("%"+name+"%"); // %LIKE% : name이 포함된 유저 조회
-        List<UserResponseDto> userResponseDtoList =
-                userList.stream()
-                        .map(user -> new UserResponseDto(user))
-                        .collect(Collectors.toList());
 
-        return userResponseDtoList;
+        return userList.stream()
+                .map(UserResponseDto::new)
+                .collect(Collectors.toList());
     }
 
     // 유저 수정
@@ -130,9 +144,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updatePw(UUID id, PwUpdateRequestDto dto) {
 
-        ErrorMessage errorMessage1 = ErrorMessage.ENTITY_NOT_FOUND;
         User user = userRepository.findById(id).orElseThrow(() ->
-                new UserException(errorMessage1.getMessage(), errorMessage1.getStatus()));
+                ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
 
         // 비밀번호 검증 성공
         if(bcrypt.matches(dto.getOriginalPw(), user.getPassword())) {
@@ -140,17 +153,16 @@ public class UserServiceImpl implements UserService{
             // originalPw == newPw CASE -> 예외처리
             if(bcrypt.matches(dto.getNewPw(), user.getPassword())) {
                 log.info("이전과 동일한 비밀번호입니다. ");
-                ErrorMessage errorMessage2 = ErrorMessage.VALID_ERROR;
-                throw new UserException(errorMessage2.getMessage(), errorMessage2.getStatus());
+                throw ExceptionUtil.throwErrorMessage(ErrorMessage.VALID_ERROR, UserException.class);
             }
+            log.info("변경된 비밀번호: {}", dto.getNewPw());
             user.updatePassword(bcrypt.encode(dto.getNewPw()));
         }
 
         // 비밀번호 검증 실패
         else{
             log.info("비밀번호 검증 실패");
-            ErrorMessage errorMessage3 = ErrorMessage.PASSWORD_IS_WRONG;
-            throw new UserException(errorMessage3.getMessage(), errorMessage3.getStatus());
+            throw ExceptionUtil.throwErrorMessage(ErrorMessage.PASSWORD_IS_WRONG, UserException.class);
         }
 
         userRepository.flush(); // flush 필수!!
@@ -181,9 +193,8 @@ public class UserServiceImpl implements UserService{
     @Override
     public void updateGrade(UUID id) {
 
-        ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
         User user = userRepository.findById(id).orElseThrow(() ->
-                new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
+                ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
 
         // 등급 설정
         user.updateGrade();
