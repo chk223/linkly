@@ -9,6 +9,7 @@ import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.UserRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
@@ -69,6 +70,7 @@ public class FeedServiceImpl implements FeedService {
      * @return
      */
     @Override
+    @Transactional
     public FeedResponseDto updateFeed(Long id, UpdateFeedRequestDto requestDto) {
         ErrorMessage errorNotFound = ErrorMessage.ENTITY_NOT_FOUND;
         ErrorMessage errorBad = ErrorMessage.BLANK_INPUT;

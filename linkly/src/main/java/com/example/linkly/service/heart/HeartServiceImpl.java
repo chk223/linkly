@@ -11,6 +11,7 @@ import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.HeartRepository;
 import com.example.linkly.repository.UserRepository;
 import com.example.linkly.util.HeartCategory;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.attoparser.dom.Comment;
 import org.springframework.stereotype.Service;
@@ -35,6 +36,7 @@ public class HeartServiceImpl implements HeartService {
      * @return
      */
     @Override
+    @Transactional
     public String toggleHeart(UUID userId, Long categoryId, HeartCategory category) {
 
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
