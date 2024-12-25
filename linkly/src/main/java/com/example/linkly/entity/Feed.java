@@ -28,7 +28,7 @@ public class Feed {
     @Column(name = "img_url")
     private String imgUrl;
     @Column(name = "like_count")
-    private Long heartCount;
+    private Long heartCount; // 좋아요 갯수를 카운트할 필드
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)
