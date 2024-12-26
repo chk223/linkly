@@ -46,7 +46,6 @@ public class User extends BaseEntity {
 
     // 유저 등급
     @Enumerated(EnumType.STRING)  // Enum을 String으로 저장
-//    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'BASIC'")
     @Column(length = 10)
     private UserGrade grade = UserGrade.BASIC;
 
