@@ -45,6 +45,7 @@ public class FeedServiceImpl implements FeedService {
 //        log.info("저장하려는 유저의 이메일 ={}",userEmail);
         User findUser = userRepository.findByEmail(userEmail).orElseThrow(() -> new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
         Feed feed = new Feed(requestDto.getTitle(), Objects.equals(requestDto.getImgUrl(), "") ? null : requestDto.getImgUrl(), requestDto.getContent(), 0L);
+        ;
 
         feed.setUser(findUser);
         Feed saveFeed = feedRepository.save(feed);
