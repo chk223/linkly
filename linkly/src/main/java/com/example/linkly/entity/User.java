@@ -15,9 +15,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-//@SoftDelete // 기능 -> 밑에 있는 @SQLDelete(~~~) + @Where(~~~)
-@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id = ?") // 엔티티 삭제 시, delted 컬럼 값을 true로 변경
-@Where(clause = "deleted = false")
+@SoftDelete
 @Table(name = "user")
 public class User extends BaseEntity {
 
@@ -25,16 +23,13 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private boolean deleted;
-
     @Column(length = 10)
     private String name;
 
     @Column(length = 30, nullable = false, unique = true)
     private String email;
 
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String password;
 
     // 프로필 사진

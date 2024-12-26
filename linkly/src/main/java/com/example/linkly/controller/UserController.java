@@ -25,7 +25,9 @@ public class UserController {
 
     // 유저 생성
     @PostMapping("/sign-up")
-    public ResponseEntity<Void> signUp(@RequestBody SignUpRequestDto dto) {
+    public ResponseEntity<Void> signUp(
+            @RequestBody SignUpRequestDto dto
+    ) {
         userService.signUp(
                 dto.getEmail(),
                 bcrypt.encode(dto.getPassword()),
