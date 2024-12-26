@@ -27,7 +27,8 @@ public class ValidatorUser {
         }
         // Access Token이 없거나 유효하지 않은 경우 처리
         if (accessToken == null || !jwtUtil.validateAccessToken(accessToken)) {
-            ExceptionUtil.throwErrorMessage(ErrorMessage.INVALID_TOKEN, AuthException.class);
+//            ExceptionUtil.throwErrorMessage(ErrorMessage.INVALID_TOKEN, AuthException.class);
+            return null;
         }
         return jwtUtil.extractUsername(accessToken);
     }

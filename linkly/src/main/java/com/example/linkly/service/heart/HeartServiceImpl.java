@@ -44,7 +44,6 @@ public class HeartServiceImpl implements HeartService {
     @Transactional
     public String toggleHeart(Long categoryId, HeartCategory category, HttpServletRequest request) {
 
-        ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
         String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
         // user 조회
         User user = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
@@ -89,6 +88,16 @@ public class HeartServiceImpl implements HeartService {
         }
         return null;
 
+    }
+
+    @Override
+    public boolean isILikeThis(Long categoryId, HeartCategory category, HttpServletRequest request) {
+        String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
+        // user 조회
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+        // 좋아요 여부 확인
+        Optional<Heart> heartOptional = heartRepository.findByUserAndCategoryIdAndCategory(user, categoryId, category);
+        return heartOptional.isPresent();
     }
 }
 

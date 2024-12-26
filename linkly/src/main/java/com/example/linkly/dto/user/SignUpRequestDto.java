@@ -30,6 +30,7 @@ public class SignUpRequestDto {
         this.password = password;
         this.name = name;
     }
+
     public SignUpRequestDto() {
     }
 }

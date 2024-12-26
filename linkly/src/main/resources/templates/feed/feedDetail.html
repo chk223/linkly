@@ -34,7 +34,7 @@
         <p class="me-2 mb-0" th:text="'좋아요 수: ' + (${feed.heartCount != null ? feed.heartCount : 0})"></p>
         <form th:action="@{/view/heart/toggle/{feedId}(feedId=${feed.id})}" method="post" style="display: inline;">
             <button type="submit" th:class="${feed.heartCount > 0} ? 'btn btn-secondary' : 'btn btn-primary'">
-                <span th:text="${feed.heartCount > 0} ? '좋아요 취소' : '좋아요'"></span>
+                <span th:text="${isLiked == true} ? '좋아요 취소' : '좋아요'"></span>
             </button>
         </form>
     </div>
