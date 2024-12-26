@@ -2,8 +2,10 @@ package com.example.linkly.dto.feed;
 
 import jakarta.validation.constraints.Size;
 import lombok.Getter;
+import lombok.Setter;
 
 @Getter
+@Setter
 public class UpdateFeedRequestDto {
 
     @Size(max = 40, message = "40글자 이내로 작성해주세요.")

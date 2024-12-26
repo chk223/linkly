@@ -4,12 +4,14 @@ import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;
 import org.springframework.data.annotation.CreatedDate;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
 @Entity
 @Getter
 @Table(name = "feed")
+@EntityListeners(AuditingEntityListener.class)
 public class Feed {
 
     @Id
@@ -24,10 +26,11 @@ public class Feed {
     @Column(length = 100)
     private String content;
 
+    @Setter
     @Column(name = "img_url")
     private String imgUrl;
     @Column(name = "like_count")
-    private Long heartCount;
+    private Long heartCount; // 좋아요 갯수를 카운트할 필드
 
     @CreatedDate
     @Column(name = "created_at", updatable = false)

@@ -85,5 +85,4 @@ public class User extends BaseEntity {
     public void updateGrade() {
         this.grade = (this.grade == UserGrade.BASIC) ? UserGrade.VIP : UserGrade.BASIC;
     }
-
 }

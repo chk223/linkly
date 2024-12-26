@@ -2,7 +2,7 @@
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
     <div class="container-fluid">
       <a class="navbar-brand" href="/">홈</a>
-      <a th:if="${user != null}" href="/cart/cart-items" type="button" class="btn btn-primary">추가 기능</a>
+      <a th:if="${user != null}" href="/view/feed/best" type="button" class="btn btn-primary">베스트 피드</a>
       <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
       </button>
@@ -15,20 +15,24 @@
             <a class="nav-link" href="/">랜덤 피드</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/">내 정보</a>
+            <!-- 내 정보 페이지로 이동 -->
+            <a th:if="${user != null}" th:href="@{/view/user/info/{id}(id=${user.id})}" class="nav-link">내 정보</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link disabled" aria-disabled="true">등급 변경</a>
+            <form th:if="${user != null}" th:action="@{/view/user/change-grade/{id}(id=${user.id})}" method="post">
+              <button type="submit" class="btn btn-success">등급 변경</button>
+            </form>
           </li>
         </ul>
-        <form class="d-flex" role="search">
-          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
+        <form class="d-flex" role="search" method="get" action="/view/user/filter">
+          <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search" name="name">
           <button class="btn btn-outline-success" type="submit">검색</button>
         </form>
         <li class="nav-item">
-          <a th:if="${user != null}" href="/view/user/logout" type="button" class="btn btn-danger">로그아웃</a>
+          <form th:if="${user != null}" th:action="@{/view/auth/logout}" method="post">
+            <button type="submit" class="btn btn-danger">로그아웃</button>
+          </form>
           <a th:if="${user == null}" href="/view/auth/login" type="button" class="btn btn-primary">로그인</a>
-          <a th:if="${user != null}" href="/view/user/my-info" type="button" class="btn btn-primary">추가 기능</a>
         </li>
       </div>
     </div>

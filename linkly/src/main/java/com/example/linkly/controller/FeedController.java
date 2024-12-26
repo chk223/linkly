@@ -16,6 +16,8 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -66,6 +68,7 @@ public class FeedController {
 
     /**
      * 피드 삭제
+     *
      * @param id
      * @return
      */
@@ -77,6 +80,7 @@ public class FeedController {
 
     /**
      * 피드 페이징
+     * 랜덤 피드
      * @param page
      * @param size
      * @return
@@ -88,5 +92,15 @@ public class FeedController {
     ) {
         Page<Feed> feedsPagination = feedService.getFeedsPagination(page - 1, size);
         return ResponseEntity.ok(feedsPagination);
+    }
+
+    /**
+     * 베스트5 피드 조회
+     * @return
+     */
+    @GetMapping("/best")
+    public ResponseEntity<List<Feed>> getBestFeeds() {
+        List<Feed> bestFeeds = feedService.getBestFeeds();
+        return new ResponseEntity<>(bestFeeds, HttpStatus.OK);
     }
 }

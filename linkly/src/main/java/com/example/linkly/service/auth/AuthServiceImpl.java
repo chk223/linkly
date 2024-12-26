@@ -11,6 +11,7 @@ import com.example.linkly.repository.UserRepository;
 import com.example.linkly.util.auth.JwtUtil;
 import com.example.linkly.util.exception.ExceptionUtil;
 import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -93,5 +94,16 @@ public class AuthServiceImpl implements AuthService {
         response.addCookie(refreshTokenCookie);
 
         log.info("로그인 완료!");
+    }
+    public void logout(HttpServletResponse response) {
+        invalidToken("accessToken", response);
+        invalidToken("refreshToken", response);
+    }
+
+    private void invalidToken(String accessToken, HttpServletResponse response) {
+        Cookie accessTokenCookie = new Cookie(accessToken, null);
+        accessTokenCookie.setMaxAge(0);
+        accessTokenCookie.setPath("/");
+        response.addCookie(accessTokenCookie);
     }
 }
