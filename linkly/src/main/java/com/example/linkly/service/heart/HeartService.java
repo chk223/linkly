@@ -1,10 +1,11 @@
 package com.example.linkly.service.heart;
 
 import com.example.linkly.util.HeartCategory;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.UUID;
 
 public interface HeartService {
-    String toggleHeart(UUID user, Long categoryId, HeartCategory category);
+    String toggleHeart(Long categoryId, HeartCategory category, HttpServletRequest request);
 
 }

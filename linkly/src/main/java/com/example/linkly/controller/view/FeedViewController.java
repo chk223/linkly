@@ -3,6 +3,7 @@ package com.example.linkly.controller.view;
 import com.example.linkly.dto.feed.CreateFeedRequestDto;
 import com.example.linkly.dto.feed.FeedResponseDto;
 import com.example.linkly.dto.feed.UpdateFeedRequestDto;
+import com.example.linkly.entity.Feed;
 import com.example.linkly.service.feed.FeedService;
 import com.example.linkly.util.auth.ValidatorUser;
 import jakarta.servlet.http.HttpServletRequest;
@@ -12,6 +13,9 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
+
 @Slf4j
 @Controller
 @RequestMapping("/view/feed")
@@ -67,4 +71,14 @@ public class FeedViewController {
         return "redirect:/";
     }
 
+    /**
+     * 베스트5 피드 조회
+     * @return
+     */
+    @GetMapping("/best")
+    public String getBestFeeds(Model model) {
+        List<Feed> bestFeeds = feedService.getBestFeeds();
+        model.addAttribute("feeds", bestFeeds);
+        return "feed/bestFeed";
+    }
 }

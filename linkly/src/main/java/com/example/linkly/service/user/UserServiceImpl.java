@@ -198,7 +198,6 @@ public class UserServiceImpl implements UserService{
 
         // 등급 설정
         user.updateGrade();
-
         userRepository.flush();
 
         log.info("등급 설정 완료 {}", user.getGrade());

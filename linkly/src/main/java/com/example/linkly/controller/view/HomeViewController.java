@@ -30,40 +30,4 @@ public class HomeViewController {
         model.addAttribute("totalPages", feedsPagination.getTotalPages());
         return "index";  // index.html로 반환
     }
-    /**
-     * 여기서부터 테스트용
-     */
-    @GetMapping("/add-feed")
-    public String addFeed() {
-        return "addFeed";
-    }
-
-    @RequestMapping("/feed-detail")
-    public String feedDetail() {
-        return "feedDetail";
-    }
-
-
-    @GetMapping("/add-comment/{feedId}")
-    public String comments(@PathVariable Long feedId, Model model) {
-//        List<CommentResponseDto> comments = commentService.getCommentsByFeedId(feedId);
-        List<CommentResponseDto> comments = new ArrayList<>();
-        model.addAttribute("comments", comments);
-        model.addAttribute("feedId", feedId);
-//        model.addAttribute("commentRequestDto", new CommentRequestDto());
-        return "comments";
-    }
-    @PostMapping("/add-comment")
-    public String addComment(@ModelAttribute CommentRequestDto commentRequestDto, @RequestParam Long feedId, BindingResult result) {
-        if (result.hasErrors()) {
-            return "comments";
-        }
-        return "redirect:/";
-    }
-
-
-
-
-
-
 }

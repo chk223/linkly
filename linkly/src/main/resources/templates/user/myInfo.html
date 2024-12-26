@@ -36,9 +36,7 @@
             <a th:href="${userResponseDto.profileUrl}" class="btn btn-primary">개인 블로그 링크</a>
             <div>
                 <a th:if="${user.email.equals(userResponseDto.email)}" th:href="@{/view/user/edit/{id}(id=${userResponseDto.id})}" class="btn btn-success">회원 정보 수정</a>
-                <form th:action="@{/view/user/withdraw/{id}(id=${user.id})}" method="post">
-                    <button th:if="${user.email.equals(userResponseDto.email)}" type="submit" class="btn btn-danger" name="_method" value="DELETE">회원 탈퇴</button>
-                </form>
+                <a th:href="@{/view/user/withdraw/{id}(id=${user.id})}" th:if="${user.email.equals(userResponseDto.email)}" class="btn btn-danger"> 회원 탈퇴 </a>
             </div>
 
         </div>

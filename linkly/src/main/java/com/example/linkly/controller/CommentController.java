@@ -5,6 +5,7 @@ import com.example.linkly.dto.comment.CommentResponseDto;
 import com.example.linkly.entity.Comment;
 import com.example.linkly.service.comment.CommentService;
 import com.example.linkly.service.heart.HeartService;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,11 +27,12 @@ public class CommentController {
     @PostMapping("/{feedId}")
     public ResponseEntity<CommentResponseDto> addComment(
             @PathVariable Long feedId,
-            @RequestBody CommentRequestDto requestDto
+            @RequestBody CommentRequestDto requestDto,
+            HttpServletRequest request
             ){
 
         //log.info("feedid={} userid={} commnet={}",feedId,requestDto.getUserId(),requestDto.getContent());
-        CommentResponseDto commentResponseDto = commentService.addComment(requestDto.getUserId(),requestDto.getContent(),feedId);
+        CommentResponseDto commentResponseDto = commentService.addComment(requestDto.getContent(),feedId,request);
 
         return new ResponseEntity<>(commentResponseDto, HttpStatus.CREATED);
     }
@@ -48,7 +50,7 @@ public class CommentController {
     @PatchMapping("/{id}")
     public ResponseEntity<CommentResponseDto> update(@PathVariable Long id, @RequestBody CommentRequestDto dto) {
         log.info("id={} content{} userId{} ",id,dto.getContent(),dto.getUserId());
-        CommentResponseDto updateComment = commentService.update(id, dto.getContent(),dto.getUserId());
+        CommentResponseDto updateComment = commentService.update(id, dto.getContent());
 
         return new ResponseEntity<>(updateComment, HttpStatus.OK);
     }
@@ -63,9 +65,9 @@ public class CommentController {
     }
 
     @GetMapping
-    public ResponseEntity<List<Comment>> heartCountNumber() {
+    public ResponseEntity<List<CommentResponseDto>> heartCountNumber() {
 
-        List<Comment> heartCountNumber = commentService.heartCountNumber();
+        List<CommentResponseDto> heartCountNumber = commentService.heartCountNumber();
 
         return new ResponseEntity<>(heartCountNumber, HttpStatus.OK);
     }

@@ -10,6 +10,10 @@ import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.CommentRepository;
 import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.UserRepository;
+import com.example.linkly.util.auth.ValidatorUser;
+import com.example.linkly.util.exception.ExceptionUtil;
+import jakarta.servlet.http.HttpServletRequest;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -25,6 +29,7 @@ public class CommentServiceImpl implements CommentService{
     private final CommentRepository commentRepository;
     private final UserRepository userRepository;
     private final FeedRepository feedRepository;
+    private final ValidatorUser validatorUser;
 
     /**
      * 댓글 생성
@@ -33,14 +38,11 @@ public class CommentServiceImpl implements CommentService{
      * @return
      */
     @Override
-    public CommentResponseDto addComment(UUID id, String contents, Long feedId) {
-
-        ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
-
-        User user = userRepository.findById(id).orElseThrow(()-> new UserException(errorMessage.getMessage(),errorMessage.getStatus()));;
-        Feed feed = feedRepository.findById(feedId).orElseThrow(()-> new FeedException(errorMessage.getMessage(),errorMessage.getStatus()));
+    public CommentResponseDto addComment(String contents, Long feedId, HttpServletRequest request) {
+        String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));;
+        Feed feed = feedRepository.findById(feedId).orElseThrow(()-> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, FeedException.class));
         Comment comment = commentRepository.save(new Comment(contents,user,feed,0L));
-
         return CommentResponseDto.toDto(comment);
     }
 
@@ -56,22 +58,24 @@ public class CommentServiceImpl implements CommentService{
         return CommentResponseDto.toDto(comment);
     }
 
+    @Override
+    public List<CommentResponseDto> findAllCommentFromFeed(Long feedId) {
+        List<Comment> comments = commentRepository.findAllByFeedId(feedId);
+        return comments.stream().map(CommentResponseDto::toDto).toList();
+    }
+
     /**
      * 댓글 수정
      * @param id
      * @param content
-     * @param userId
      * @return
      */
+    @Transactional
     @Override
-    public CommentResponseDto update(Long id, String content, UUID userId) {
-
+    public CommentResponseDto update(Long id, String content) {
         Comment updateComment = commentRepository.findByIdOrElseThrow(id);
-
         updateComment.update(content);
-
         return CommentResponseDto.toDto(updateComment);
-
     }
 
     /**
@@ -87,9 +91,10 @@ public class CommentServiceImpl implements CommentService{
     }
 
     @Override
-    public List<Comment> heartCountNumber() {
+    public List<CommentResponseDto> heartCountNumber() {
 
-        return commentRepository.findTop5ByOrderByHeartCountDescCreatedAtAsc();
+        List<Comment> bestComments = commentRepository.findTop5ByOrderByHeartCountDescCreatedAtAsc();
+        return bestComments.stream().map(CommentResponseDto::toDto).toList();
     }
 
 

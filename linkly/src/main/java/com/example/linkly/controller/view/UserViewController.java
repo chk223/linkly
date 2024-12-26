@@ -110,7 +110,7 @@ public class UserViewController {
     // 비밀번호 수정 처리
     @PostMapping("/edit-password")
     public String updatePassword(@ModelAttribute @Valid PwUpdateRequestDto passwordDto, BindingResult result, @ModelAttribute("user") UserResponseDto responseDto) {
-        log.info("비번 변경 감지 id = {} old_pw = {} new_pw ={}", responseDto.getId(), passwordDto.getOriginalPw(),passwordDto.getNewPw());
+//        log.info("비번 변경 감지 id = {} old_pw = {} new_pw ={}", responseDto.getId(), passwordDto.getOriginalPw(),passwordDto.getNewPw());
         if (result.hasErrors()) {
             log.info("검증 에러!!!!!");
             ExceptionUtil.throwErrorMessage(ErrorMessage.VALID_ERROR, UserException.class);
@@ -121,19 +121,26 @@ public class UserViewController {
         userService.updatePw(responseDto.getId(), passwordDto);
         return "redirect:/view/user/info/"+responseDto.getId();  // 비밀번호 수정 후 리다이렉트할 페이지
     }
+    @GetMapping("/withdraw/{id}")
+    public String displayWithdrawForm(@PathVariable UUID id, Model model) {
+        model.addAttribute("userId", id); // 사용자 ID를 모델에 추가
+        return "user/confirmWithdraw";
+    }
 
-    // 유저 삭제
     @PostMapping("/withdraw/{id}")
-    public String withdrawUser(@PathVariable UUID id, @RequestParam String password, HttpServletRequest request){
+    public String withdrawUser(@PathVariable UUID id, @RequestParam String password) {
+//        log.info("탈퇴 감지!!!! id={}, pw = {}", id, password);
         userService.deleteUser(id, password);
         return "redirect:/view/user/sign-up";
     }
 
     // 등급 설정
-    @PatchMapping("/grade/{id}")
-    public ResponseEntity<Void> updateGrade(@PathVariable UUID id){
+    @PostMapping("/change-grade/{id}")
+    public String updateGrade(@PathVariable UUID id){
+//        log.info("등급 변경 시도!!!!");
         userService.updateGrade(id);
-        return new ResponseEntity<>(HttpStatus.OK);
+//        log.info("등급 변경 완료!!!!");
+        return "redirect:/";
     }
 
 

@@ -16,6 +16,8 @@ public interface CommentRepository extends JpaRepository<Comment, Long> {
         return findById(id).orElseThrow(()-> new CommentException(errorMessage.getMessage(),errorMessage.getStatus()));
     }
 
+    List<Comment> findAllByFeedId(Long feedId);
+
     List<Comment> findTop5ByOrderByHeartCountDescCreatedAtAsc();
 
 }

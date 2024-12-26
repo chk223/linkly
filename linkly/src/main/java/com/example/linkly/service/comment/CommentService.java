@@ -2,20 +2,23 @@ package com.example.linkly.service.comment;
 
 import com.example.linkly.dto.comment.CommentResponseDto;
 import com.example.linkly.entity.Comment;
+import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
 import java.util.UUID;
 
 public interface CommentService {
 
-    CommentResponseDto addComment(UUID id, String contents, Long feedId);
+    CommentResponseDto addComment(String contents, Long feedId, HttpServletRequest request);
 
     CommentResponseDto findCommentFeedById(Long feedId);
 
-    CommentResponseDto update(Long id, String content, UUID userId);
+    List<CommentResponseDto> findAllCommentFromFeed(Long feedId);
+
+    CommentResponseDto update(Long id, String content);
 
     void delete(Long id);
 
 
-    List<Comment> heartCountNumber();
+    List<CommentResponseDto> heartCountNumber();
 }

@@ -14,6 +14,8 @@ public class CommentResponseDto {
 
     private final Long id;
     private final UUID userId;
+    private final String userEmail;
+    private final String userName;
     private final Long feedId;
     private final String content;
     private final LocalDateTime createdAt;
@@ -24,6 +26,8 @@ public class CommentResponseDto {
         return new CommentResponseDto(
                 comment.getId(),
                 comment.getUser().getId(),
+                comment.getUser().getEmail(),
+                comment.getUser().getName(),
                 comment.getFeed().getId(),
                 comment.getContent(),
                 comment.getCreatedAt(),
