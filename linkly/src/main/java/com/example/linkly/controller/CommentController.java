@@ -6,6 +6,7 @@ import com.example.linkly.entity.Comment;
 import com.example.linkly.service.comment.CommentService;
 import com.example.linkly.service.heart.HeartService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -27,7 +28,7 @@ public class CommentController {
     @PostMapping("/{feedId}")
     public ResponseEntity<CommentResponseDto> addComment(
             @PathVariable Long feedId,
-            @RequestBody CommentRequestDto requestDto,
+            @Valid @RequestBody CommentRequestDto requestDto,
             HttpServletRequest request
             ){
 
@@ -48,7 +49,7 @@ public class CommentController {
 
     // 댓글 수정
     @PatchMapping("/{id}")
-    public ResponseEntity<CommentResponseDto> update(@PathVariable Long id, @RequestBody CommentRequestDto dto) {
+    public ResponseEntity<CommentResponseDto> update(@PathVariable Long id,@Valid @RequestBody CommentRequestDto dto) {
         log.info("id={} content{} userId{} ",id,dto.getContent(),dto.getUserId());
         CommentResponseDto updateComment = commentService.update(id, dto.getContent());
 
