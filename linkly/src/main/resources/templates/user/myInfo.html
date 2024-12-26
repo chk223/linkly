@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>내 정보</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<!-- 헤더 포함 -->
+<div th:insert="~{fragments/header :: header}"></div>
+<div class="container mt-4">
+    <h1>내 정보</h1>
+
+    <!-- 프로필 정보 카드 -->
+    <div class="card" style="width: 18rem;">
+        <!-- 프로필 이미지 -->
+        <img th:src="${(userResponseDto.profileImgUrl != null and userResponseDto.profileImgUrl != '') ? userResponseDto.profileImgUrl : '/images/default.png'}"
+             class="card-img-top" alt="Profile Image" style="height: 200px; object-fit: cover;">
+
+
+        <div class="card-body">
+            <!-- 이름 -->
+            <h5 class="card-title" th:text="${userResponseDto.name}">사용자 이름</h5>
+
+            <!-- 프로필 소개 -->
+            <p class="card-text" th:text="${userResponseDto.profileIntro}">프로필 소개</p>
+
+            <!-- 등급 -->
+            <p class="card-text">
+                <strong>등급:</strong>
+                <span th:text="${userResponseDto.gradeVal}">사용자 등급</span>
+            </p>
+
+            <!-- 개인 블로그 링크 -->
+            <a th:href="${userResponseDto.profileUrl}" class="btn btn-primary">개인 블로그 링크</a>
+            <div>
+                <a th:if="${user.email.equals(userResponseDto.email)}" th:href="@{/view/user/edit/{id}(id=${userResponseDto.id})}" class="btn btn-success">회원 정보 수정</a>
+                <a th:href="@{/view/user/withdraw/{id}(id=${user.id})}" th:if="${user.email.equals(userResponseDto.email)}" class="btn btn-danger"> 회원 탈퇴 </a>
+            </div>
+
+        </div>
+    </div>
+</div>
+</body>
+</html>

@@ -1,22 +1,30 @@
 package com.example.linkly.service.feed;
 
+import com.example.linkly.dto.feed.CreateFeedRequestDto;
 import com.example.linkly.dto.feed.FeedResponseDto;
 import com.example.linkly.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.entity.User;
+import com.example.linkly.exception.AuthException;
 import com.example.linkly.exception.FeedException;
 import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.UserRepository;
+import jakarta.transaction.Transactional;
+import com.example.linkly.util.auth.JwtUtil;
+import com.example.linkly.util.auth.ValidatorUser;
+import com.example.linkly.util.exception.ExceptionUtil;
+import jakarta.servlet.http.Cookie;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
+import java.util.Objects;
 import java.util.UUID;
 
 @Slf4j
@@ -26,6 +34,7 @@ public class FeedServiceImpl implements FeedService {
 
     private final FeedRepository feedRepository;
     private final UserRepository userRepository;
+    private final ValidatorUser validatorUser;
 
     /**
      * 피드 생성
@@ -36,14 +45,16 @@ public class FeedServiceImpl implements FeedService {
      * @return
      */
     @Override
-    public FeedResponseDto feedSave(UUID userId, String title, String imgUrl, String content) {
+    public FeedResponseDto feedSave(CreateFeedRequestDto requestDto, HttpServletRequest request) {
+//        log.info("피드 저장 시도");
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
-        User findUser = userRepository.findById(userId).orElseThrow(()-> new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
-        Feed feed = new Feed(title, imgUrl, content, 0L);
+        String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
+//        log.info("저장하려는 유저의 이메일 ={}",userEmail);
+        User findUser = userRepository.findByEmail(userEmail).orElseThrow(() -> new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
+        Feed feed = new Feed(requestDto.getTitle(), Objects.equals(requestDto.getImgUrl(), "") ? null : requestDto.getImgUrl(), requestDto.getContent(), 0L);
+
         feed.setUser(findUser);
-//        log.info("컨텐츠={}, 생성일={}, feedid={}, 유저={}, 라이크={}, url={}" ,feed.getContent(), feed.getCreatedAt(), feed.getId(), feed.getUser(), feed.getHeartCount(), feed.getImgUrl());
         Feed saveFeed = feedRepository.save(feed);
-//        log.info("저장된id={}, 저장된유저={}, 저장된컨텐츠={}, 저장된url={}, 저장된카운트={}, 저장된날짜={}", saveFeed.getId(), saveFeed.getUser(), saveFeed.getContent(), saveFeed.getImgUrl(), saveFeed.getHeartCount(), saveFeed.getCreatedAt());
         return new FeedResponseDto(saveFeed);
     }
 
@@ -69,21 +80,28 @@ public class FeedServiceImpl implements FeedService {
      * @return
      */
     @Override
+    @Transactional
     public FeedResponseDto updateFeed(Long id, UpdateFeedRequestDto requestDto) {
         ErrorMessage errorNotFound = ErrorMessage.ENTITY_NOT_FOUND;
         ErrorMessage errorBad = ErrorMessage.BLANK_INPUT;
         Feed findFeed = feedRepository.findById(id).orElseThrow(() -> new FeedException(errorNotFound.getMessage(), errorNotFound.getStatus()));
 
 
+        // 피드수정 요청에 아무 값이 들어오지 않았을 경우 에러 처리
         if (requestDto.getTitle() == null && requestDto.getContent() == null) {
             throw new FeedException(errorBad.getMessage(), errorBad.getStatus());
         }
 
+        // 피드에 수정할 content가 없다면 title만 수정
         if (requestDto.getTitle() != null) {
             findFeed.setTitle(requestDto.getTitle());
         }
+        // 피드에 수정할 title이 없다면 content만 수정
         if (requestDto.getContent() != null) {
             findFeed.setContent(requestDto.getContent());
+        }
+        if (requestDto.getImgUrl() != null) {
+            findFeed.setImgUrl(requestDto.getImgUrl());
         }
         feedRepository.save(findFeed);
         return FeedResponseDto.toDto(findFeed);
@@ -108,10 +126,18 @@ public class FeedServiceImpl implements FeedService {
      */
     @Override
     public Page<Feed> getFeedsPagination(int page, int size) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by("createdAt").ascending());
+        Pageable pageable = PageRequest.of(page, size);
 
-        return feedRepository.findAll(pageable);
+        return feedRepository.findAllRandom(pageable);
     }
 
+    /**
+     * 베스트5 피드 조회
+     * @return
+     */
+    @Override
+    public List<Feed> getBestFeeds() {
+        return feedRepository.findTop5ByOrderByHeartCountDescCreatedAtAsc();
+    }
 
 }

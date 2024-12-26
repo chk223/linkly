@@ -45,4 +45,5 @@ public class FriendController {
         friendService.deleteFollowing(friendId);
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }
+
 }

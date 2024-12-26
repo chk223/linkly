@@ -13,7 +13,7 @@
 <div th:insert="~{fragments/header :: header}"></div>
 <h1>회원가입</h1>
 <div class="input_box">
-    <form th:action="@{/sign-up}" method="post" th:object="${SignUpRequestDto}">
+    <form th:action="@{/view/user/sign-up}" method="post" th:object="${SignUpRequestDto}">
         <div class="input-group mb-3">
             <span class="input-group-text">이메일</span>
             <input type="text" id="email" th:field="*{email}" class="form-control"

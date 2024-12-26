@@ -2,6 +2,7 @@ package com.example.linkly.controller;
 
 import com.example.linkly.service.heart.HeartService;
 import com.example.linkly.util.HeartCategory;
+import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
@@ -18,11 +19,11 @@ public class HeartController {
 
     @PostMapping("/toggle")
     public ResponseEntity<String> toggleHeart(
-            @RequestParam UUID userId,
             @RequestParam Long categoryId,
-            @RequestParam HeartCategory category
+            @RequestParam HeartCategory category,
+            HttpServletRequest request
             ) {
-        String result = heartService.toggleHeart(userId, categoryId, category);
+        String result = heartService.toggleHeart(categoryId, category, request);
 
         return ResponseEntity.ok(result);
     }

@@ -15,6 +15,7 @@ public class FeedResponseDto {
     private final String content;
     private final String imgUrl;
     private final Long heartCount;
+    private final String email;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private final LocalDateTime createdAt;
@@ -27,6 +28,7 @@ public class FeedResponseDto {
         this.content = content;
         this.heartCount = heartCount;
         this.createdAt = createdAt;
+        this.email=null;
     }
 
     public FeedResponseDto(Feed findFeed) {
@@ -37,6 +39,7 @@ public class FeedResponseDto {
         this.content = findFeed.getContent();
         this.heartCount = findFeed.getHeartCount();
         this.createdAt = findFeed.getCreatedAt();
+        this.email=findFeed.getUser().getEmail();
     }
 
     public static FeedResponseDto toDto(Feed feed) {

@@ -7,6 +7,7 @@ import com.example.linkly.dto.feed.FeedResponseDto;
 import com.example.linkly.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.service.feed.FeedService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -14,6 +15,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 
 @Slf4j
@@ -31,8 +34,8 @@ public class FeedController {
      * @return
      */
     @PostMapping
-    public ResponseEntity<FeedResponseDto> feedSave(@Valid @RequestBody CreateFeedRequestDto requestDto) {
-        FeedResponseDto feedResponseDto = feedService.feedSave(requestDto.getUserId(), requestDto.getTitle(), requestDto.getImgUrl(), requestDto.getContent());
+    public ResponseEntity<FeedResponseDto> feedSave(@Valid @RequestBody CreateFeedRequestDto requestDto, HttpServletRequest request) {
+        FeedResponseDto feedResponseDto = feedService.feedSave(requestDto,request);
         return new ResponseEntity<>(feedResponseDto, HttpStatus.CREATED);
     }
 
@@ -65,6 +68,7 @@ public class FeedController {
 
     /**
      * 피드 삭제
+     *
      * @param id
      * @return
      */
@@ -76,6 +80,7 @@ public class FeedController {
 
     /**
      * 피드 페이징
+     * 랜덤 피드
      * @param page
      * @param size
      * @return
@@ -87,5 +92,15 @@ public class FeedController {
     ) {
         Page<Feed> feedsPagination = feedService.getFeedsPagination(page - 1, size);
         return ResponseEntity.ok(feedsPagination);
+    }
+
+    /**
+     * 베스트5 피드 조회
+     * @return
+     */
+    @GetMapping("/best")
+    public ResponseEntity<List<Feed>> getBestFeeds() {
+        List<Feed> bestFeeds = feedService.getBestFeeds();
+        return new ResponseEntity<>(bestFeeds, HttpStatus.OK);
     }
 }
