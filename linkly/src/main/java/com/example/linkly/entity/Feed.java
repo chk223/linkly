@@ -12,7 +12,6 @@ import java.time.LocalDateTime;
 @Getter
 @EntityListeners(AuditingEntityListener.class)
 @Table(name = "feed")
-@EntityListeners(AuditingEntityListener.class)
 public class Feed {
 
     @Id
