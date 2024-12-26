@@ -1,13 +1,14 @@
 package com.example.linkly.exception.handler;
 
-import com.example.linkly.common.exception.ExceptionUtil;
+import com.example.linkly.util.exception.ExceptionUtil;
 import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorResponse;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 
 import java.util.List;
-
+@ControllerAdvice
 public class UserExceptionHandler extends BaseExceptionHandler{
     @ExceptionHandler(UserException.class)
     public ResponseEntity<ErrorResponse> handleLoginException(UserException e) {
