@@ -78,8 +78,8 @@ public class UserController {
 
     // 등급 설정
     @PatchMapping("/grade/{id}")
-    public ResponseEntity<Void> updateGrade(@PathVariable UUID id){
-        userService.updateGrade(id);
+    public ResponseEntity<Void> toggleGrade(@PathVariable UUID id){
+        userService.toggleGrade(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

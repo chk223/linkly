@@ -24,6 +24,6 @@ public interface UserService {
 
     void deleteUser(UUID id, String password);
 
-    void updateGrade(UUID id);
+    void toggleGrade(UUID id);
 
 }

@@ -177,6 +177,7 @@ public class UserServiceImpl implements UserService{
 
         // 비밀번호 검증 성공 -> 유저 삭제
         if(bcrypt.matches(password, user.getPassword())) {
+//            user.setDeleted(true);
             userRepository.delete(user);
             log.info("유저 삭제 완료");
         }
@@ -191,13 +192,13 @@ public class UserServiceImpl implements UserService{
     // 유저 등급 설정
     @Transactional
     @Override
-    public void updateGrade(UUID id) {
+    public void toggleGrade(UUID id) {
 
         User user = userRepository.findById(id).orElseThrow(() ->
                 ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
 
         // 등급 설정
-        user.updateGrade();
+        user.toggleGrade();
         userRepository.flush();
 
         log.info("등급 설정 완료 {}", user.getGrade());

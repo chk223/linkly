@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.*;
 import org.springframework.web.multipart.MultipartFile;
 import lombok.Getter;
@@ -47,7 +48,7 @@ public class User extends BaseEntity {
     // 유저 등급
     @Enumerated(EnumType.STRING)  // Enum을 String으로 저장
     @Column(length = 10)
-    private UserGrade grade = UserGrade.BASIC;
+    private UserGrade grade;
 
     public User() {
     }
@@ -59,6 +60,7 @@ public class User extends BaseEntity {
         this.profileImg = profileImg;
         this.profileIntro = profileIntro;
         this.profileUrl = profileUrl;
+        this.grade = UserGrade.BASIC;
     }
 
     public void updateName(String name) {
@@ -82,7 +84,7 @@ public class User extends BaseEntity {
     }
 
     // 등급 전환 메서드 (엔티티 클래스 내부에서 처리)
-    public void updateGrade() {
-        this.grade = (this.grade == UserGrade.BASIC) ? UserGrade.VIP : UserGrade.BASIC;
+    public void toggleGrade() {
+        this.grade = (this.grade == UserGrade.BASIC || this.grade == null) ? UserGrade.VIP : UserGrade.BASIC;
     }
 }
