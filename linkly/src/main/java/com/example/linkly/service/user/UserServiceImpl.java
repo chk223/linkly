@@ -72,10 +72,6 @@ public class UserServiceImpl implements UserService{
             ErrorMessage errorMessage = ErrorMessage.valueOf("이미 가입된 이메일입니다.");
             throw new UserException(errorMessage.getMessage(), HttpStatus.CONFLICT); // 409 Conflict : 리소스 충돌
         }
-        log.info(email);
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("이미 존재하는 이메일입니다."); //수정
-        }
 
         User user = new User(email, password, userName, null, null, null); // 프로필 사진, 소개, 링크는 프로필 수정에서
         User save = userRepository.save(user);
