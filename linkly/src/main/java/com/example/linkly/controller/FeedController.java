@@ -17,6 +17,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
+import java.util.UUID;
 
 
 @Slf4j
@@ -35,7 +36,7 @@ public class FeedController {
      */
     @PostMapping
     public ResponseEntity<FeedResponseDto> feedSave(@Valid @RequestBody CreateFeedRequestDto requestDto, HttpServletRequest request) {
-        FeedResponseDto feedResponseDto = feedService.feedSave(requestDto,request);
+        FeedResponseDto feedResponseDto = feedService.feedSave(requestDto, request);
         return new ResponseEntity<>(feedResponseDto, HttpStatus.CREATED);
     }
 
@@ -81,6 +82,7 @@ public class FeedController {
     /**
      * 피드 페이징
      * 랜덤 피드
+     *
      * @param page
      * @param size
      * @return
@@ -96,11 +98,28 @@ public class FeedController {
 
     /**
      * 베스트5 피드 조회
+     *
      * @return
      */
     @GetMapping("/best")
     public ResponseEntity<List<Feed>> getBestFeeds() {
         List<Feed> bestFeeds = feedService.getBestFeeds();
         return new ResponseEntity<>(bestFeeds, HttpStatus.OK);
+    }
+
+    /**
+     * 친구 피드보기
+     * @param userId
+     * @param page
+     * @param size
+     * @return
+     */
+    @GetMapping("/friends")
+    public List<Feed> getFriendFeeds(
+            @RequestParam UUID userId,
+            @RequestParam int page,
+            @RequestParam int size
+    ) {
+        return feedService.getFriendFeeds(userId, page, size);
     }
 }

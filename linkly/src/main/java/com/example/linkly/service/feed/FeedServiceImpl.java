@@ -21,6 +21,7 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
+import java.util.UUID;
 
 @Slf4j
 @Service
@@ -133,6 +134,19 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public List<Feed> getBestFeeds() {
         return feedRepository.findTop5ByOrderByHeartCountDescCreatedAtAsc();
+    }
+
+    /**
+     * 친구 피드 보기
+     * @param userId
+     * @param page
+     * @param size
+     * @return
+     */
+    @Override
+    public List<Feed> getFriendFeeds(UUID userId, int page, int size) {
+        int offset = page * size;
+        return feedRepository.findFriendFeeds(userId, offset, size);
     }
 
 }
