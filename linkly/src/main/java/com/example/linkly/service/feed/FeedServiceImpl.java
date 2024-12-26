@@ -5,17 +5,13 @@ import com.example.linkly.dto.feed.FeedResponseDto;
 import com.example.linkly.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.entity.User;
-import com.example.linkly.exception.AuthException;
 import com.example.linkly.exception.FeedException;
 import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import com.example.linkly.util.auth.JwtUtil;
 import com.example.linkly.util.auth.ValidatorUser;
-import com.example.linkly.util.exception.ExceptionUtil;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -25,7 +21,6 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Objects;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -38,10 +33,8 @@ public class FeedServiceImpl implements FeedService {
 
     /**
      * 피드 생성
-     * @param userId
-     * @param title
-     * @param imgUrl
-     * @param content
+     * @param requestDto
+     * @param request
      * @return
      */
     @Override
@@ -92,14 +85,15 @@ public class FeedServiceImpl implements FeedService {
             throw new FeedException(errorBad.getMessage(), errorBad.getStatus());
         }
 
-        // 피드에 수정할 content가 없다면 title만 수정
+        // 피드에 수정할 content가 없다면 제외시키기
         if (requestDto.getTitle() != null) {
             findFeed.setTitle(requestDto.getTitle());
         }
-        // 피드에 수정할 title이 없다면 content만 수정
+        // 피드에 수정할 title이 없다면 제외시키기
         if (requestDto.getContent() != null) {
             findFeed.setContent(requestDto.getContent());
         }
+        // 피드에 수정할 URL이 없다면 제외시키기
         if (requestDto.getImgUrl() != null) {
             findFeed.setImgUrl(requestDto.getImgUrl());
         }
