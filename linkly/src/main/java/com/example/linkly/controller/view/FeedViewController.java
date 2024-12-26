@@ -9,6 +9,7 @@ import com.example.linkly.service.heart.HeartService;
 import com.example.linkly.util.HeartCategory;
 import com.example.linkly.util.auth.ValidatorUser;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
@@ -34,7 +35,7 @@ public class FeedViewController {
     }
 
     @PostMapping()
-    public String feedSave(@ModelAttribute CreateFeedRequestDto requestDto, BindingResult result, HttpServletRequest request, Model model) {
+    public String feedSave(@ModelAttribute @Valid CreateFeedRequestDto requestDto, BindingResult result, HttpServletRequest request, Model model) {
 //        log.info("입력된 제목 ={} 내용 ={}",requestDto.getTitle(),requestDto.getContent());
         FeedResponseDto feedResponseDto = feedService.feedSave(requestDto,request);
         Long id = feedResponseDto.getId();
@@ -63,7 +64,7 @@ public class FeedViewController {
     }
 
     @PostMapping("/edit-feed/{id}")
-    public String updateFeed(@PathVariable Long id, @ModelAttribute UpdateFeedRequestDto responseDto) {
+    public String updateFeed(@PathVariable Long id, @ModelAttribute @Valid UpdateFeedRequestDto responseDto) {
         log.info("수정 제목 : {}, 내용 : {} 이미지 : {}", responseDto.getTitle(), responseDto.getContent(),responseDto.getImgUrl());
         feedService.updateFeed(id,responseDto);
         return "redirect:/view/feed/" + id; // 업데이트 후 상세 페이지로 리다이렉트

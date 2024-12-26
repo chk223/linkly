@@ -4,6 +4,7 @@ import com.example.linkly.dto.user.PwUpdateRequestDto;
 import com.example.linkly.dto.user.UserResponseDto;
 import com.example.linkly.dto.user.UserUpdateRequestDto;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;
 import java.util.UUID;
@@ -22,7 +23,7 @@ public interface UserService {
 
     void updatePw(UUID id, PwUpdateRequestDto dto);
 
-    void deleteUser(UUID id, String password);
+    void deleteUser(UUID id, String password, HttpServletResponse response);
 
     void updateGrade(UUID id);
 

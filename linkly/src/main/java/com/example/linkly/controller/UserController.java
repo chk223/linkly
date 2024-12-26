@@ -4,6 +4,7 @@ package com.example.linkly.controller;
 import com.example.linkly.config.PasswordEncoder;
 import com.example.linkly.dto.user.*;
 import com.example.linkly.service.user.UserService;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -67,9 +68,9 @@ public class UserController {
 
     // 유저 삭제
     @DeleteMapping("/{id}")
-    public ResponseEntity<Void> deleteUser(@PathVariable UUID id, @RequestBody String password){
+    public ResponseEntity<Void> deleteUser(@PathVariable UUID id, @RequestBody String password, HttpServletResponse response){
 
-        userService.deleteUser(id, password);
+        userService.deleteUser(id, password, response);
 
         return new ResponseEntity<>(HttpStatus.NO_CONTENT);
     }

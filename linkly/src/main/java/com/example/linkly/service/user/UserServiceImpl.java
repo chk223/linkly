@@ -13,6 +13,7 @@ import com.example.linkly.util.auth.ValidatorUser;
 import com.example.linkly.util.exception.ExceptionUtil;
 import jakarta.persistence.PersistenceException;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -38,6 +39,7 @@ public class UserServiceImpl implements UserService{
     private final ValidatorUser validatorUser;
     private final UserRepository userRepository;
     PasswordEncoder bcrypt = new PasswordEncoder();
+    private final JwtUtil jwtUtil;
 
     // 유저 생성
     @Override
@@ -171,13 +173,15 @@ public class UserServiceImpl implements UserService{
 
     // 유저 삭제
     @Override
-    public void deleteUser(UUID id, String password) {
+    public void deleteUser(UUID id, String password, HttpServletResponse response) {
 
         User user = userRepository.findByIdOrElseThrow(id);
 
         // 비밀번호 검증 성공 -> 유저 삭제
         if(bcrypt.matches(password, user.getPassword())) {
             userRepository.delete(user);
+            jwtUtil.invalidToken("accessToken", response);
+            jwtUtil.invalidToken("refreshToken", response);
             log.info("유저 삭제 완료");
         }
         // 비밀번호 검증 실패
