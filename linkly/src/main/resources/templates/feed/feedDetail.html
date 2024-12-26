@@ -13,7 +13,7 @@
     <!-- 피드 작성자 및 생성 날짜 -->
     <div class="feed-header">
         <h4 th:text="${feed.userName}">작성자명</h4>
-        <p th:text="${feed.createdAt}">2024-12-22</p>
+        <p th:text="${feed.createdAt}">작성날짜</p>
     </div>
 
     <!-- 피드 제목 -->
@@ -30,16 +30,17 @@
     </div>
 
     <!-- 좋아요 버튼 -->
-    <button th:if="${feed.heartCount > 0}"
-            th:onclick="'location.href=\'/view/feed/heart/remove' + ${feed.id} + '\''"
-            class="btn btn-secondary">
-        좋아요 취소
-    </button>
-    <button th:if="${feed.heartCount <= 0}"
-            th:onclick="'location.href=\'/view/feed/heart/add' + ${feed.id} + '\''"
-            class="btn btn-primary">
-        좋아요
-    </button>
+    <div class="d-flex align-items-center">
+        <p class="me-2 mb-0" th:text="'좋아요 수: ' + (${feed.heartCount != null ? feed.heartCount : 0})"></p>
+        <form th:action="@{/view/heart/toggle/{feedId}(feedId=${feed.id})}" method="post" style="display: inline;">
+            <button type="submit" th:class="${feed.heartCount > 0} ? 'btn btn-secondary' : 'btn btn-primary'">
+                <span th:text="${feed.heartCount > 0} ? '좋아요 취소' : '좋아요'"></span>
+            </button>
+        </form>
+    </div>
+
+
+
 
     <!-- 수정 및 삭제 버튼 -->
     <button th:if="${userEmail != null && userEmail.equals(feed.email)}"
@@ -50,7 +51,7 @@
         <button th:if="${userEmail != null && userEmail.equals(feed.email)}" type="submit" class="btn btn-danger" name="_method" value="DELETE">삭제</button>
     </form>
     <!-- 댓글창 열기 버튼 -->
-    <a th:href="@{/comment/add/{feedId}(feedId=${feed.id})}" class="btn btn-primary">댓글 작성</a>
+    <a th:href="@{/view/comment/comments/{feedId}(feedId=${feed.id})}" class="btn btn-primary">댓글 작성</a>
 </div>
 </body>
 </html>

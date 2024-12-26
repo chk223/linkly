@@ -30,22 +30,4 @@ public class HomeViewController {
         model.addAttribute("totalPages", feedsPagination.getTotalPages());
         return "index";  // index.html로 반환
     }
-    /**
-     * 여기서부터 테스트용
-     */
-    @GetMapping("/add-feed")
-    public String addFeed() {
-        return "addFeed";
-    }
-
-    @RequestMapping("/feed-detail")
-    public String feedDetail() {
-        return "feedDetail";
-    }
-
-
-
-
-
-
 }
