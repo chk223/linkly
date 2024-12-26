@@ -39,7 +39,7 @@ public class UserController {
     // 유저 조회
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> findByNameContains(@RequestParam String name) {
-        List<UserResponseDto> userResponseDtoList = userService.findByNameContains(name);
+        List<UserResponseDto> userResponseDtoList = userService.findByNameContaining(name);
 
         return new ResponseEntity<>(userResponseDtoList, HttpStatus.OK);
     }

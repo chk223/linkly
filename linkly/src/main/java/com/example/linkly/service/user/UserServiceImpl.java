@@ -93,9 +93,9 @@ public class UserServiceImpl implements UserService{
 
     // 유저 조회
     @Override
-    public List<UserResponseDto> findByNameContains(String name){
+    public List<UserResponseDto> findByNameContaining(String name){
 
-        List<User> userList = userRepository.findByNameLike("%"+name+"%"); // %LIKE% : name이 포함된 유저 조회
+        List<User> userList = userRepository.findByNameContaining(name); // %LIKE% : name이 포함된 유저 조회
 
         return userList.stream()
                 .map(UserResponseDto::new)

@@ -17,7 +17,7 @@ public interface UserRepository extends JpaRepository<User, UUID> {
 
     Optional<User> findByEmail(String email);
 
-    List<User> findByNameLike(String name);
+    List<User> findByNameContaining(String name);
 
     default User findByIdOrElseThrow(UUID id) {
         return findById(id).orElseThrow(() -> new ResponseStatusException(HttpStatus.NOT_FOUND, "Does not exitst id = " + id));

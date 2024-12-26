@@ -69,7 +69,7 @@ public class UserViewController {
     // 유저 조회
     @GetMapping("/filter")
     public String findByNameContains(Model model, @RequestParam String name) {
-        List<UserResponseDto> userResponseDtoList = userService.findByNameContains(name);
+        List<UserResponseDto> userResponseDtoList = userService.findByNameContaining(name);
         model.addAttribute("users", userResponseDtoList);
         return "user/searchUser";
     }

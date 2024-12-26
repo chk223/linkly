@@ -15,7 +15,7 @@ public interface UserService {
 
     UserResponseDto getInfo(UUID id);
 
-    List<UserResponseDto> findByNameContains(String name);
+    List<UserResponseDto> findByNameContaining(String name);
 
     UserResponseDto findByEmail(String email);
 
