@@ -1,5 +1,7 @@
 package com.example.linkly.grade;
 
+import com.fasterxml.jackson.annotation.JsonCreator;
+
 public enum UserGrade {
     BASIC("BASIC"),
     VIP("VIP");
@@ -9,5 +11,4 @@ public enum UserGrade {
     UserGrade(String value) {
         this.value = value;
     }
-
 }
