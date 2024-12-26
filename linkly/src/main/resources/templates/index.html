@@ -31,7 +31,7 @@
         <div id="feed-container" class="col-md-9">
             <h2>피드</h2>
             <div class="row">
-                <!-- 카드 리스트 반복 렌더링 -->
+                <!-- 피드 리스트 반복 렌더링 -->
                 <div class="col-md-4" th:each="feed : ${feeds}">
                     <div class="card">
                         <!-- 이미지 영역 -->
@@ -53,17 +53,39 @@
         <!-- 친구 목록 영역 -->
         <div id="friends-container" class="col-md-3">
             <h2>친구 목록</h2>
-            <ul style="list-style: none; padding: 0;">
-                <li th:each="friend : ${friends}" style="margin-bottom: 10px;">
-                    <div style="display: flex; align-items: center;">
-                        <img th:src="${friend.profilePicture != null ? friend.profilePicture : '/images/default-profile.png'}"
-                             alt="Profile Picture"
-                             style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
-                        <span th:text="${friend.name}">Friend Name</span>
-                    </div>
-                </li>
-            </ul>
+            <div th:if="${user != null}">
+                <ul style="list-style: none; padding: 0;">
+                    <li th:each="friend : ${myFollowing}" style="margin-bottom: 10px;">
+                        <div style="display: flex; align-items: center;">
+                            <!-- 프로필 이미지 -->
+                            <img th:src="${(friend.profileImg != null and friend.profileImg != '') ? friend.profileImg : '/images/default.png'}"
+                                 alt="Profile Picture"
+                                 style="width: 40px; height: 40px; border-radius: 50%; margin-right: 10px;">
+
+                            <!-- 친구 이름 -->
+                            <span th:text="${friend.name}">Friend Name</span>
+
+                            <!-- 버튼들 -->
+                            <div style="margin-left: auto; display: flex;">
+                                <!-- 친구 정보 버튼 -->
+                                <a th:href="@{/view/user/info/{id}(id=${friend.userId})}" class="btn btn-info btn-sm" style="margin-right: 5px;">
+                                    친구 정보
+                                </a>
+
+                                <!-- 언팔로우 버튼 -->
+<!--                                <form th:action="@{/view/friend/follow/{id}(id=${friend.id})}" method="post" style="display: inline;">-->
+<!--                                    <button type="submit" class="btn btn-danger btn-sm">-->
+<!--                                        언팔로우-->
+<!--                                    </button>-->
+<!--                                </form>-->
+                            </div>
+                        </div>
+                    </li>
+                </ul>
+            </div>
+
         </div>
+
     </div>
 </div>
 </body>

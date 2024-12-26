@@ -19,11 +19,13 @@ public class HeartViewController {
     @PostMapping("/toggle/{feedId}")
     public String toggleFeedHeart(@PathVariable Long feedId, HttpServletRequest request){
         heartService.toggleHeart(feedId, HeartCategory.FEED, request);
+//        log.info("피드 좋아요 버튼 누름");
         return "redirect:/view/feed/" + feedId;
     }
     @PostMapping("/toggle/{feedId}/{commentId}")
     public String toggleCommentHeart(@PathVariable Long feedId, @PathVariable Long commentId, HttpServletRequest request){
         heartService.toggleHeart(commentId, HeartCategory.COMMENT, request);
+//        log.info("댓글 좋아요 버튼 누름");
         return "redirect:/view/comment/comments/" + feedId;
     }
 }

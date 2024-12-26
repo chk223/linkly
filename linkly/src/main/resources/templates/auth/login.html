@@ -9,7 +9,7 @@
 </head>
 <body>
 <!-- 헤더 포함 -->
-<div th:insert="~{fragments/header :: header}"></div>
+<!--<div th:insert="~{fragments/header :: header}"></div>-->
 <h1>로그인</h1>
 <div class="input_box">
     <form th:action="@{/view/auth/login}" method="post" th:object="${loginRequestDto}">

@@ -7,6 +7,7 @@ import com.example.linkly.dto.user.UserResponseDto;
 import com.example.linkly.dto.user.UserUpdateRequestDto;
 import com.example.linkly.exception.UserException;
 import com.example.linkly.exception.util.ErrorMessage;
+import com.example.linkly.service.friend.FriendService;
 import com.example.linkly.service.user.UserService;
 import com.example.linkly.util.auth.ValidatorUser;
 import com.example.linkly.util.exception.ExceptionUtil;
@@ -31,6 +32,7 @@ import java.util.UUID;
 public class UserViewController {
     private final ValidatorUser validatorUser;
     private final UserService userService;
+    private final FriendService friendService;
     private final PasswordEncoder bcrypt;
 
     @GetMapping("/sign-up")
@@ -54,16 +56,18 @@ public class UserViewController {
     }
 
     @GetMapping("/info/{id}")
-    public String displayUserProfile(@PathVariable UUID id, Model model) {
+    public String displayUserProfile(@PathVariable UUID id, Model model, HttpServletRequest request) {
+        boolean isFollowing = friendService.isFollowed(id, request);
         UserResponseDto userResponseDto = userService.getInfo(id);
 //        log.info("등급 ={},이미지 ={}", userResponseDto.getGradeVal(), userResponseDto.getProfileImgUrl());
         model.addAttribute("userResponseDto", userResponseDto);
+        model.addAttribute("isFollowing", isFollowing);
         return "user/myInfo";  // userProfile.html 템플릿 반환
     }
 
     // 유저 조회
     @GetMapping("/filter")
-    public String findByNameContains(Model model, String name) {
+    public String findByNameContains(Model model, @RequestParam String name) {
         List<UserResponseDto> userResponseDtoList = userService.findByNameContains(name);
         model.addAttribute("users", userResponseDtoList);
         return "user/searchUser";

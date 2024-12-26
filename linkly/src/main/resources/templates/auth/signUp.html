@@ -10,7 +10,7 @@
 </head>
 <body>
 <!-- 헤더 포함 -->
-<div th:insert="~{fragments/header :: header}"></div>
+<!--<div th:insert="~{fragments/header :: header}"></div>-->
 <h1>회원가입</h1>
 <div class="input_box">
     <form th:action="@{/view/user/sign-up}" method="post" th:object="${SignUpRequestDto}">
@@ -39,6 +39,7 @@
             </div>
         </div>
         <button type="submit" class="btn btn-primary">등록</button>
+        <a th:href="@{/view/auth/login}" type="submit" class="btn btn-primary">로그인</a>
     </form>
 
 </div>

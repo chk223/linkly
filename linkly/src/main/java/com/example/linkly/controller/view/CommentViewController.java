@@ -2,10 +2,17 @@ package com.example.linkly.controller.view;
 
 import com.example.linkly.dto.comment.CommentRequestDto;
 import com.example.linkly.dto.comment.CommentResponseDto;
+import com.example.linkly.dto.user.UserResponseDto;
 import com.example.linkly.entity.Comment;
+import com.example.linkly.entity.User;
+import com.example.linkly.exception.UserException;
+import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.service.comment.CommentService;
 import com.example.linkly.service.heart.HeartService;
+import com.example.linkly.service.user.UserService;
+import com.example.linkly.util.HeartCategory;
 import com.example.linkly.util.auth.ValidatorUser;
+import com.example.linkly.util.exception.ExceptionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -18,6 +25,7 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Controller
@@ -26,15 +34,25 @@ import java.util.List;
 public class CommentViewController {
     private final CommentService commentService;
     private final HeartService heartService;
+    private final ValidatorUser validatorUser;
+    private final UserService userService;
 
     @GetMapping("/comments/{feedId}")
-    public String comments(@PathVariable Long feedId, Model model) {
+    public String getComments(@PathVariable Long feedId, Model model, HttpServletRequest request) {
         List<CommentResponseDto> comments = commentService.findAllCommentFromFeed(feedId);
-        model.addAttribute("comments", comments);
+
+        List<CommentResponseDto> commentResponses = comments.stream().map(CommentResponseDto -> {
+            boolean isLiked = heartService.isILikeThis(CommentResponseDto.getId(), HeartCategory.COMMENT, request);
+            CommentResponseDto.setLiked(isLiked);
+            return CommentResponseDto;
+        }).collect(Collectors.toList());
+
+        model.addAttribute("comments", commentResponses);
         model.addAttribute("feedId", feedId);
         model.addAttribute("commentRequestDto", new CommentRequestDto());
-        return "comment/comments";
+        return "comment/comments"; // Thymeleaf template name
     }
+
     @PostMapping("/add-comment")
     public String addComment(@ModelAttribute CommentRequestDto commentRequestDto, @RequestParam Long feedId, BindingResult result) {
         if (result.hasErrors()) {

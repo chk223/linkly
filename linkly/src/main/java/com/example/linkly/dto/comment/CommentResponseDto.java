@@ -3,6 +3,7 @@ package com.example.linkly.dto.comment;
 import com.example.linkly.entity.Comment;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
+import lombok.Setter;
 
 import java.math.BigInteger;
 import java.time.LocalDateTime;
@@ -21,6 +22,8 @@ public class CommentResponseDto {
     private final LocalDateTime createdAt;
     private final LocalDateTime updatedAt;
     private final Long heartNumber;
+    @Setter
+    private boolean isLiked;
 
     public static CommentResponseDto toDto(Comment comment) {
         return new CommentResponseDto(
@@ -32,7 +35,8 @@ public class CommentResponseDto {
                 comment.getContent(),
                 comment.getCreatedAt(),
                 comment.getUpdatedAt(),
-                comment.getHeartCount()
+                comment.getHeartCount(),
+                false
         );
     }
 

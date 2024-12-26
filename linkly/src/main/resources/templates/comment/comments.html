@@ -41,8 +41,8 @@
                         <span th:text="${comment.heartNumber != null ? comment.heartNumber : 0}">0</span>
                     </p>
                     <form th:action="@{/view/heart/toggle/{feedId}/{commentId}(feedId=${feedId}, commentId=${comment.id})}" method="post" style="display: inline;">
-                        <button type="submit" th:class="${comment.heartNumber > 0} ? 'btn btn-outline-danger' : 'btn btn-outline-primary'">
-                            <span th:text="${comment.heartNumber > 0} ? '좋아요 취소' : '좋아요'"></span>
+                        <button type="submit" th:class="${comment.isLiked == true} ? 'btn btn-outline-danger' : 'btn btn-outline-primary'">
+                            <span th:text="${comment.isLiked == true} ? '좋아요 취소' : '좋아요'"></span>
                         </button>
                     </form>
                 </div>

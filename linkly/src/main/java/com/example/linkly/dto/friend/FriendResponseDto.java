@@ -6,24 +6,24 @@ import java.time.LocalDateTime;
 import java.util.UUID;
 
 @Getter
-@RequiredArgsConstructor
 public class FriendResponseDto {
 
     //기능
     //Getter
     //속성
     private final Long id;
-    private final UUID followerId;      //merge후 String->UUID로 타입변경
-    private final UUID followingId;     //merge후 String->UUID로 타입변경
+    private final UUID userId;
+    private final String name;
+    private final String profileImg;
     private LocalDateTime createdAt;
 
     //생성자
 
-    public FriendResponseDto(Long id, UUID followerId, UUID followingId, LocalDateTime createdAt) {  //merge후 String->UUID로 타입변경
+    public FriendResponseDto(Long id, UUID userId, String name, String profileImg, LocalDateTime createdAt) {
         this.id = id;
-        this.followerId = followerId;
-        this.followingId = followingId;
+        this.userId = userId;
+        this.name = name;
+        this.profileImg = profileImg;
         this.createdAt = createdAt;
     }
-
 }

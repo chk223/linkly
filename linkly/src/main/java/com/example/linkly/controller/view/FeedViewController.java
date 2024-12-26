@@ -5,6 +5,8 @@ import com.example.linkly.dto.feed.FeedResponseDto;
 import com.example.linkly.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.service.feed.FeedService;
+import com.example.linkly.service.heart.HeartService;
+import com.example.linkly.util.HeartCategory;
 import com.example.linkly.util.auth.ValidatorUser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -23,6 +25,7 @@ import java.util.List;
 public class FeedViewController {
     private final FeedService feedService;
     private final ValidatorUser validatorUser;
+    private final HeartService heartService;
 
     @GetMapping
     public String displayFeedForm(Model model) {
@@ -42,9 +45,11 @@ public class FeedViewController {
     @GetMapping("/{id}")
     public String displayFeedDetail(@PathVariable Long id, Model model, HttpServletRequest request) {
         String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
+        boolean isLiked = heartService.isILikeThis(id, HeartCategory.FEED, request);
 //        log.info("로그인 한 유저의 email ={} ", userEmail);
         FeedResponseDto feed = feedService.findById(id);
 //        log.info("해당 피드 작성한 유저 이메일 ={}", feed.getEmail());
+        model.addAttribute("isLiked", isLiked);
         model.addAttribute("feed", feed);
         model.addAttribute("userEmail", userEmail);
         return "feed/feedDetail"; // 피드 상세 페이지 렌더링
