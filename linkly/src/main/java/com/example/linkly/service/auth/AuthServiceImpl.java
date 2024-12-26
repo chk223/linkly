@@ -96,14 +96,7 @@ public class AuthServiceImpl implements AuthService {
         log.info("로그인 완료!");
     }
     public void logout(HttpServletResponse response) {
-        invalidToken("accessToken", response);
-        invalidToken("refreshToken", response);
-    }
-
-    private void invalidToken(String accessToken, HttpServletResponse response) {
-        Cookie accessTokenCookie = new Cookie(accessToken, null);
-        accessTokenCookie.setMaxAge(0);
-        accessTokenCookie.setPath("/");
-        response.addCookie(accessTokenCookie);
+        jwtUtil.invalidToken("accessToken", response);
+        jwtUtil.invalidToken("refreshToken", response);
     }
 }

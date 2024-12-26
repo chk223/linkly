@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
-@Table(name = "feed")
 @EntityListeners(AuditingEntityListener.class)
+@Table(name = "feed")
 public class Feed {
 
     @Id
@@ -32,8 +32,8 @@ public class Feed {
     @Column(name = "like_count")
     private Long heartCount; // 좋아요 갯수를 카운트할 필드
 
+    @Column(name = "created_at", updatable = false, nullable = false)
     @CreatedDate
-    @Column(name = "created_at", updatable = false)
     private LocalDateTime createdAt;
 
     @Setter

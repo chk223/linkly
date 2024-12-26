@@ -12,6 +12,7 @@ import com.example.linkly.service.user.UserService;
 import com.example.linkly.util.auth.ValidatorUser;
 import com.example.linkly.util.exception.ExceptionUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -132,9 +133,9 @@ public class UserViewController {
     }
 
     @PostMapping("/withdraw/{id}")
-    public String withdrawUser(@PathVariable UUID id, @RequestParam String password) {
+    public String withdrawUser(@PathVariable UUID id, @RequestParam String password, HttpServletResponse response) {
 //        log.info("탈퇴 감지!!!! id={}, pw = {}", id, password);
-        userService.deleteUser(id, password);
+        userService.deleteUser(id, password, response);
         return "redirect:/view/user/sign-up";
     }
 
