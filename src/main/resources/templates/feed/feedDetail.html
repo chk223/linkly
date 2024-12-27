@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>피드 상세</title>
+    <link rel="stylesheet" href="/css/style.css"> <!-- 스타일 파일 연결 -->
+</head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+<div id="feed-detail-container" class="container">
+    <!-- 피드 작성자 및 생성 날짜 -->
+    <div class="feed-header">
+        <h4 th:text="${feed.userName}">작성자명</h4>
+        <p th:text="${feed.createdAt}">작성날짜</p>
+    </div>
+
+    <!-- 피드 제목 -->
+    <h2 class="feed-title" th:text="${feed.title}">피드 제목</h2>
+
+    <!-- 피드 내용 -->
+    <div class="feed-content">
+        <p th:text="${feed.content}">피드 내용</p>
+    </div>
+
+    <!-- 피드 이미지 -->
+    <div class="feed-image">
+        <img th:src="${(feed.imgUrl != null and feed.imgUrl != '') ? feed.imgUrl : '/images/default.png'}" alt="Feed Image" class="img-fluid">
+    </div>
+
+    <!-- 좋아요 버튼 -->
+    <div class="d-flex align-items-center">
+        <p class="me-2 mb-0" th:text="'좋아요 수: ' + (${feed.heartCount != null ? feed.heartCount : 0})"></p>
+        <form th:action="@{/view/heart/toggle/{feedId}(feedId=${feed.id})}" method="post" style="display: inline;">
+            <button type="submit" th:class="${feed.heartCount > 0} ? 'btn btn-secondary' : 'btn btn-primary'">
+                <span th:text="${isLiked == true} ? '좋아요 취소' : '좋아요'"></span>
+            </button>
+        </form>
+    </div>
+
+
+
+
+    <!-- 수정 및 삭제 버튼 -->
+    <button th:if="${userEmail != null && userEmail.equals(feed.email)}"
+            th:onclick="'location.href=\'/view/feed/edit-feed/' + ${feed.id} + '\''">
+        수정
+    </button>
+    <form th:action="@{/view/feed/delete/{id}(id=${feed.id})}" method="post">
+        <button th:if="${userEmail != null && userEmail.equals(feed.email)}" type="submit" class="btn btn-danger" name="_method" value="DELETE">삭제</button>
+    </form>
+    <!-- 댓글창 열기 버튼 -->
+    <a th:href="@{/view/comment/comments/{feedId}(feedId=${feed.id})}" class="btn btn-primary">댓글 작성</a>
+</div>
+</body>
+</html>
