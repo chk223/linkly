@@ -5,6 +5,7 @@ import com.example.linkly.config.PasswordEncoder;
 import com.example.linkly.dto.user.*;
 import com.example.linkly.service.user.UserService;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
@@ -26,7 +27,7 @@ public class UserController {
 
     // 유저 생성
     @PostMapping("/sign-up")
-    public ResponseEntity<Void> signUp(@RequestBody SignUpRequestDto dto) {
+    public ResponseEntity<Void> signUp(@RequestBody @Valid SignUpRequestDto dto) {
         userService.signUp(
                 dto.getEmail(),
                 bcrypt.encode(dto.getPassword()),
@@ -38,7 +39,7 @@ public class UserController {
     // 유저 조회
     @GetMapping
     public ResponseEntity<List<UserResponseDto>> findByNameContains(@RequestParam String name) {
-        List<UserResponseDto> userResponseDtoList = userService.findByNameContains(name);
+        List<UserResponseDto> userResponseDtoList = userService.findByNameContaining(name);
 
         return new ResponseEntity<>(userResponseDtoList, HttpStatus.OK);
     }
@@ -48,7 +49,7 @@ public class UserController {
     @PatchMapping("/edit/{id}")
     public ResponseEntity<Void> updateUser(
             @PathVariable UUID id,
-            @RequestBody UserUpdateRequestDto requestDto
+            @RequestBody @Valid UserUpdateRequestDto requestDto
     ) {
         userService.updateUser(id, requestDto);
 
@@ -59,7 +60,7 @@ public class UserController {
     @PatchMapping("/{id}")
     public ResponseEntity<Void> updatePw(
             @PathVariable UUID id,
-            @RequestBody PwUpdateRequestDto requestDto
+            @RequestBody @Valid PwUpdateRequestDto requestDto
     ) {
         userService.updatePw(id, requestDto);
 
@@ -78,7 +79,7 @@ public class UserController {
     // 등급 설정
     @PatchMapping("/grade/{id}")
     public ResponseEntity<Void> updateGrade(@PathVariable UUID id){
-        userService.updateGrade(id);
+        userService.toggleGrade(id);
 
         return new ResponseEntity<>(HttpStatus.OK);
     }

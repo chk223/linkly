@@ -67,7 +67,7 @@ public class UserViewController {
     // 유저 조회
     @GetMapping("/filter")
     public String findByNameContains(Model model, @RequestParam String name) {
-        List<UserResponseDto> userResponseDtoList = userService.findByNameContains(name);
+        List<UserResponseDto> userResponseDtoList = userService.findByNameContaining(name);
         model.addAttribute("users", userResponseDtoList);
         return "user/searchUser";
     }
@@ -141,7 +141,7 @@ public class UserViewController {
     @PostMapping("/change-grade/{id}")
     public String updateGrade(@PathVariable UUID id){
 //        log.info("등급 변경 시도!!!!");
-        userService.updateGrade(id);
+        userService.toggleGrade(id);
 //        log.info("등급 변경 완료!!!!");
         return "redirect:/";
     }

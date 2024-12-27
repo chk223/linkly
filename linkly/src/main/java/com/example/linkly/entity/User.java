@@ -7,6 +7,7 @@ import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
+import lombok.Setter;
 import org.hibernate.annotations.*;
 import org.springframework.web.multipart.MultipartFile;
 import lombok.Getter;
@@ -15,9 +16,7 @@ import java.util.UUID;
 
 @Entity
 @Getter
-//@SoftDelete // 기능 -> 밑에 있는 @SQLDelete(~~~) + @Where(~~~)
-@SQLDelete(sql = "UPDATE user SET deleted = true WHERE id = ?") // 엔티티 삭제 시, delted 컬럼 값을 true로 변경
-@Where(clause = "deleted = false")
+@SoftDelete
 @Table(name = "user")
 public class User extends BaseEntity {
 
@@ -25,16 +24,13 @@ public class User extends BaseEntity {
     @GeneratedValue(strategy = GenerationType.UUID)
     private UUID id;
 
-    @Column(columnDefinition = "BOOLEAN DEFAULT FALSE")
-    private boolean deleted;
-
     @Column(length = 10)
     private String name;
 
     @Column(length = 30, nullable = false, unique = true)
     private String email;
 
-    @Column(length = 255)
+    @Column(length = 255, nullable = false)
     private String password;
 
     // 프로필 사진
@@ -51,9 +47,8 @@ public class User extends BaseEntity {
 
     // 유저 등급
     @Enumerated(EnumType.STRING)  // Enum을 String으로 저장
-//    @Column(columnDefinition = "VARCHAR(10) DEFAULT 'BASIC'")
     @Column(length = 10)
-    private UserGrade grade = UserGrade.BASIC;
+    private UserGrade grade;
 
     public User() {
     }
@@ -65,6 +60,7 @@ public class User extends BaseEntity {
         this.profileImg = profileImg;
         this.profileIntro = profileIntro;
         this.profileUrl = profileUrl;
+        this.grade = UserGrade.BASIC;
     }
 
     public void updateName(String name) {
@@ -88,7 +84,7 @@ public class User extends BaseEntity {
     }
 
     // 등급 전환 메서드 (엔티티 클래스 내부에서 처리)
-    public void updateGrade() {
-        this.grade = (this.grade == UserGrade.BASIC) ? UserGrade.VIP : UserGrade.BASIC;
+    public void toggleGrade() {
+        this.grade = (this.grade == UserGrade.BASIC || this.grade == null) ? UserGrade.VIP : UserGrade.BASIC;
     }
 }

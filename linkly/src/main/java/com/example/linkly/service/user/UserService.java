@@ -15,7 +15,7 @@ public interface UserService {
 
     UserResponseDto getInfo(UUID id);
 
-    List<UserResponseDto> findByNameContains(String name);
+    List<UserResponseDto> findByNameContaining(String name);
 
     UserResponseDto findByEmail(String email);
 
@@ -25,6 +25,6 @@ public interface UserService {
 
     void deleteUser(UUID id, String password, HttpServletResponse response);
 
-    void updateGrade(UUID id);
+    void toggleGrade(UUID id);
 
 }

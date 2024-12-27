@@ -63,10 +63,6 @@ public class UserServiceImpl implements UserService{
             ErrorMessage errorMessage = ErrorMessage.valueOf("이미 가입된 이메일입니다.");
             throw new ApiException(errorMessage.getMessage(), HttpStatus.CONFLICT); // 409 Conflict : 리소스 충돌
         }
-        log.info(email);
-        if (userRepository.findByEmail(email).isPresent()) {
-            throw new RuntimeException("이미 존재하는 이메일입니다."); //수정
-        }
 
         User user = new User(email, password, userName, null, null, null); // 프로필 사진, 소개, 링크는 프로필 수정에서
         User save = userRepository.save(user);
@@ -88,9 +84,9 @@ public class UserServiceImpl implements UserService{
 
     // 유저 조회
     @Override
-    public List<UserResponseDto> findByNameContains(String name){
+    public List<UserResponseDto> findByNameContaining(String name){
 
-        List<User> userList = userRepository.findByNameLike("%"+name+"%"); // %LIKE% : name이 포함된 유저 조회
+        List<User> userList = userRepository.findByNameContaining(name); // %LIKE% : name이 포함된 유저 조회
 
         return userList.stream()
                 .map(UserResponseDto::new)
@@ -170,6 +166,7 @@ public class UserServiceImpl implements UserService{
 
         // 비밀번호 검증 성공 -> 유저 삭제
         if(bcrypt.matches(password, user.getPassword())) {
+//            user.setDeleted(true);
             userRepository.delete(user);
             jwtUtil.invalidToken("accessToken", response);
             jwtUtil.invalidToken("refreshToken", response);
@@ -186,13 +183,13 @@ public class UserServiceImpl implements UserService{
     // 유저 등급 설정
     @Transactional
     @Override
-    public void updateGrade(UUID id) {
+    public void toggleGrade(UUID id) {
 
         User user = userRepository.findById(id).orElseThrow(() ->
                 ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
 
         // 등급 설정
-        user.updateGrade();
+        user.toggleGrade();
         userRepository.flush();
 
         log.info("등급 설정 완료 {}", user.getGrade());
