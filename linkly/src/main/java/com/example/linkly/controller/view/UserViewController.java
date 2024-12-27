@@ -41,7 +41,7 @@ public class UserViewController {
     }
 
     @PostMapping("/sign-up")
-    public String signUp(@ModelAttribute SignUpRequestDto requestDto, BindingResult result) {
+    public String signUp(@ModelAttribute @Valid SignUpRequestDto requestDto, BindingResult result) {
         if (result.hasErrors()) {
             return "auth/signUp";
         }
@@ -88,7 +88,7 @@ public class UserViewController {
     // 유저 수정
     // 이름 변경 및 프로필 사진, 소개, 링크 설정
     @PostMapping("/edit/{id}")
-    public String updateUser(@PathVariable UUID id,@ModelAttribute UserUpdateRequestDto requestDto) {
+    public String updateUser(@PathVariable UUID id,@ModelAttribute @Valid UserUpdateRequestDto requestDto) {
         userService.updateUser(id, requestDto);
         return "redirect:/view/user/info/" + id;
     }
