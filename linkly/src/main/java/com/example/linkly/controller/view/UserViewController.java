@@ -41,17 +41,25 @@ public class UserViewController {
     }
 
     @PostMapping("/sign-up")
-    public String signUp(@ModelAttribute @Valid SignUpRequestDto requestDto, BindingResult result) {
+    public String signUp(@ModelAttribute @Valid SignUpRequestDto requestDto, BindingResult result, Model model) {
         if (result.hasErrors()) {
             return "auth/signUp";
         }
-        userService.signUp(
-            requestDto.getEmail(),
-            bcrypt.encode(requestDto.getPassword()),
-            requestDto.getName()
-        );
+        try {
+            userService.signUp(
+                    requestDto.getEmail(),
+                    bcrypt.encode(requestDto.getPassword()),
+                    requestDto.getName()
+            );
+            model.addAttribute("message", "로그인 성공");
+            return "redirect:/";
+        } catch (ApiException e) {
+            String errorMessage = e.getErrorResponse().getMessage();
+            log.info("에러메세지 = {} ", errorMessage);
+            model.addAttribute("error", errorMessage);
+            return "auth/signUp";
+        }
 
-        return "redirect:/";
     }
 
     @GetMapping("/info/{id}")

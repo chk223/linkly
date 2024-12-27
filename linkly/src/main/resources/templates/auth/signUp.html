@@ -38,6 +38,16 @@
                 <span th:errors="*{name}"></span>
             </div>
         </div>
+        <!-- 검증 오류 메시지 출력 -->
+        <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
+            <span th:errors="*{email}"></span>
+            <span th:errors="*{password}"></span>
+            <span th:errors="*{name}"></span>
+        </div>
+        <!-- 로직 오류 메시지 출력 -->
+        <div th:if="${error != null and error != ''}" class="alert alert-danger">
+            <span th:text="${error}"></span>
+        </div>
         <button type="submit" class="btn btn-primary">등록</button>
         <a th:href="@{/view/auth/login}" type="submit" class="btn btn-primary">로그인</a>
     </form>

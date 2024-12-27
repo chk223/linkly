@@ -29,6 +29,7 @@ public class CommentViewController {
     private final HeartService heartService;
     @GetMapping("/comments/{feedId}")
     public String getComments(@PathVariable Long feedId, Model model, HttpServletRequest request) {
+        log.info("여기?");
         List<CommentResponseDto> comments = commentService.findAllCommentFromFeed(feedId);
 
         List<CommentResponseDto> commentResponses = comments.stream().map(CommentResponseDto -> {
@@ -72,17 +73,10 @@ public class CommentViewController {
 
     // 댓글 수정
     @RequestMapping("/edit-comment/{id}")
-    public String update(@PathVariable Long id, @RequestParam String content, @RequestParam Long feedId, BindingResult result, Model model) {
-        if (result.hasErrors()) {
-            return "comment/comments";
-        }
-        try{
-            commentService.update(id, content);
-            return "redirect:/view/comment/comments/"+feedId;
-        } catch (ApiException e) {
-            model.addAttribute("error", e.getErrorResponse().getMessage());
-            return "comment/editComment";
-        }
+    public String update(@PathVariable Long id, @RequestParam String content, @RequestParam Long feedId) {
+        log.info("댓글 수정 감지 !!내용= {} ",content);
+        commentService.update(id, content);
+        return "redirect:/view/comment/comments/"+feedId;
     }
 
     // 댓글 삭제

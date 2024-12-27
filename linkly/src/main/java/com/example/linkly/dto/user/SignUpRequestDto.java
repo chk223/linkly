@@ -22,6 +22,7 @@ public class SignUpRequestDto {
     @Size(min = 8)
     private String password;
 
+    @NotBlank
     @Size(min = 0, max = 10)
     private String name;
 
