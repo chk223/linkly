@@ -23,5 +23,5 @@ public interface FeedService {
 
     List<Feed> getBestFeeds();
 
-    List<Feed> getFriendFeeds(UUID userId, int page, int size);
+    Page<Feed> getFriendFeeds(UUID userId, int page, int size);
 }

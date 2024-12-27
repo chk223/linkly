@@ -29,14 +29,15 @@
                 <span th:errors="*{password}"></span>
             </div>
         </div>
-        <!-- 전체 로그인 오류 메시지 출력 -->
+        <!-- 검증 오류 메시지 출력 -->
         <div th:if="${#fields.hasErrors()}" class="alert alert-danger">
             <span th:errors="*{email}"></span>
             <span th:errors="*{password}"></span>
             <!-- 로그인 실패 메시지 출력 -->
-            <div th:if="${loginFailed}" class="alert alert-danger">
-                <span th:text="${loginFailed}"></span> <!-- 'auth.failed' 오류 메시지 출력 -->
-            </div>
+        </div>
+        <!-- 로직 오류 메시지 출력 -->
+        <div th:if="${error != null and error != ''}" class="alert alert-danger">
+            <span th:text="${error}"></span>
         </div>
         <button type="submit" class="btn btn-primary">로그인</button>
         <a th:href="@{/view/user/sign-up}" type="button" class="btn btn-primary">회원가입</a>

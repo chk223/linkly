@@ -4,9 +4,7 @@ import com.example.linkly.entity.Comment;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.entity.Heart;
 import com.example.linkly.entity.User;
-import com.example.linkly.exception.CommentException;
-import com.example.linkly.exception.FeedException;
-import com.example.linkly.exception.UserException;
+import com.example.linkly.exception.ApiException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.CommentRepository;
 import com.example.linkly.repository.FeedRepository;
@@ -46,12 +44,12 @@ public class HeartServiceImpl implements HeartService {
 
         String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
         // user 조회
-        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
         // 좋아요 여부 확인
         Optional<Heart> heartOptional = heartRepository.findByUserAndCategoryIdAndCategory(user, categoryId, category);
 
         if (category == HeartCategory.FEED) {
-            Feed findFeed = feedRepository.findById(categoryId).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, FeedException.class));
+            Feed findFeed = feedRepository.findById(categoryId).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
             if (heartOptional.isPresent()) {
                 //좋아요가 되어 있다면 삭제
                 findFeed.decreaseCount();
@@ -70,7 +68,7 @@ public class HeartServiceImpl implements HeartService {
                 return "heart added";
             }
         } else if (category == HeartCategory.COMMENT) {
-            Comment findComment = commentRepository.findById(categoryId).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, CommentException.class));
+            Comment findComment = commentRepository.findById(categoryId).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
             if (heartOptional.isPresent()) {
                 findComment.decreaseCount();
                 heartRepository.delete(heartOptional.get());
@@ -94,7 +92,7 @@ public class HeartServiceImpl implements HeartService {
     public boolean isILikeThis(Long categoryId, HeartCategory category, HttpServletRequest request) {
         String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
         // user 조회
-        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
         // 좋아요 여부 확인
         Optional<Heart> heartOptional = heartRepository.findByUserAndCategoryIdAndCategory(user, categoryId, category);
         return heartOptional.isPresent();

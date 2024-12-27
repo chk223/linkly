@@ -1,20 +1,23 @@
 package com.example.linkly.controller.view;
 
 import com.example.linkly.dto.login.LoginRequestDto;
-import com.example.linkly.exception.AuthException;
-import com.example.linkly.exception.UserException;
+import com.example.linkly.exception.ApiException;
 import com.example.linkly.service.auth.AuthService;
-import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.Map;
+
 @Controller
 @RequestMapping("/view/auth")
 @RequiredArgsConstructor
+@Slf4j
 public class AuthViewController {
     private final AuthService authService;
 
@@ -25,7 +28,7 @@ public class AuthViewController {
     }
 
     @PostMapping("/login")
-    public String login(@ModelAttribute LoginRequestDto loginRequestDto, BindingResult result, HttpServletResponse response, Model model) {
+    public String login(@ModelAttribute @Valid LoginRequestDto loginRequestDto, BindingResult result, HttpServletResponse response, Model model) {
         if (result.hasErrors()) {
             return "auth/login";
         }
@@ -33,8 +36,10 @@ public class AuthViewController {
             authService.login(loginRequestDto, response);
             model.addAttribute("message", "로그인 성공");
             return "redirect:/";
-        } catch (UserException | AuthException e) {
-            model.addAttribute("error", e.getMessage());
+        } catch (ApiException e) {
+            String errorMessage = e.getErrorResponse().getMessage();
+            log.info("에러메세지 = {} ", errorMessage);
+            model.addAttribute("error", errorMessage);
             return "auth/login"; // login.html로 이동
         }
     }

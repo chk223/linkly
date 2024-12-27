@@ -3,8 +3,7 @@ package com.example.linkly.service.friend;
 import com.example.linkly.dto.friend.FriendResponseDto;
 import com.example.linkly.entity.Friend;
 import com.example.linkly.entity.User;
-import com.example.linkly.exception.FriendException;
-import com.example.linkly.exception.UserException;
+import com.example.linkly.exception.ApiException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.FriendRepository;
 import com.example.linkly.repository.UserRepository;
@@ -35,9 +34,9 @@ public class FriendServiceImpl implements FriendService {
     public FriendResponseDto toggleFollow(UUID id, HttpServletRequest request) {
         String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
         User me = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+                .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
         User follow = userRepository.findById(id)
-                .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+                .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
         log.info("내 id = {}, name = {} , email = {} , grade = {}",me.getId(), me.getName(), me.getEmail(), me.getGrade());
         log.info("친구 id = {}, name = {} , email = {} , grade = {}",follow.getId(), follow.getName(), follow.getEmail(), follow.getGrade());
         // 팔로우 상태 확인
@@ -74,7 +73,7 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public List<FriendResponseDto> getMyFollowings(HttpServletRequest request) {
         String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
-        User me = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+        User me = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
         // 내 아이디로 팔로잉 목록을 가져옴
         List<Friend> myFollowing = friendRepository.findByFollowing(me);
 
@@ -91,7 +90,7 @@ public class FriendServiceImpl implements FriendService {
             User followingUser = followingUsers.stream()
                     .filter(user -> user.getId().equals(followingId))
                     .findFirst()
-                    .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+                    .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
 
             return new FriendResponseDto(
                     friend.getId(),
@@ -108,7 +107,7 @@ public class FriendServiceImpl implements FriendService {
     @Override
     public List<FriendResponseDto> getMyFollowers(HttpServletRequest request) {
         String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
-        User me = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+        User me = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
         // 내 아이디로 팔로잉 목록을 가져옴
         List<Friend> myFollowing = friendRepository.findByFollower(me);
 
@@ -126,7 +125,7 @@ public class FriendServiceImpl implements FriendService {
             User followerUser = followingUsers.stream()
                     .filter(user -> user.getId().equals(followingId))
                     .findFirst()
-                    .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+                    .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
 
             return new FriendResponseDto(
                     friend.getId(),
@@ -146,7 +145,7 @@ public class FriendServiceImpl implements FriendService {
     public boolean isFollowed(UUID id, HttpServletRequest request) {
         String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
         User me = userRepository.findByEmail(userEmail)
-                .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+                .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
 
         // 내가 팔로우 중인 유저 목록을 가져옴
         List<Friend> myFollowing = friendRepository.findByFollowing(me);

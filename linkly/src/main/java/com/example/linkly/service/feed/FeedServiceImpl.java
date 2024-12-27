@@ -5,10 +5,10 @@ import com.example.linkly.dto.feed.FeedResponseDto;
 import com.example.linkly.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.entity.User;
-import com.example.linkly.exception.FeedException;
-import com.example.linkly.exception.UserException;
+import com.example.linkly.exception.ApiException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.FeedRepository;
+import com.example.linkly.repository.FriendRepository;
 import com.example.linkly.repository.UserRepository;
 import jakarta.transaction.Transactional;
 import com.example.linkly.util.auth.ValidatorUser;
@@ -29,6 +29,7 @@ import java.util.UUID;
 public class FeedServiceImpl implements FeedService {
 
     private final FeedRepository feedRepository;
+    private final FriendRepository friendRepository;
     private final UserRepository userRepository;
     private final ValidatorUser validatorUser;
 
@@ -44,7 +45,7 @@ public class FeedServiceImpl implements FeedService {
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
         String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
 //        log.info("저장하려는 유저의 이메일 ={}",userEmail);
-        User findUser = userRepository.findByEmail(userEmail).orElseThrow(() -> new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
+        User findUser = userRepository.findByEmail(userEmail).orElseThrow(() -> new ApiException(errorMessage.getMessage(), errorMessage.getStatus()));
         Feed feed = new Feed(requestDto.getTitle(), Objects.equals(requestDto.getImgUrl(), "") ? null : requestDto.getImgUrl(), requestDto.getContent(), 0L);
         ;
 
@@ -62,7 +63,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public FeedResponseDto findById(Long id) {
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
-        Feed findFeed = feedRepository.findById(id).orElseThrow(() -> new FeedException(errorMessage.getMessage(), errorMessage.getStatus()));
+        Feed findFeed = feedRepository.findById(id).orElseThrow(() -> new ApiException(errorMessage.getMessage(), errorMessage.getStatus()));
 
         return new FeedResponseDto(findFeed);
     }
@@ -79,12 +80,12 @@ public class FeedServiceImpl implements FeedService {
     public FeedResponseDto updateFeed(Long id, UpdateFeedRequestDto requestDto) {
         ErrorMessage errorNotFound = ErrorMessage.ENTITY_NOT_FOUND;
         ErrorMessage errorBad = ErrorMessage.BLANK_INPUT;
-        Feed findFeed = feedRepository.findById(id).orElseThrow(() -> new FeedException(errorNotFound.getMessage(), errorNotFound.getStatus()));
+        Feed findFeed = feedRepository.findById(id).orElseThrow(() -> new ApiException(errorNotFound.getMessage(), errorNotFound.getStatus()));
 
 
         // 피드수정 요청에 아무 값이 들어오지 않았을 경우 에러 처리
         if (requestDto.getTitle() == null && requestDto.getContent() == null) {
-            throw new FeedException(errorBad.getMessage(), errorBad.getStatus());
+            throw new ApiException(errorBad.getMessage(), errorBad.getStatus());
         }
 
         // 피드에 수정할 content가 없다면 제외시키기
@@ -110,7 +111,7 @@ public class FeedServiceImpl implements FeedService {
     @Override
     public void deleteFeed(Long id) {
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
-        Feed findFeed = feedRepository.findById(id).orElseThrow(() -> new FeedException(errorMessage.getMessage(), errorMessage.getStatus()));
+        Feed findFeed = feedRepository.findById(id).orElseThrow(() -> new ApiException(errorMessage.getMessage(), errorMessage.getStatus()));
         feedRepository.delete(findFeed);
     }
 
@@ -144,9 +145,9 @@ public class FeedServiceImpl implements FeedService {
      * @return
      */
     @Override
-    public List<Feed> getFriendFeeds(UUID userId, int page, int size) {
-        int offset = page * size;
-        return feedRepository.findFriendFeeds(userId, offset, size);
+    public Page<Feed> getFriendFeeds(UUID userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return feedRepository.findFriendFeeds(userId, pageable);
     }
 
 }

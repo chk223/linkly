@@ -12,7 +12,12 @@
             <a class="nav-link active" aria-current="page" href="/view/feed">피드 추가</a>
           </li>
           <li class="nav-item">
-            <a class="nav-link" href="/">랜덤 피드</a>
+            <a th:if="${user.gradeVal != null and user.gradeVal == vip}"
+               class="nav-link" href="/?feedType=random">
+              랜덤 피드
+            </a>
+
+
           </li>
           <li class="nav-item">
             <!-- 내 정보 페이지로 이동 -->

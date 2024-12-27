@@ -21,17 +21,17 @@ public interface FeedRepository extends JpaRepository<Feed, Long> {
     @Query("SELECT f FROM Feed f ORDER BY function('RAND')")
     Page<Feed> findAllRandom(Pageable pageable);
 
+
+
     // 베스트5피드를 좋아요 수와 생성날짜 내림차순
     List<Feed> findTop5ByOrderByHeartCountDescCreatedAtAsc();
 
 
     // 친구 피드 보기
     @Query(value = "select * from feed f where user_id in (select following from friend where follower = :userId)" +
-            "ORDER BY f.created_at DESC " +
-            "LIMIT :offset, :pageSize",
+            "ORDER BY f.created_at DESC ",
     nativeQuery = true)
-    List<Feed> findFriendFeeds(
+    Page<Feed> findFriendFeeds(
             @Param("userId") UUID userId,
-            @Param("offset") int offset,
-            @Param("pageSize") int pageSize);
+            Pageable pageable);
 }

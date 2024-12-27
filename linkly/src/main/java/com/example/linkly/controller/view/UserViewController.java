@@ -5,7 +5,7 @@ import com.example.linkly.dto.user.PwUpdateRequestDto;
 import com.example.linkly.dto.user.SignUpRequestDto;
 import com.example.linkly.dto.user.UserResponseDto;
 import com.example.linkly.dto.user.UserUpdateRequestDto;
-import com.example.linkly.exception.UserException;
+import com.example.linkly.exception.ApiException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.service.friend.FriendService;
 import com.example.linkly.service.user.UserService;
@@ -16,8 +16,6 @@ import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -118,7 +116,7 @@ public class UserViewController {
 //        log.info("비번 변경 감지 id = {} old_pw = {} new_pw ={}", responseDto.getId(), passwordDto.getOriginalPw(),passwordDto.getNewPw());
         if (result.hasErrors()) {
             log.info("검증 에러!!!!!");
-            ExceptionUtil.throwErrorMessage(ErrorMessage.VALID_ERROR, UserException.class);
+            ExceptionUtil.throwErrorMessage(ErrorMessage.VALID_ERROR, ApiException.class);
             return "redirect:/view/user/edit-password";
         }
         log.info("검증 완료 후 비번 변경 감지 id = {} old_pw = {} new_pw ={}", responseDto.getId(), passwordDto.getOriginalPw(),passwordDto.getNewPw());

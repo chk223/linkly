@@ -4,6 +4,7 @@ import com.example.linkly.dto.feed.CreateFeedRequestDto;
 import com.example.linkly.dto.feed.FeedResponseDto;
 import com.example.linkly.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
+import com.example.linkly.exception.ApiException;
 import com.example.linkly.service.feed.FeedService;
 import com.example.linkly.service.heart.HeartService;
 import com.example.linkly.util.HeartCategory;
@@ -36,11 +37,20 @@ public class FeedViewController {
 
     @PostMapping()
     public String feedSave(@ModelAttribute @Valid CreateFeedRequestDto requestDto, BindingResult result, HttpServletRequest request, Model model) {
-//        log.info("입력된 제목 ={} 내용 ={}",requestDto.getTitle(),requestDto.getContent());
-        FeedResponseDto feedResponseDto = feedService.feedSave(requestDto,request);
-        Long id = feedResponseDto.getId();
-//        log.info("저장된 피드의 아이디 ={}", id);
-        return "redirect:/view/feed/" + id;
+        if (result.hasErrors()) {
+            model.addAttribute("createFeedRequestDto", requestDto);
+            return "feed/addFeed";
+        }
+        try{
+            FeedResponseDto feedResponseDto = feedService.feedSave(requestDto,request);
+            Long id = feedResponseDto.getId();
+            return "redirect:/view/feed/" + id;
+        } catch (ApiException e) {
+            model.addAttribute("createFeedRequestDto", requestDto); // 기존 데이터 유지
+            model.addAttribute("error", e.getErrorResponse().getMessage()); // 에러 메시지 추가
+            return "feed/addFeed";
+        }
+
     }
 
     @GetMapping("/{id}")

@@ -115,11 +115,11 @@ public class FeedController {
      * @return
      */
     @GetMapping("/friends")
-    public List<Feed> getFriendFeeds(
+    public Page<Feed> getFriendFeeds(
             @RequestParam UUID userId,
-            @RequestParam int page,
-            @RequestParam int size
+            @RequestParam(defaultValue = "1") int page,
+            @RequestParam(defaultValue = "10") int size
     ) {
-        return feedService.getFriendFeeds(userId, page, size);
+        return feedService.getFriendFeeds(userId, page-1, size);
     }
 }

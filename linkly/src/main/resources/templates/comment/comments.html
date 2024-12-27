@@ -59,6 +59,13 @@
             <div class="mb-3">
                 <label for="content" class="form-label">내용</label>
                 <textarea id="content" th:field="*{content}" class="form-control" rows="4" required></textarea>
+                <div th:if="${#fields.hasErrors('content')}" class="invalid-feedback">
+                    <span th:errors="*{content}"></span>
+                </div>
+            </div>
+            <!-- 로직 오류 메시지 출력 -->
+            <div th:if="${error != null and error != ''}" class="alert alert-danger">
+                <span th:text="${error}"></span>
             </div>
             <button type="submit" class="btn btn-success">댓글 달기</button>
         </form>

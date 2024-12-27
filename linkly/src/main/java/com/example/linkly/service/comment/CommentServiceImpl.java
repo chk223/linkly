@@ -4,8 +4,7 @@ import com.example.linkly.dto.comment.CommentResponseDto;
 import com.example.linkly.entity.Comment;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.entity.User;
-import com.example.linkly.exception.FeedException;
-import com.example.linkly.exception.UserException;
+import com.example.linkly.exception.ApiException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.CommentRepository;
 import com.example.linkly.repository.FeedRepository;
@@ -19,7 +18,6 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
-import java.util.UUID;
 
 @Slf4j
 @Service
@@ -40,8 +38,8 @@ public class CommentServiceImpl implements CommentService{
     @Override
     public CommentResponseDto addComment(String contents, Long feedId, HttpServletRequest request) {
         String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
-        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));;
-        Feed feed = feedRepository.findById(feedId).orElseThrow(()-> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, FeedException.class));
+        User user = userRepository.findByEmail(userEmail).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));;
+        Feed feed = feedRepository.findById(feedId).orElseThrow(()-> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
         Comment comment = commentRepository.save(new Comment(contents,user,feed,0L));
         return CommentResponseDto.toDto(comment);
     }

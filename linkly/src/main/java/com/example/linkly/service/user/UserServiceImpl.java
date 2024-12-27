@@ -5,29 +5,20 @@ import com.example.linkly.dto.user.PwUpdateRequestDto;
 import com.example.linkly.dto.user.UserResponseDto;
 import com.example.linkly.dto.user.UserUpdateRequestDto;
 import com.example.linkly.entity.User;
-import com.example.linkly.exception.UserException;
+import com.example.linkly.exception.ApiException;
 import com.example.linkly.exception.util.ErrorMessage;
 import com.example.linkly.repository.UserRepository;
 import com.example.linkly.util.auth.JwtUtil;
 import com.example.linkly.util.auth.ValidatorUser;
 import com.example.linkly.util.exception.ExceptionUtil;
-import jakarta.persistence.PersistenceException;
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
-import jakarta.validation.ConstraintViolationException;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.dao.DataAccessException;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.servlet.View;
-import java.sql.SQLException;
-import java.sql.SQLIntegrityConstraintViolationException;
+
 import java.util.List;
-import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -62,7 +53,7 @@ public class UserServiceImpl implements UserService{
             if (userWithEmail != null) {
                 log.info("탈퇴한 사용자의 이메일입니다.");
                 ErrorMessage errorMessage = ErrorMessage.valueOf("탈퇴한 사용자의 이메일입니다. ");
-                throw new UserException(errorMessage.getMessage(), HttpStatus.CONFLICT); // 409 Conflict : 리소스 충돌
+                throw new ApiException(errorMessage.getMessage(), HttpStatus.CONFLICT); // 409 Conflict : 리소스 충돌
             }
         }
         // (2) 가입된 이메일 여부 확인
@@ -70,7 +61,7 @@ public class UserServiceImpl implements UserService{
 
             log.info("이미 가입된 이메일입니다.");
             ErrorMessage errorMessage = ErrorMessage.valueOf("이미 가입된 이메일입니다.");
-            throw new UserException(errorMessage.getMessage(), HttpStatus.CONFLICT); // 409 Conflict : 리소스 충돌
+            throw new ApiException(errorMessage.getMessage(), HttpStatus.CONFLICT); // 409 Conflict : 리소스 충돌
         }
         log.info(email);
         if (userRepository.findByEmail(email).isPresent()) {
@@ -85,13 +76,13 @@ public class UserServiceImpl implements UserService{
 
     @Override
     public UserResponseDto getInfo(UUID id) {
-        User user = userRepository.findById(id).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+        User user = userRepository.findById(id).orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
         return new UserResponseDto(user);
     }
 
     @Override
     public UserResponseDto findByEmail(String email) {
-        User user = userRepository.findByEmail(email).orElseThrow(()-> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+        User user = userRepository.findByEmail(email).orElseThrow(()-> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
         return new UserResponseDto(user);
     }
 
@@ -113,7 +104,7 @@ public class UserServiceImpl implements UserService{
 
         ErrorMessage errorMessage = ErrorMessage.ENTITY_NOT_FOUND;
         User user = userRepository.findById(id).orElseThrow(() ->
-                new UserException(errorMessage.getMessage(), errorMessage.getStatus()));
+                new ApiException(errorMessage.getMessage(), errorMessage.getStatus()));
 
         // 이름 수정
         if(dto.getName() != null) {
@@ -147,7 +138,7 @@ public class UserServiceImpl implements UserService{
     public void updatePw(UUID id, PwUpdateRequestDto dto) {
 
         User user = userRepository.findById(id).orElseThrow(() ->
-                ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+                ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
 
         // 비밀번호 검증 성공
         if(bcrypt.matches(dto.getOriginalPw(), user.getPassword())) {
@@ -155,7 +146,7 @@ public class UserServiceImpl implements UserService{
             // originalPw == newPw CASE -> 예외처리
             if(bcrypt.matches(dto.getNewPw(), user.getPassword())) {
                 log.info("이전과 동일한 비밀번호입니다. ");
-                throw ExceptionUtil.throwErrorMessage(ErrorMessage.VALID_ERROR, UserException.class);
+                throw ExceptionUtil.throwErrorMessage(ErrorMessage.VALID_ERROR, ApiException.class);
             }
             log.info("변경된 비밀번호: {}", dto.getNewPw());
             user.updatePassword(bcrypt.encode(dto.getNewPw()));
@@ -164,7 +155,7 @@ public class UserServiceImpl implements UserService{
         // 비밀번호 검증 실패
         else{
             log.info("비밀번호 검증 실패");
-            throw ExceptionUtil.throwErrorMessage(ErrorMessage.PASSWORD_IS_WRONG, UserException.class);
+            throw ExceptionUtil.throwErrorMessage(ErrorMessage.PASSWORD_IS_WRONG, ApiException.class);
         }
 
         userRepository.flush(); // flush 필수!!
@@ -188,7 +179,7 @@ public class UserServiceImpl implements UserService{
         else{
             log.info("비밀번호 검증 실패");
             ErrorMessage errorMessage3 = ErrorMessage.PASSWORD_IS_WRONG;
-            throw new UserException(errorMessage3.getMessage(), errorMessage3.getStatus());
+            throw new ApiException(errorMessage3.getMessage(), errorMessage3.getStatus());
         }
     }
 
@@ -198,7 +189,7 @@ public class UserServiceImpl implements UserService{
     public void updateGrade(UUID id) {
 
         User user = userRepository.findById(id).orElseThrow(() ->
-                ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, UserException.class));
+                ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
 
         // 등급 설정
         user.updateGrade();

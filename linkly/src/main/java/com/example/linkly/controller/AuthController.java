@@ -1,7 +1,7 @@
 package com.example.linkly.controller;
 
 import com.example.linkly.dto.login.LoginRequestDto;
-import com.example.linkly.exception.AuthException;
+import com.example.linkly.exception.ApiException;
 import com.example.linkly.service.auth.AuthService;
 import com.example.linkly.util.auth.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
@@ -41,7 +41,7 @@ public class AuthController {
 
             return ResponseEntity.ok(tokens);  // HTTP 200 OK와 함께 새 accessToken 반환
         } else {
-            throw new AuthException("Invalid refresh token", HttpStatus.UNAUTHORIZED);
+            throw new ApiException("Invalid refresh token", HttpStatus.UNAUTHORIZED);
         }
     }
 }

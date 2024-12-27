@@ -1,8 +1,5 @@
 package com.example.linkly.util.auth;
 
-import com.example.linkly.exception.AuthException;
-import com.example.linkly.exception.util.ErrorMessage;
-import com.example.linkly.util.exception.ExceptionUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
@@ -27,7 +24,7 @@ public class ValidatorUser {
         }
         // Access Token이 없거나 유효하지 않은 경우 처리
         if (accessToken == null || !jwtUtil.validateAccessToken(accessToken)) {
-//            ExceptionUtil.throwErrorMessage(ErrorMessage.INVALID_TOKEN, AuthException.class);
+//            ExceptionUtil.throwErrorMessage(ErrorMessage.INVALID_TOKEN, ApiException.class);
             return null;
         }
         return jwtUtil.extractUsername(accessToken);
