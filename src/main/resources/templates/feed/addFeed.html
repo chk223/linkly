@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Feed Input</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+<div th:insert="~{fragments/header :: header}"></div>
+<div id="container">
+    <h2>피드 등록</h2>
+    <form class="input-form" th:action="@{/view/feed}" method="post" th:object="${requestDto}">
+        <!-- 피드 제목 -->
+        <div>
+            <span class="input-group-text">제목</span>
+            <input type="text" id="title" th:field="*{title}" class="form-control"
+                   th:classappend="${#fields.hasErrors('title') ? 'is-invalid':''}" placeholder="제목을 입력하세요.">
+            <div th:if="${#fields.hasErrors('title')}" class="invalid-feedback">
+                <span th:errors="*{title}"></span>
+            </div>
+        </div>
+
+        <!-- 피드 내용 -->
+        <div>
+            <span class="input-group-text">내용</span>
+            <input type="text" id="content" th:field="*{content}" class="form-control"
+                   th:classappend="${#fields.hasErrors('content') ? 'is-invalid':''}" placeholder="내용을 입력하세요.">
+            <div th:if="${#fields.hasErrors('content')}" class="invalid-feedback">
+                <span th:errors="*{content}"></span>
+            </div>
+        </div>
+
+        <!-- 이미지 URL -->
+        <div>
+            <span class="input-group-text">이미지 URL</span>
+            <input type="text" id="imgUrl" th:field="*{imgUrl}" class="form-control"
+                   th:classappend="${#fields.hasErrors('imgUrl') ? 'is-invalid':''}" placeholder="이미지 주소를 입력하세요.">
+            <div th:if="${#fields.hasErrors('imgUrl')}" class="invalid-feedback">
+                <span th:errors="*{imgUrl}"></span>
+            </div>
+        </div>
+        <!-- 로직 오류 메시지 출력 -->
+        <div th:if="${error != null and error != ''}" class="alert alert-danger">
+            <span th:text="${error}"></span>
+        </div>
+
+
+        <!-- 제출 버튼 -->
+        <button class="input-button" type="submit">등록</button>
+    </form>
+</div>
+</body>
+</html>
