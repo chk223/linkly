@@ -1,7 +1,7 @@
 package com.example.linkly.controller;
 
 
-import com.example.linkly.dto.friend.FriendResponseDto;
+import com.example.linkly.common.dto.friend.FriendResponseDto;
 import com.example.linkly.service.friend.FriendService;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;

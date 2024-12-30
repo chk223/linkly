@@ -1,7 +1,7 @@
 package com.example.linkly.controller.view;
 
-import com.example.linkly.dto.login.LoginRequestDto;
-import com.example.linkly.exception.ApiException;
+import com.example.linkly.common.dto.login.LoginRequestDto;
+import com.example.linkly.common.exception.ApiException;
 import com.example.linkly.service.auth.AuthService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;
@@ -11,8 +11,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.Map;
 
 @Controller
 @RequestMapping("/view/auth")

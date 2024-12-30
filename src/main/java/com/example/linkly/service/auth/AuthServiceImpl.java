@@ -1,13 +1,13 @@
 package com.example.linkly.service.auth;
 
-import com.example.linkly.config.PasswordEncoder;
-import com.example.linkly.dto.login.LoginRequestDto;
+import com.example.linkly.common.config.PasswordEncoder;
+import com.example.linkly.common.dto.login.LoginRequestDto;
 import com.example.linkly.entity.User;
-import com.example.linkly.exception.ApiException;
-import com.example.linkly.exception.util.ErrorMessage;
+import com.example.linkly.common.exception.ApiException;
+import com.example.linkly.common.exception.util.ErrorMessage;
 import com.example.linkly.repository.UserRepository;
-import com.example.linkly.util.auth.JwtUtil;
-import com.example.linkly.util.exception.ExceptionUtil;
+import com.example.linkly.common.util.auth.JwtUtil;
+import com.example.linkly.common.exception.ExceptionUtil;
 import jakarta.servlet.http.Cookie;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;

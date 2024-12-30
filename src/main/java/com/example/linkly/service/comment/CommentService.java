@@ -1,11 +1,9 @@
 package com.example.linkly.service.comment;
 
-import com.example.linkly.dto.comment.CommentResponseDto;
-import com.example.linkly.entity.Comment;
+import com.example.linkly.common.dto.comment.CommentResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;
-import java.util.UUID;
 
 public interface CommentService {
 

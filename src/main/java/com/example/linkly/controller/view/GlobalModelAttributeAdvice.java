@@ -1,8 +1,8 @@
 package com.example.linkly.controller.view;
 
-import com.example.linkly.dto.user.UserResponseDto;
+import com.example.linkly.common.dto.user.UserResponseDto;
 import com.example.linkly.service.user.UserService;
-import com.example.linkly.util.auth.ValidatorUser;
+import com.example.linkly.common.util.auth.ValidatorUser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.ControllerAdvice;

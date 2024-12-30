@@ -1,8 +1,7 @@
 package com.example.linkly.controller;
 
-import com.example.linkly.dto.comment.CommentRequestDto;
-import com.example.linkly.dto.comment.CommentResponseDto;
-import com.example.linkly.entity.Comment;
+import com.example.linkly.common.dto.comment.CommentRequestDto;
+import com.example.linkly.common.dto.comment.CommentResponseDto;
 import com.example.linkly.service.comment.CommentService;
 import com.example.linkly.service.heart.HeartService;
 import jakarta.servlet.http.HttpServletRequest;

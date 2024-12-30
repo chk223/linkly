@@ -1,6 +1,6 @@
 package com.example.linkly.service.friend;
 
-import com.example.linkly.dto.friend.FriendResponseDto;
+import com.example.linkly.common.dto.friend.FriendResponseDto;
 import jakarta.servlet.http.HttpServletRequest;
 
 import java.util.List;

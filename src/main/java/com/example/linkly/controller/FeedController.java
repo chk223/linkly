@@ -1,10 +1,9 @@
 package com.example.linkly.controller;
 
 
-import com.example.linkly.dto.feed.CreateFeedRequestDto;
-import com.example.linkly.dto.feed.FeedPageResponseDto;
-import com.example.linkly.dto.feed.FeedResponseDto;
-import com.example.linkly.dto.feed.UpdateFeedRequestDto;
+import com.example.linkly.common.dto.feed.CreateFeedRequestDto;
+import com.example.linkly.common.dto.feed.FeedResponseDto;
+import com.example.linkly.common.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.service.feed.FeedService;
 import jakarta.servlet.http.HttpServletRequest;

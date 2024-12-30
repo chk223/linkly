@@ -2,7 +2,7 @@ package com.example.linkly.repository;
 
 import com.example.linkly.entity.Heart;
 import com.example.linkly.entity.User;
-import com.example.linkly.util.HeartCategory;
+import com.example.linkly.common.util.HeartCategory;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 

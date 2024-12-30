@@ -1,17 +1,17 @@
 package com.example.linkly.service.feed;
 
-import com.example.linkly.dto.feed.CreateFeedRequestDto;
-import com.example.linkly.dto.feed.FeedResponseDto;
-import com.example.linkly.dto.feed.UpdateFeedRequestDto;
+import com.example.linkly.common.dto.feed.CreateFeedRequestDto;
+import com.example.linkly.common.dto.feed.FeedResponseDto;
+import com.example.linkly.common.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.entity.User;
-import com.example.linkly.exception.ApiException;
-import com.example.linkly.exception.util.ErrorMessage;
+import com.example.linkly.common.exception.ApiException;
+import com.example.linkly.common.exception.util.ErrorMessage;
 import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.FriendRepository;
 import com.example.linkly.repository.UserRepository;
 import jakarta.transaction.Transactional;
-import com.example.linkly.util.auth.ValidatorUser;
+import com.example.linkly.common.util.auth.ValidatorUser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

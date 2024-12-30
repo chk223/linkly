@@ -1,6 +1,6 @@
 package com.example.linkly.entity;
 
-import com.example.linkly.util.HeartCategory;
+import com.example.linkly.common.util.HeartCategory;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.Setter;

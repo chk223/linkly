@@ -1,9 +1,9 @@
 package com.example.linkly.controller;
 
-import com.example.linkly.dto.login.LoginRequestDto;
-import com.example.linkly.exception.ApiException;
+import com.example.linkly.common.dto.login.LoginRequestDto;
+import com.example.linkly.common.exception.ApiException;
 import com.example.linkly.service.auth.AuthService;
-import com.example.linkly.util.auth.JwtUtil;
+import com.example.linkly.common.util.auth.JwtUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;

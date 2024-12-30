@@ -1,6 +1,6 @@
 package com.example.linkly.service.auth;
 
-import com.example.linkly.dto.login.LoginRequestDto;
+import com.example.linkly.common.dto.login.LoginRequestDto;
 import jakarta.servlet.http.HttpServletResponse;
 import org.springframework.http.ResponseEntity;
 

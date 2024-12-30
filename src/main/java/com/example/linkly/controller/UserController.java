@@ -1,8 +1,11 @@
 package com.example.linkly.controller;
 
 
-import com.example.linkly.config.PasswordEncoder;
-import com.example.linkly.dto.user.*;
+import com.example.linkly.common.config.PasswordEncoder;
+import com.example.linkly.common.dto.user.PwUpdateRequestDto;
+import com.example.linkly.common.dto.user.SignUpRequestDto;
+import com.example.linkly.common.dto.user.UserResponseDto;
+import com.example.linkly.common.dto.user.UserUpdateRequestDto;
 import com.example.linkly.service.user.UserService;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

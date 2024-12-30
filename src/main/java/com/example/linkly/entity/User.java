@@ -1,16 +1,10 @@
 package com.example.linkly.entity;
 
-import com.example.linkly.grade.UserGrade;
+import com.example.linkly.common.util.grade.UserGrade;
 import jakarta.persistence.*;
 import jakarta.persistence.Table;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotBlank;
-import jakarta.validation.constraints.Pattern;
 import lombok.Getter;
-import lombok.Setter;
 import org.hibernate.annotations.*;
-import org.springframework.web.multipart.MultipartFile;
-import lombok.Getter;
 
 import java.util.UUID;
 

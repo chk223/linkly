@@ -1,7 +1,7 @@
 package com.example.linkly.controller;
 
-import com.example.linkly.dto.comment.CommentRequestDto;
-import com.example.linkly.dto.comment.CommentResponseDto;
+import com.example.linkly.common.dto.comment.CommentRequestDto;
+import com.example.linkly.common.dto.comment.CommentResponseDto;
 import com.example.linkly.service.auth.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;

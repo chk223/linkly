@@ -1,16 +1,16 @@
 package com.example.linkly.controller.view;
 
-import com.example.linkly.config.PasswordEncoder;
-import com.example.linkly.dto.user.PwUpdateRequestDto;
-import com.example.linkly.dto.user.SignUpRequestDto;
-import com.example.linkly.dto.user.UserResponseDto;
-import com.example.linkly.dto.user.UserUpdateRequestDto;
-import com.example.linkly.exception.ApiException;
-import com.example.linkly.exception.util.ErrorMessage;
+import com.example.linkly.common.config.PasswordEncoder;
+import com.example.linkly.common.dto.user.PwUpdateRequestDto;
+import com.example.linkly.common.dto.user.SignUpRequestDto;
+import com.example.linkly.common.dto.user.UserResponseDto;
+import com.example.linkly.common.dto.user.UserUpdateRequestDto;
+import com.example.linkly.common.exception.ApiException;
+import com.example.linkly.common.exception.util.ErrorMessage;
 import com.example.linkly.service.friend.FriendService;
 import com.example.linkly.service.user.UserService;
-import com.example.linkly.util.auth.ValidatorUser;
-import com.example.linkly.util.exception.ExceptionUtil;
+import com.example.linkly.common.util.auth.ValidatorUser;
+import com.example.linkly.common.exception.ExceptionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import jakarta.validation.Valid;

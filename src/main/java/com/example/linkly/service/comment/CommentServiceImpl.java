@@ -1,16 +1,16 @@
 package com.example.linkly.service.comment;
 
-import com.example.linkly.dto.comment.CommentResponseDto;
+import com.example.linkly.common.dto.comment.CommentResponseDto;
 import com.example.linkly.entity.Comment;
 import com.example.linkly.entity.Feed;
 import com.example.linkly.entity.User;
-import com.example.linkly.exception.ApiException;
-import com.example.linkly.exception.util.ErrorMessage;
+import com.example.linkly.common.exception.ApiException;
+import com.example.linkly.common.exception.util.ErrorMessage;
 import com.example.linkly.repository.CommentRepository;
 import com.example.linkly.repository.FeedRepository;
 import com.example.linkly.repository.UserRepository;
-import com.example.linkly.util.auth.ValidatorUser;
-import com.example.linkly.util.exception.ExceptionUtil;
+import com.example.linkly.common.util.auth.ValidatorUser;
+import com.example.linkly.common.exception.ExceptionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;

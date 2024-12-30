@@ -1,13 +1,13 @@
 package com.example.linkly.controller.view;
 
-import com.example.linkly.dto.friend.FriendResponseDto;
-import com.example.linkly.dto.user.UserResponseDto;
+import com.example.linkly.common.dto.friend.FriendResponseDto;
+import com.example.linkly.common.dto.user.UserResponseDto;
 import com.example.linkly.entity.Feed;
-import com.example.linkly.grade.UserGrade;
+import com.example.linkly.common.util.grade.UserGrade;
 import com.example.linkly.service.feed.FeedService;
 import com.example.linkly.service.friend.FriendService;
 import com.example.linkly.service.user.UserService;
-import com.example.linkly.util.auth.ValidatorUser;
+import com.example.linkly.common.util.auth.ValidatorUser;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,7 +20,6 @@ import org.springframework.web.bind.annotation.*;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 @Controller
 @Slf4j

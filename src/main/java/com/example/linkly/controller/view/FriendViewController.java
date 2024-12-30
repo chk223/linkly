@@ -1,9 +1,8 @@
 package com.example.linkly.controller.view;
 
-import com.example.linkly.dto.friend.FriendResponseDto;
+import com.example.linkly.common.dto.friend.FriendResponseDto;
 import com.example.linkly.service.friend.FriendService;
 import jakarta.servlet.http.HttpServletRequest;
-import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Controller;

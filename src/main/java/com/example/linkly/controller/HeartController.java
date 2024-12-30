@@ -1,14 +1,12 @@
 package com.example.linkly.controller;
 
 import com.example.linkly.service.heart.HeartService;
-import com.example.linkly.util.HeartCategory;
+import com.example.linkly.common.util.HeartCategory;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.UUID;
 
 @Slf4j
 @RestController

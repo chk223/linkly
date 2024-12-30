@@ -1,8 +1,8 @@
 package com.example.linkly.service.feed;
 
-import com.example.linkly.dto.feed.CreateFeedRequestDto;
-import com.example.linkly.dto.feed.FeedResponseDto;
-import com.example.linkly.dto.feed.UpdateFeedRequestDto;
+import com.example.linkly.common.dto.feed.CreateFeedRequestDto;
+import com.example.linkly.common.dto.feed.FeedResponseDto;
+import com.example.linkly.common.dto.feed.UpdateFeedRequestDto;
 import com.example.linkly.entity.Feed;
 import jakarta.servlet.http.HttpServletRequest;
 import org.springframework.data.domain.Page;

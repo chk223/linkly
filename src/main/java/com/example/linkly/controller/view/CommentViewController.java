@@ -1,13 +1,11 @@
 package com.example.linkly.controller.view;
 
-import com.example.linkly.dto.comment.CommentRequestDto;
-import com.example.linkly.dto.comment.CommentResponseDto;
-import com.example.linkly.exception.ApiException;
+import com.example.linkly.common.dto.comment.CommentRequestDto;
+import com.example.linkly.common.dto.comment.CommentResponseDto;
+import com.example.linkly.common.exception.ApiException;
 import com.example.linkly.service.comment.CommentService;
 import com.example.linkly.service.heart.HeartService;
-import com.example.linkly.service.user.UserService;
-import com.example.linkly.util.HeartCategory;
-import com.example.linkly.util.auth.ValidatorUser;
+import com.example.linkly.common.util.HeartCategory;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

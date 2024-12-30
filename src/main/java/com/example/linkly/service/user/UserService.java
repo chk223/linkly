@@ -1,9 +1,8 @@
 package com.example.linkly.service.user;
 
-import com.example.linkly.dto.user.PwUpdateRequestDto;
-import com.example.linkly.dto.user.UserResponseDto;
-import com.example.linkly.dto.user.UserUpdateRequestDto;
-import jakarta.servlet.http.HttpServletRequest;
+import com.example.linkly.common.dto.user.PwUpdateRequestDto;
+import com.example.linkly.common.dto.user.UserResponseDto;
+import com.example.linkly.common.dto.user.UserUpdateRequestDto;
 import jakarta.servlet.http.HttpServletResponse;
 
 import java.util.List;

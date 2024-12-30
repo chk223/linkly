@@ -1,14 +1,14 @@
 package com.example.linkly.service.friend;
 
-import com.example.linkly.dto.friend.FriendResponseDto;
+import com.example.linkly.common.dto.friend.FriendResponseDto;
 import com.example.linkly.entity.Friend;
 import com.example.linkly.entity.User;
-import com.example.linkly.exception.ApiException;
-import com.example.linkly.exception.util.ErrorMessage;
+import com.example.linkly.common.exception.ApiException;
+import com.example.linkly.common.exception.util.ErrorMessage;
 import com.example.linkly.repository.FriendRepository;
 import com.example.linkly.repository.UserRepository;
-import com.example.linkly.util.auth.ValidatorUser;
-import com.example.linkly.util.exception.ExceptionUtil;
+import com.example.linkly.common.util.auth.ValidatorUser;
+import com.example.linkly.common.exception.ExceptionUtil;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
