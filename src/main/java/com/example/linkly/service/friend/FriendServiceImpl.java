@@ -37,26 +37,19 @@ public class FriendServiceImpl implements FriendService {
                 .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
         User follow = userRepository.findById(id)
                 .orElseThrow(() -> ExceptionUtil.throwErrorMessage(ErrorMessage.ENTITY_NOT_FOUND, ApiException.class));
-        log.info("내 id = {}, name = {} , email = {} , grade = {}",me.getId(), me.getName(), me.getEmail(), me.getGrade());
-        log.info("친구 id = {}, name = {} , email = {} , grade = {}",follow.getId(), follow.getName(), follow.getEmail(), follow.getGrade());
         // 팔로우 상태 확인
         List<Friend> myFollowing = friendRepository.findByFollowing(me);
-        log.info("myFollowing size = {}", myFollowing.size());
         // 상대방의 ID가 팔로우 목록에 있는지 확인
         boolean existingFriend = myFollowing.stream()
                 .anyMatch(friend -> friend.getFollowing().getId().equals(id));
-        log.info("친구 창에 있나요? ={} ", existingFriend);
 
         if (existingFriend) {
             // 이미 팔로우한 상태라면 언팔로우 처리
-            log.info("삭제시작");
             friendRepository.deleteByFollowerAndFollowing(me, follow);
-            log.info("삭제끝");
             return null;
         } else {
             // 팔로우하지 않은 상태라면 팔로우 처리
             Friend newFriend = new Friend(me, follow);
-            log.info("{} << 이사람이 {} << 이사람을 팔로우 할게요!!",me.getName(),follow.getName());
             friendRepository.save(newFriend); // 팔로우 관계 저장
             return new FriendResponseDto(
                     newFriend.getId(),
@@ -149,7 +142,6 @@ public class FriendServiceImpl implements FriendService {
 
         // 내가 팔로우 중인 유저 목록을 가져옴
         List<Friend> myFollowing = friendRepository.findByFollowing(me);
-        log.info("my Following size = {} ", myFollowing.size());
         // 상대방의 ID가 팔로우 목록에 있는지 확인
         return myFollowing.stream()
                 .anyMatch(friend -> friend.getFollowing().getId().equals(id)); // 팔로우 중인 유저의 ID와 비교

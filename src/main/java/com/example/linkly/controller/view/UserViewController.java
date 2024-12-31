@@ -55,7 +55,6 @@ public class UserViewController {
             return "redirect:/";
         } catch (ApiException e) {
             String errorMessage = e.getErrorResponse().getMessage();
-            log.info("에러메세지 = {} ", errorMessage);
             model.addAttribute("error", errorMessage);
             return "auth/signUp";
         }
@@ -66,7 +65,6 @@ public class UserViewController {
     public String displayUserProfile(@PathVariable UUID id, Model model, HttpServletRequest request) {
         boolean isFollowing = friendService.isFollowed(id, request);
         UserResponseDto userResponseDto = userService.getInfo(id);
-//        log.info("등급 ={},이미지 ={}", userResponseDto.getGradeVal(), userResponseDto.getProfileImgUrl());
         model.addAttribute("userResponseDto", userResponseDto);
         model.addAttribute("isFollowing", isFollowing);
         return "user/myInfo";  // userProfile.html 템플릿 반환

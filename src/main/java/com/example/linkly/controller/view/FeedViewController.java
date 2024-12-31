@@ -57,9 +57,7 @@ public class FeedViewController {
     public String displayFeedDetail(@PathVariable Long id, Model model, HttpServletRequest request) {
         String userEmail = validatorUser.getUserEmailFromTokenOrThrow(request);
         boolean isLiked = heartService.isILikeThis(id, HeartCategory.FEED, request);
-//        log.info("로그인 한 유저의 email ={} ", userEmail);
         FeedResponseDto feed = feedService.findById(id);
-//        log.info("해당 피드 작성한 유저 이메일 ={}", feed.getEmail());
         model.addAttribute("isLiked", isLiked);
         model.addAttribute("feed", feed);
         model.addAttribute("userEmail", userEmail);
@@ -75,14 +73,12 @@ public class FeedViewController {
 
     @PostMapping("/edit-feed/{id}")
     public String updateFeed(@PathVariable Long id, @ModelAttribute @Valid UpdateFeedRequestDto responseDto) {
-        log.info("수정 제목 : {}, 내용 : {} 이미지 : {}", responseDto.getTitle(), responseDto.getContent(),responseDto.getImgUrl());
         feedService.updateFeed(id,responseDto);
         return "redirect:/view/feed/" + id; // 업데이트 후 상세 페이지로 리다이렉트
     }
 
     @PostMapping(value = "/delete/{id}")
     public String deleteFeed(@PathVariable Long id) {
-        log.info("삭제 감지 id ={}",id);
         feedService.deleteFeed(id);
         return "redirect:/";
     }
